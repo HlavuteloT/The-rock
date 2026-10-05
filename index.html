@@ -8,227 +8,7 @@
 
     <meta name="description"
           content="Professional town planning, environmental planning and land use management services in South Africa.">
-/* ================================
-   APPLICATION WIZARD
-================================ */
 
-.wizard-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.75);
-    padding: 30px 15px;
-    overflow-y: auto;
-    align-items: center;
-    justify-content: center;
-}
-
-.wizard-box {
-    position: relative;
-    width: 100%;
-    max-width: 760px;
-    background: #ffffff;
-    padding: 45px;
-    border-radius: 18px;
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
-    color: #1d2b24;
-}
-
-.wizard-close {
-    position: absolute;
-    top: 15px;
-    right: 18px;
-    border: none;
-    background: transparent;
-    font-size: 32px;
-    cursor: pointer;
-    color: #777;
-    line-height: 1;
-}
-
-.wizard-close:hover {
-    color: #111;
-}
-
-.wizard-intro {
-    max-width: 620px;
-    margin-bottom: 30px;
-}
-
-
-/* Progress */
-
-.wizard-progress {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin: 25px 0 35px;
-}
-
-.progress-step {
-    text-align: center;
-    font-size: 13px;
-    color: #999;
-    padding: 10px 5px;
-    border-bottom: 2px solid #ddd;
-}
-
-.progress-step span {
-    display: block;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    margin: 0 auto 7px;
-    border-radius: 50%;
-    background: #ddd;
-    color: #666;
-    font-weight: 700;
-}
-
-.progress-step.active {
-    color: #a78332;
-    border-bottom-color: #a78332;
-}
-
-.progress-step.active span {
-    background: #a78332;
-    color: white;
-}
-
-
-/* Steps */
-
-.wizard-step {
-    display: none;
-}
-
-.wizard-step.active {
-    display: block;
-}
-
-.wizard-step h3 {
-    margin-bottom: 10px;
-}
-
-
-/* Form */
-
-.wizard-step label {
-    display: block;
-    margin-top: 20px;
-    margin-bottom: 7px;
-    font-weight: 600;
-}
-
-.wizard-step input,
-.wizard-step select,
-.wizard-step textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 13px 14px;
-    border: 1px solid #d8ddd9;
-    border-radius: 8px;
-    font: inherit;
-    background: #fafbfa;
-}
-
-.wizard-step textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.wizard-step input:focus,
-.wizard-step select:focus,
-.wizard-step textarea:focus {
-    outline: none;
-    border-color: #a78332;
-    box-shadow: 0 0 0 3px rgba(167, 131, 50, 0.12);
-}
-
-.wizard-note {
-    font-size: 13px;
-    color: #777;
-    margin-top: 8px;
-}
-
-
-/* Buttons */
-
-.wizard-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-top: 30px;
-}
-
-
-/* Summary */
-
-.application-summary {
-    margin-top: 30px;
-    padding: 20px;
-    border-radius: 10px;
-    background: #f4f6f4;
-    border-left: 4px solid #a78332;
-}
-
-.application-summary h4 {
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-
-.application-summary p {
-    margin: 8px 0;
-}
-
-
-/* Message */
-
-#applicationMessage {
-    margin-top: 20px;
-    font-weight: 600;
-}
-
-
-/* Mobile */
-
-@media (max-width: 700px) {
-
-    .wizard-overlay {
-        padding: 10px;
-        align-items: flex-start;
-    }
-
-    .wizard-box {
-        margin-top: 10px;
-        padding: 30px 20px;
-        border-radius: 12px;
-    }
-
-    .wizard-progress {
-        gap: 3px;
-    }
-
-    .progress-step {
-        font-size: 11px;
-    }
-
-    .progress-step span {
-        width: 26px;
-        height: 26px;
-        line-height: 26px;
-    }
-
-    .wizard-buttons {
-        flex-direction: column-reverse;
-    }
-
-    .wizard-buttons .button {
-        width: 100%;
-    }
-
-}
     <style>
 
         /* =========================
@@ -867,7 +647,227 @@
             }
 
         }
+/* ================================
+   APPLICATION WIZARD
+================================ */
 
+.wizard-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 30px 15px;
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.wizard-box {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    background: #ffffff;
+    padding: 45px;
+    border-radius: 18px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+    color: #1d2b24;
+}
+
+.wizard-close {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    border: none;
+    background: transparent;
+    font-size: 32px;
+    cursor: pointer;
+    color: #777;
+    line-height: 1;
+}
+
+.wizard-close:hover {
+    color: #111;
+}
+
+.wizard-intro {
+    max-width: 620px;
+    margin-bottom: 30px;
+}
+
+
+/* Progress */
+
+.wizard-progress {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 25px 0 35px;
+}
+
+.progress-step {
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    padding: 10px 5px;
+    border-bottom: 2px solid #ddd;
+}
+
+.progress-step span {
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 auto 7px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #666;
+    font-weight: 700;
+}
+
+.progress-step.active {
+    color: #a78332;
+    border-bottom-color: #a78332;
+}
+
+.progress-step.active span {
+    background: #a78332;
+    color: white;
+}
+
+
+/* Steps */
+
+.wizard-step {
+    display: none;
+}
+
+.wizard-step.active {
+    display: block;
+}
+
+.wizard-step h3 {
+    margin-bottom: 10px;
+}
+
+
+/* Form */
+
+.wizard-step label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+.wizard-step input,
+.wizard-step select,
+.wizard-step textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 14px;
+    border: 1px solid #d8ddd9;
+    border-radius: 8px;
+    font: inherit;
+    background: #fafbfa;
+}
+
+.wizard-step textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.wizard-step input:focus,
+.wizard-step select:focus,
+.wizard-step textarea:focus {
+    outline: none;
+    border-color: #a78332;
+    box-shadow: 0 0 0 3px rgba(167, 131, 50, 0.12);
+}
+
+.wizard-note {
+    font-size: 13px;
+    color: #777;
+    margin-top: 8px;
+}
+
+
+/* Buttons */
+
+.wizard-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+
+/* Summary */
+
+.application-summary {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f4f6f4;
+    border-left: 4px solid #a78332;
+}
+
+.application-summary h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.application-summary p {
+    margin: 8px 0;
+}
+
+
+/* Message */
+
+#applicationMessage {
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+    .wizard-overlay {
+        padding: 10px;
+        align-items: flex-start;
+    }
+
+    .wizard-box {
+        margin-top: 10px;
+        padding: 30px 20px;
+        border-radius: 12px;
+    }
+
+    .wizard-progress {
+        gap: 3px;
+    }
+
+    .progress-step {
+        font-size: 11px;
+    }
+
+    .progress-step span {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+    }
+
+    .wizard-buttons {
+        flex-direction: column-reverse;
+    }
+
+    .wizard-buttons .button {
+        width: 100%;
+    }
+
+}
     </style>
 </head>
 
