@@ -1746,6 +1746,19 @@
 
 
 <!-- =========================
+     CLOSE CONTACT SECTION
+========================= -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
      FOOTER
 ========================= -->
 
@@ -1755,7 +1768,6 @@
 
         <div class="footer-grid">
 
-
             <div>
 
                 <h3>
@@ -1763,15 +1775,12 @@
                 </h3>
 
                 <p>
-
                     Professional Environmental,
                     Town Planning & Land Use Management
                     Services.
-
                 </p>
 
             </div>
-
 
 
             <div>
@@ -1803,7 +1812,6 @@
                 </ul>
 
             </div>
-
 
 
             <div>
@@ -1839,7 +1847,6 @@
         </div>
 
 
-
         <div class="footer-bottom">
 
             © 2026 The Rock. All rights reserved.
@@ -1855,40 +1862,23 @@
     </div>
 
 </footer>
-<script>
-
-<!-- SUPABASE -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-
-const SUPABASE_URL =
-    "https://iuwnsrvlmicgdilmrftl.supabase.co";
-
-const SUPABASE_KEY =
-    "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
 
 
-<!-- =========================================
+
+<!-- =====================================================
      APPLICATION WIZARD
-========================================= -->
+===================================================== -->
 
 <div
     id="applicationWizard"
-    class="application-wizard"
-    style="display:none;"
+    class="wizard-overlay"
 >
 
-    <div class="wizard-container">
+    <div class="wizard-box">
 
-        <!-- CLOSE BUTTON -->
+
+        <!-- CLOSE -->
+
         <button
             type="button"
             class="wizard-close"
@@ -1900,12 +1890,16 @@ const supabaseClient =
 
         <!-- TITLE -->
 
-        <h2>Planning Application</h2>
+        <h2>
+            Planning Application
+        </h2>
 
         <p class="wizard-intro">
-            Please provide the information below so that we can
-            understand your planning application and assess the
-            appropriate next steps.
+
+            Please provide the information below so that we
+            can understand your planning application and
+            assess the appropriate next steps.
+
         </p>
 
 
@@ -1914,26 +1908,50 @@ const supabaseClient =
         <div class="wizard-progress">
 
             <div class="progress-step active">
+
                 <span>1</span>
-                <small>Project</small>
+
+                <small>
+                    Project
+                </small>
+
             </div>
 
+
             <div class="progress-step">
+
                 <span>2</span>
-                <small>Property</small>
+
+                <small>
+                    Property
+                </small>
+
             </div>
 
+
             <div class="progress-step">
+
                 <span>3</span>
-                <small>Proposal</small>
+
+                <small>
+                    Proposal
+                </small>
+
             </div>
 
+
             <div class="progress-step">
+
                 <span>4</span>
-                <small>Review</small>
+
+                <small>
+                    Review
+                </small>
+
             </div>
 
         </div>
+
 
 
         <!-- APPLICATION FORM -->
@@ -1941,91 +1959,85 @@ const supabaseClient =
         <form id="applicationForm">
 
 
-            <!-- =====================================
+            <!-- =========================
                  STEP 1
-            ====================================== -->
+            ========================= -->
 
             <div
                 id="applicationStep1"
                 class="wizard-step active"
             >
 
-                <h3>Step 1 — Project Information</h3>
-
-                <div class="form-group">
-
-                    <label for="appType">
-                        Application Type
-                    </label>
-
-                    <select
-                        id="appType"
-                        required
-                    >
-
-                        <option value="">
-                            Select application type
-                        </option>
-
-                        <option value="Rezoning">
-                            Rezoning
-                        </option>
-
-                        <option value="Consent Use">
-                            Consent Use
-                        </option>
-
-                        <option value="Subdivision">
-                            Subdivision
-                        </option>
-
-                        <option value="Consolidation">
-                            Consolidation
-                        </option>
-
-                        <option value="Township Establishment">
-                            Township Establishment
-                        </option>
-
-                        <option value="Removal of Restrictions">
-                            Removal of Restrictions
-                        </option>
-
-                        <option value="Departure / Relaxation">
-                            Departure / Relaxation
-                        </option>
-
-                        <option value="Site Development">
-                            Site Development
-                        </option>
-
-                        <option value="Land Use Management">
-                            Land Use Management
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
-
-                    </select>
-
-                </div>
+                <h3>
+                    Step 1 — Project Information
+                </h3>
 
 
-                <div class="form-group">
+                <label for="appType">
+                    Application Type
+                </label>
 
-                    <label for="appDescription">
-                        Brief Project Description
-                    </label>
+                <select
+                    id="appType"
+                    required
+                >
 
-                    <textarea
-                        id="appDescription"
-                        rows="5"
-                        placeholder="Briefly describe what you would like to do with the property..."
-                        required
-                    ></textarea>
+                    <option value="">
+                        Select application type
+                    </option>
 
-                </div>
+                    <option value="Rezoning">
+                        Rezoning
+                    </option>
+
+                    <option value="Consent Use">
+                        Consent Use
+                    </option>
+
+                    <option value="Subdivision">
+                        Subdivision
+                    </option>
+
+                    <option value="Consolidation">
+                        Consolidation
+                    </option>
+
+                    <option value="Township Establishment">
+                        Township Establishment
+                    </option>
+
+                    <option value="Removal of Restrictions">
+                        Removal of Restrictions
+                    </option>
+
+                    <option value="Departure / Relaxation">
+                        Departure / Relaxation
+                    </option>
+
+                    <option value="Site Development">
+                        Site Development
+                    </option>
+
+                    <option value="Land Use Management">
+                        Land Use Management
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+
+                <label for="appDescription">
+                    Brief Project Description
+                </label>
+
+                <textarea
+                    id="appDescription"
+                    placeholder="Briefly describe what you would like to do with the property..."
+                    required
+                ></textarea>
 
 
                 <div class="wizard-buttons">
@@ -2044,142 +2056,124 @@ const supabaseClient =
 
 
 
-            <!-- =====================================
+            <!-- =========================
                  STEP 2
-            ====================================== -->
+            ========================= -->
 
             <div
                 id="applicationStep2"
                 class="wizard-step"
             >
 
-                <h3>Step 2 — Property Information</h3>
+                <h3>
+                    Step 2 — Property Information
+                </h3>
 
 
-                <div class="form-group">
+                <label for="appErf">
+                    Erf / Farm Number
+                </label>
 
-                    <label for="appErf">
-                        Erf / Farm Number
-                    </label>
-
-                    <input
-                        type="text"
-                        id="appErf"
-                        placeholder="e.g. Erf 1234"
-                        required
-                    >
-
-                </div>
+                <input
+                    type="text"
+                    id="appErf"
+                    placeholder="e.g. Erf 1234"
+                    required
+                >
 
 
-                <div class="form-group">
+                <label for="appSuburb">
+                    Suburb / Area
+                </label>
 
-                    <label for="appSuburb">
-                        Suburb / Area
-                    </label>
-
-                    <input
-                        type="text"
-                        id="appSuburb"
-                        placeholder="Suburb or area"
-                        required
-                    >
-
-                </div>
+                <input
+                    type="text"
+                    id="appSuburb"
+                    placeholder="Suburb or area"
+                    required
+                >
 
 
-                <div class="form-group">
+                <label for="appMunicipality">
+                    Municipality
+                </label>
 
-                    <label for="appMunicipality">
-                        Municipality
-                    </label>
-
-                    <input
-                        type="text"
-                        id="appMunicipality"
-                        placeholder="Municipality"
-                        required
-                    >
-
-                </div>
+                <input
+                    type="text"
+                    id="appMunicipality"
+                    placeholder="Municipality"
+                    required
+                >
 
 
-                <div class="form-group">
+                <label for="appProvince">
+                    Province
+                </label>
 
-                    <label for="appProvince">
-                        Province
-                    </label>
+                <select
+                    id="appProvince"
+                    required
+                >
 
-                    <select
-                        id="appProvince"
-                        required
-                    >
+                    <option value="">
+                        Select province
+                    </option>
 
-                        <option value="">
-                            Select province
-                        </option>
+                    <option value="Eastern Cape">
+                        Eastern Cape
+                    </option>
 
-                        <option value="Eastern Cape">
-                            Eastern Cape
-                        </option>
+                    <option value="Free State">
+                        Free State
+                    </option>
 
-                        <option value="Free State">
-                            Free State
-                        </option>
+                    <option value="Gauteng">
+                        Gauteng
+                    </option>
 
-                        <option value="Gauteng">
-                            Gauteng
-                        </option>
+                    <option value="KwaZulu-Natal">
+                        KwaZulu-Natal
+                    </option>
 
-                        <option value="KwaZulu-Natal">
-                            KwaZulu-Natal
-                        </option>
+                    <option value="Limpopo">
+                        Limpopo
+                    </option>
 
-                        <option value="Limpopo">
-                            Limpopo
-                        </option>
+                    <option value="Mpumalanga">
+                        Mpumalanga
+                    </option>
 
-                        <option value="Mpumalanga">
-                            Mpumalanga
-                        </option>
+                    <option value="Northern Cape">
+                        Northern Cape
+                    </option>
 
-                        <option value="Northern Cape">
-                            Northern Cape
-                        </option>
+                    <option value="North West">
+                        North West
+                    </option>
 
-                        <option value="North West">
-                            North West
-                        </option>
+                    <option value="Western Cape">
+                        Western Cape
+                    </option>
 
-                        <option value="Western Cape">
-                            Western Cape
-                        </option>
-
-                    </select>
-
-                </div>
+                </select>
 
 
-                <div class="form-group">
+                <label for="appZoning">
+                    Current Zoning
+                </label>
 
-                    <label for="appZoning">
-                        Current Zoning
-                    </label>
-
-                    <input
-                        type="text"
-                        id="appZoning"
-                        placeholder="If known"
-                    >
-
-                </div>
+                <input
+                    type="text"
+                    id="appZoning"
+                    placeholder="If known"
+                >
 
 
                 <div class="wizard-buttons">
 
                     <button
                         type="button"
-                        class="button button-secondary"
+                        class="button button-outline"
                         onclick="nextApplicationStep(1)"
                     >
                         Back
@@ -2199,71 +2193,60 @@ const supabaseClient =
 
 
 
-            <!-- =====================================
+            <!-- =========================
                  STEP 3
-            ====================================== -->
+            ========================= -->
 
             <div
                 id="applicationStep3"
                 class="wizard-step"
             >
 
-                <h3>Step 3 — Development Proposal</h3>
+                <h3>
+                    Step 3 — Development Proposal
+                </h3>
 
 
-                <div class="form-group">
+                <label for="appCurrentUse">
+                    Current Use of Property
+                </label>
 
-                    <label for="appCurrentUse">
-                        Current Use of Property
-                    </label>
-
-                    <input
-                        type="text"
-                        id="appCurrentUse"
-                        placeholder="e.g. Residential, vacant land, agricultural"
-                        required
-                    >
-
-                </div>
+                <input
+                    type="text"
+                    id="appCurrentUse"
+                    placeholder="e.g. Residential, vacant land, agricultural"
+                    required
+                >
 
 
-                <div class="form-group">
+                <label for="appProposal">
+                    Proposed Development
+                </label>
 
-                    <label for="appProposal">
-                        Proposed Development
-                    </label>
-
-                    <textarea
-                        id="appProposal"
-                        rows="5"
-                        placeholder="Describe the proposed development..."
-                        required
-                    ></textarea>
-
-                </div>
+                <textarea
+                    id="appProposal"
+                    placeholder="Describe the proposed development..."
+                    required
+                ></textarea>
 
 
-                <div class="form-group">
+                <label for="appUnits">
+                    Number of Units / Dwellings
+                </label>
 
-                    <label for="appUnits">
-                        Number of Units / Dwellings
-                    </label>
-
-                    <input
-                        type="number"
-                        id="appUnits"
-                        min="0"
-                        placeholder="If applicable"
-                    >
-
-                </div>
+                <input
+                    type="number"
+                    id="appUnits"
+                    min="0"
+                    placeholder="If applicable"
+                >
 
 
                 <div class="wizard-buttons">
 
                     <button
                         type="button"
-                        class="button button-secondary"
+                        class="button button-outline"
                         onclick="nextApplicationStep(2)"
                     >
                         Back
@@ -2283,88 +2266,91 @@ const supabaseClient =
 
 
 
-            <!-- =====================================
+            <!-- =========================
                  STEP 4
-            ====================================== -->
+            ========================= -->
 
             <div
                 id="applicationStep4"
                 class="wizard-step"
             >
 
-                <h3>Step 4 — Applicant Details & Review</h3>
+                <h3>
+                    Step 4 — Applicant Details
+                </h3>
 
 
-                <div class="form-group">
+                <label for="applicantName">
+                    Full Name
+                </label>
 
-                    <label for="applicantName">
-                        Full Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="applicantName"
-                        placeholder="Your full name"
-                        required
-                    >
-
-                </div>
+                <input
+                    type="text"
+                    id="applicantName"
+                    placeholder="Your full name"
+                    required
+                >
 
 
-                <div class="form-group">
+                <label for="applicantEmail">
+                    Email Address
+                </label>
 
-                    <label for="applicantEmail">
-                        Email Address
-                    </label>
-
-                    <input
-                        type="email"
-                        id="applicantEmail"
-                        placeholder="you@example.com"
-                        required
-                    >
-
-                </div>
+                <input
+                    type="email"
+                    id="applicantEmail"
+                    placeholder="you@example.com"
+                    required
+                >
 
 
-                <div class="form-group">
+                <label for="applicantPhone">
+                    Phone Number
+                </label>
 
-                    <label for="applicantPhone">
-                        Phone Number
-                    </label>
-
-                    <input
-                        type="tel"
-                        id="applicantPhone"
-                        placeholder="+27..."
-                        required
-                    >
-
-                </div>
+                <input
+                    type="tel"
+                    id="applicantPhone"
+                    placeholder="+27..."
+                    required
+                >
 
 
-                <!-- REVIEW -->
+                <!-- SUMMARY -->
 
-                <div class="application-review">
+                <div class="application-summary">
 
-                    <h4>Application Summary</h4>
+                    <h4>
+                        Application Summary
+                    </h4>
 
                     <p>
-                        <strong>Application Type:</strong>
+                        <strong>
+                            Application Type:
+                        </strong>
+
                         <span id="summaryType">
                             Not provided
                         </span>
                     </p>
 
+
                     <p>
-                        <strong>Erf / Farm:</strong>
+                        <strong>
+                            Erf / Farm:
+                        </strong>
+
                         <span id="summaryProperty">
                             Not provided
                         </span>
                     </p>
 
+
                     <p>
-                        <strong>Municipality:</strong>
+                        <strong>
+                            Municipality:
+                        </strong>
+
                         <span id="summaryMunicipality">
                             Not provided
                         </span>
@@ -2373,19 +2359,14 @@ const supabaseClient =
                 </div>
 
 
-                <!-- MESSAGE -->
-
-                <div
-                    id="applicationMessage"
-                    class="form-message"
-                ></div>
+                <div id="applicationMessage"></div>
 
 
                 <div class="wizard-buttons">
 
                     <button
                         type="button"
-                        class="button button-secondary"
+                        class="button button-outline"
                         onclick="nextApplicationStep(3)"
                     >
                         Back
@@ -2410,9 +2391,9 @@ const supabaseClient =
 
 
 
-<!-- =========================================
+<!-- =====================================================
      SUPABASE
-========================================= -->
+===================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -2425,6 +2406,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
 
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -2434,7 +2416,7 @@ const supabaseClient =
 
 
 /* =========================================
-   OPEN APPLICATION WIZARD
+   OPEN WIZARD
 ========================================= */
 
 function openApplicationWizard() {
@@ -2444,20 +2426,30 @@ function openApplicationWizard() {
             "applicationWizard"
         );
 
-    if (wizard) {
+    if (!wizard) {
 
-        wizard.style.display = "flex";
+        console.error(
+            "Application wizard was not found."
+        );
 
-        document.body.style.overflow = "hidden";
+        return;
 
     }
+
+
+    wizard.style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+
+
+    nextApplicationStep(1);
 
 }
 
 
 
 /* =========================================
-   CLOSE APPLICATION WIZARD
+   CLOSE WIZARD
 ========================================= */
 
 function closeApplicationWizard() {
@@ -2467,13 +2459,16 @@ function closeApplicationWizard() {
             "applicationWizard"
         );
 
-    if (wizard) {
+    if (!wizard) {
 
-        wizard.style.display = "none";
-
-        document.body.style.overflow = "";
+        return;
 
     }
+
+
+    wizard.style.display = "none";
+
+    document.body.style.overflow = "";
 
 }
 
@@ -2486,18 +2481,18 @@ function closeApplicationWizard() {
 function nextApplicationStep(step) {
 
 
-    /* Hide all steps */
-
     document
         .querySelectorAll(".wizard-step")
-        .forEach(function(element) {
+        .forEach(
+            function(element) {
 
-            element.classList.remove("active");
+                element.classList.remove(
+                    "active"
+                );
 
-        });
+            }
+        );
 
-
-    /* Show selected step */
 
     const selectedStep =
         document.getElementById(
@@ -2507,69 +2502,61 @@ function nextApplicationStep(step) {
 
     if (selectedStep) {
 
-        selectedStep.classList.add("active");
+        selectedStep.classList.add(
+            "active"
+        );
 
     }
 
 
-    /* Update progress */
-
     document
         .querySelectorAll(".progress-step")
-        .forEach(function(element, index) {
+        .forEach(
+            function(element, index) {
 
-            element.classList.remove("active");
+                element.classList.remove(
+                    "active"
+                );
 
-            if (index < step) {
 
-                element.classList.add("active");
+                if (index < step) {
+
+                    element.classList.add(
+                        "active"
+                    );
+
+                }
 
             }
+        );
 
-        });
-
-
-    /* Create review summary */
 
     if (step === 4) {
-
-
-        const type =
-            document.getElementById(
-                "appType"
-            );
-
-
-        const erf =
-            document.getElementById(
-                "appErf"
-            );
-
-
-        const municipality =
-            document.getElementById(
-                "appMunicipality"
-            );
-
 
         document.getElementById(
             "summaryType"
         ).textContent =
-            type.value ||
+            document.getElementById(
+                "appType"
+            ).value ||
             "Not provided";
 
 
         document.getElementById(
             "summaryProperty"
         ).textContent =
-            erf.value ||
+            document.getElementById(
+                "appErf"
+            ).value ||
             "Not provided";
 
 
         document.getElementById(
             "summaryMunicipality"
         ).textContent =
-            municipality.value ||
+            document.getElementById(
+                "appMunicipality"
+            ).value ||
             "Not provided";
 
     }
@@ -2579,7 +2566,7 @@ function nextApplicationStep(step) {
 
 
 /* =========================================
-   APPLICATION FORM SUBMISSION
+   APPLICATION SUBMISSION
 ========================================= */
 
 const applicationForm =
@@ -2617,6 +2604,7 @@ if (applicationForm) {
                         .value
                         .trim(),
 
+
                 applicant_email:
                     document
                         .getElementById(
@@ -2624,6 +2612,7 @@ if (applicationForm) {
                         )
                         .value
                         .trim(),
+
 
                 applicant_phone:
                     document
@@ -2633,12 +2622,14 @@ if (applicationForm) {
                         .value
                         .trim(),
 
+
                 application_type:
                     document
                         .getElementById(
                             "appType"
                         )
                         .value,
+
 
                 erf_number:
                     document
@@ -2648,6 +2639,7 @@ if (applicationForm) {
                         .value
                         .trim(),
 
+
                 property_description:
                     document
                         .getElementById(
@@ -2655,6 +2647,7 @@ if (applicationForm) {
                         )
                         .value
                         .trim(),
+
 
                 suburb:
                     document
@@ -2664,6 +2657,7 @@ if (applicationForm) {
                         .value
                         .trim(),
 
+
                 municipality:
                     document
                         .getElementById(
@@ -2672,12 +2666,14 @@ if (applicationForm) {
                         .value
                         .trim(),
 
+
                 province:
                     document
                         .getElementById(
                             "appProvince"
                         )
                         .value,
+
 
                 current_use:
                     document
@@ -2687,6 +2683,7 @@ if (applicationForm) {
                         .value
                         .trim(),
 
+
                 current_zoning:
                     document
                         .getElementById(
@@ -2694,6 +2691,7 @@ if (applicationForm) {
                         )
                         .value
                         .trim(),
+
 
                 proposed_development:
                     document
@@ -2703,36 +2701,46 @@ if (applicationForm) {
                         .value
                         .trim(),
 
+
                 number_of_units:
                     document
                         .getElementById(
                             "appUnits"
                         )
                         .value
-                        ? parseInt(
+                        ?
+                        parseInt(
                             document
                                 .getElementById(
                                     "appUnits"
                                 )
                                 .value
-                          )
-                        : null
+                        )
+                        :
+                        null
 
             };
 
 
-            /* SEND TO SUPABASE */
+            console.log(
+                "Submitting application:",
+                applicationData
+            );
 
-            const { data, error } =
+
+            const {
+                data,
+                error
+            } =
                 await supabaseClient
-                    .from("applications")
+                    .from(
+                        "applications"
+                    )
                     .insert(
                         [applicationData]
                     )
                     .select();
 
-
-            /* ERROR */
 
             if (error) {
 
@@ -2751,8 +2759,6 @@ if (applicationForm) {
             }
 
 
-            /* SUCCESS */
-
             console.log(
                 "Application submitted:",
                 data
@@ -2765,8 +2771,6 @@ if (applicationForm) {
 
             applicationForm.reset();
 
-
-            /* CLOSE AFTER 2 SECONDS */
 
             setTimeout(
                 function() {
@@ -2827,6 +2831,7 @@ if (enquiryForm) {
                         .value
                         .trim(),
 
+
                 email:
                     document
                         .getElementById(
@@ -2834,6 +2839,7 @@ if (enquiryForm) {
                         )
                         .value
                         .trim(),
+
 
                 phone:
                     document
@@ -2843,12 +2849,14 @@ if (enquiryForm) {
                         .value
                         .trim(),
 
+
                 application_type:
                     document
                         .getElementById(
                             "application"
                         )
                         .value,
+
 
                 property_reference:
                     document
@@ -2858,6 +2866,7 @@ if (enquiryForm) {
                         .value
                         .trim(),
 
+
                 municipality:
                     document
                         .getElementById(
@@ -2865,6 +2874,7 @@ if (enquiryForm) {
                         )
                         .value
                         .trim(),
+
 
                 message:
                     document
@@ -2877,9 +2887,13 @@ if (enquiryForm) {
             };
 
 
-            const { error } =
+            const {
+                error
+            } =
                 await supabaseClient
-                    .from("enquiries")
+                    .from(
+                        "enquiries"
+                    )
                     .insert(
                         [enquiry]
                     );
