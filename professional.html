@@ -2882,12 +2882,11 @@
                                 .complexity_level,
 
                         professional_category:
-                            currentApplication
-                                .professional_category,
+    currentApplication.professional_category || "C",
 
-                        professional_fee:
-                            roundMoney(
-                                defaultFee
+professional_fee:
+    roundMoney(
+        defaultFee
                             ),
 
                         disbursements:
@@ -3140,13 +3139,34 @@
                                 </label>
 
                                 <input
-                                    type="text"
-                                    class="form-control"
-                                    value="${escapeHtml(
-                                        quotation.professional_category ||
-                                        ""
-                                    )}"
-                                    readonly
+    type="text"
+    class="form-control"
+    value="${escapeHtml(
+        (() => {
+            const type = (quotation.application_type || "").trim().toLowerCase();
+
+            if (
+                type === "township" ||
+                type === "township establishment" ||
+                type === "township establishment application"
+            ) {
+                return "A";
+            }
+
+            if (
+                type === "rezoning" ||
+                type === "rezoning application" ||
+                type === "subdivision" ||
+                type === "subdivision application"
+            ) {
+                return "B";
+            }
+
+            return "C";
+        })()
+    )}"
+    readonly
+>
                                 >
 
                             </div>
