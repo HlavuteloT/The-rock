@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+
         :root {
             --green: #0f5132;
             --green-dark: #083b24;
@@ -43,7 +44,9 @@
             font-family: inherit;
         }
 
-        /* LOGIN */
+        /* ======================================================
+           LOGIN
+           ====================================================== */
 
         .login-screen {
             min-height: 100vh;
@@ -149,6 +152,11 @@
             color: var(--danger);
         }
 
+        .button-gold {
+            background: var(--gold);
+            color: white;
+        }
+
         .login-message {
             margin-top: 15px;
             padding: 12px;
@@ -164,7 +172,9 @@
             color: var(--danger);
         }
 
-        /* APP */
+        /* ======================================================
+           APP
+           ====================================================== */
 
         .app {
             display: none;
@@ -309,7 +319,9 @@
             font-size: 14px;
         }
 
-        /* DASHBOARD */
+        /* ======================================================
+           DASHBOARD
+           ====================================================== */
 
         .stats-grid {
             display: grid;
@@ -356,7 +368,9 @@
             font-size: 18px;
         }
 
-        /* TABLES */
+        /* ======================================================
+           TABLES
+           ====================================================== */
 
         .table-wrapper {
             width: 100%;
@@ -402,7 +416,9 @@
             text-decoration: underline;
         }
 
-        /* BADGES */
+        /* ======================================================
+           BADGES
+           ====================================================== */
 
         .badge {
             display: inline-block;
@@ -438,7 +454,9 @@
             color: #59636e;
         }
 
-        /* PIPELINE */
+        /* ======================================================
+           PIPELINE
+           ====================================================== */
 
         .pipeline-grid {
             display: grid;
@@ -466,7 +484,9 @@
             margin-top: 8px;
         }
 
-        /* CASE FILE */
+        /* ======================================================
+           CASE FILE
+           ====================================================== */
 
         .case-header {
             background: var(--green-dark);
@@ -557,7 +577,8 @@
             align-items: flex-end;
         }
 
-        #caseSaveMessage {
+        #caseSaveMessage,
+        #quotationSaveMessage {
             display: none;
             margin-top: 10px;
             padding: 10px 14px;
@@ -574,7 +595,132 @@
             line-height: 1.5;
         }
 
-        /* EMPTY / LOADING */
+        /* ======================================================
+           QUOTATION
+           ====================================================== */
+
+        .quotation-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .quotation-header {
+            background: #f8f6ef;
+            border-bottom: 1px solid var(--border);
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quotation-header h4 {
+            margin: 0;
+            color: var(--green-dark);
+            font-size: 17px;
+        }
+
+        .quotation-reference {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--green);
+            margin-top: 5px;
+        }
+
+        .quotation-body {
+            padding: 20px;
+        }
+
+        .quotation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .quotation-financials {
+            margin-top: 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .financial-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 16px;
+            border-bottom: 1px solid #edf0f1;
+            font-size: 14px;
+        }
+
+        .financial-row:last-child {
+            border-bottom: none;
+        }
+
+        .financial-row.total {
+            background: var(--green-dark);
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .financial-label {
+            font-weight: 600;
+        }
+
+        .financial-value {
+            font-weight: 800;
+        }
+
+        .quotation-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .quotation-note {
+            background: #f8faf9;
+            border: 1px solid #edf0ee;
+            border-radius: 8px;
+            padding: 13px;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-top: 15px;
+        }
+
+        .quotation-empty {
+            padding: 25px;
+            background: #fafbfb;
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .quotation-empty h4 {
+            margin: 0 0 8px;
+            color: var(--green-dark);
+        }
+
+        .quotation-empty p {
+            margin: 0 0 18px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .money-input {
+            font-weight: 700;
+        }
+
+        /* ======================================================
+           EMPTY / LOADING
+           ====================================================== */
 
         .loading {
             padding: 30px;
@@ -599,9 +745,12 @@
             margin-bottom: 15px;
         }
 
-        /* RESPONSIVE */
+        /* ======================================================
+           RESPONSIVE
+           ====================================================== */
 
         @media (max-width: 1100px) {
+
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -613,9 +762,11 @@
             .info-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
         }
 
         @media (max-width: 800px) {
+
             .sidebar {
                 width: 190px;
             }
@@ -629,9 +780,15 @@
             .user-email {
                 display: none;
             }
+
+            .quotation-grid {
+                grid-template-columns: 1fr;
+            }
+
         }
 
         @media (max-width: 650px) {
+
             .topbar {
                 padding: 0 15px;
             }
@@ -667,7 +824,8 @@
                 display: block;
             }
 
-            .case-actions {
+            .case-actions,
+            .quotation-actions {
                 display: block;
             }
 
@@ -675,15 +833,26 @@
                 align-items: stretch;
                 margin-top: 15px;
             }
+
+            .quotation-actions button {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+
+            .quotation-header {
+                display: block;
+            }
+
         }
+
     </style>
 </head>
 
 <body>
 
-<!-- ========================================================= -->
-<!-- LOGIN -->
-<!-- ========================================================= -->
+<!-- =========================================================
+     LOGIN
+     ========================================================= -->
 
 <div id="loginScreen" class="login-screen">
 
@@ -697,7 +866,9 @@
         <form id="loginForm">
 
             <div class="form-group">
-                <label for="loginEmail">Professional Email</label>
+                <label for="loginEmail">
+                    Professional Email
+                </label>
 
                 <input
                     type="email"
@@ -709,7 +880,9 @@
             </div>
 
             <div class="form-group">
-                <label for="loginPassword">Password</label>
+                <label for="loginPassword">
+                    Password
+                </label>
 
                 <input
                     type="password"
@@ -729,7 +902,10 @@
                 Sign In
             </button>
 
-            <div id="loginMessage" class="login-message"></div>
+            <div
+                id="loginMessage"
+                class="login-message"
+            ></div>
 
         </form>
 
@@ -738,19 +914,19 @@
 </div>
 
 
-<!-- ========================================================= -->
-<!-- APPLICATION -->
-<!-- ========================================================= -->
+<!-- =========================================================
+     APPLICATION
+     ========================================================= -->
 
 <div id="app" class="app">
-
-    <!-- TOP BAR -->
 
     <header class="topbar">
 
         <div class="brand">
             <h1>THE ROCK</h1>
-            <span>PLANNING & LAND USE MANAGEMENT</span>
+            <span>
+                PLANNING & LAND USE MANAGEMENT
+            </span>
         </div>
 
         <div class="user-area">
@@ -774,9 +950,7 @@
 
     <div class="layout">
 
-        <!-- ================================================= -->
         <!-- SIDEBAR -->
-        <!-- ================================================= -->
 
         <aside class="sidebar">
 
@@ -816,7 +990,10 @@
                 Pipeline
             </button>
 
-            <div class="nav-label" style="margin-top:20px;">
+            <div
+                class="nav-label"
+                style="margin-top:20px;"
+            >
                 Case Management
             </div>
 
@@ -831,16 +1008,14 @@
         </aside>
 
 
-        <!-- ================================================= -->
         <!-- MAIN -->
-        <!-- ================================================= -->
 
         <main class="main">
 
 
-            <!-- ================================================= -->
-            <!-- DASHBOARD -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 DASHBOARD
+                 ================================================= -->
 
             <section
                 id="dashboard"
@@ -850,10 +1025,13 @@
                 <div class="page-header">
 
                     <div>
-                        <h2>Professional Dashboard</h2>
+                        <h2>
+                            Professional Dashboard
+                        </h2>
 
                         <p>
-                            Manage planning applications, enquiries and active projects.
+                            Manage planning applications,
+                            enquiries and active projects.
                         </p>
                     </div>
 
@@ -958,9 +1136,9 @@
             </section>
 
 
-            <!-- ================================================= -->
-            <!-- APPLICATIONS -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 APPLICATIONS
+                 ================================================= -->
 
             <section
                 id="applications"
@@ -970,7 +1148,9 @@
                 <div class="page-header">
 
                     <div>
-                        <h2>Applications</h2>
+                        <h2>
+                            Applications
+                        </h2>
 
                         <p>
                             Review and manage planning applications.
@@ -996,9 +1176,9 @@
             </section>
 
 
-            <!-- ================================================= -->
-            <!-- ENQUIRIES -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 ENQUIRIES
+                 ================================================= -->
 
             <section
                 id="enquiries"
@@ -1008,7 +1188,9 @@
                 <div class="page-header">
 
                     <div>
-                        <h2>Client Enquiries</h2>
+                        <h2>
+                            Client Enquiries
+                        </h2>
 
                         <p>
                             Review incoming planning enquiries.
@@ -1034,9 +1216,9 @@
             </section>
 
 
-            <!-- ================================================= -->
-            <!-- PIPELINE -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 PIPELINE
+                 ================================================= -->
 
             <section
                 id="pipeline"
@@ -1046,7 +1228,9 @@
                 <div class="page-header">
 
                     <div>
-                        <h2>Project Pipeline</h2>
+                        <h2>
+                            Project Pipeline
+                        </h2>
 
                         <p>
                             Track applications through the planning process.
@@ -1083,18 +1267,16 @@
             </section>
 
 
-            <!-- ================================================= -->
-            <!-- CASE FILE -->
-            <!-- ================================================= -->
+            <!-- =================================================
+                 CASE FILE
+                 ================================================= -->
 
             <section
                 id="caseFile"
                 class="section"
             >
 
-                <div
-                    id="caseFileContainer"
-                >
+                <div id="caseFileContainer">
 
                     <div class="content-card">
 
@@ -1142,6 +1324,7 @@
     let currentUser = null;
     let currentProfile = null;
     let currentApplication = null;
+    let currentQuotation = null;
 
 
     /* ==========================================================
@@ -1233,52 +1416,71 @@
 
     document
         .getElementById("loginForm")
-        .addEventListener("submit", async function(event) {
+        .addEventListener(
+            "submit",
+            async function(event) {
 
-            event.preventDefault();
+                event.preventDefault();
 
-            const email =
-                document.getElementById("loginEmail").value.trim();
+                const email =
+                    document
+                        .getElementById("loginEmail")
+                        .value
+                        .trim();
 
-            const password =
-                document.getElementById("loginPassword").value;
+                const password =
+                    document
+                        .getElementById("loginPassword")
+                        .value;
 
-            const button =
-                document.getElementById("loginButton");
-
-
-            button.disabled = true;
-            button.textContent = "Signing in...";
-
-            clearLoginMessage();
-
-
-            const {
-                data,
-                error
-            } = await supabaseClient.auth.signInWithPassword({
-                email,
-                password
-            });
+                const button =
+                    document.getElementById(
+                        "loginButton"
+                    );
 
 
-            if (error) {
+                button.disabled = true;
+                button.textContent =
+                    "Signing in...";
 
-                showLoginError(error.message);
+                clearLoginMessage();
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth
+                        .signInWithPassword({
+                            email,
+                            password
+                        });
+
+
+                if (error) {
+
+                    showLoginError(
+                        error.message
+                    );
+
+                    button.disabled = false;
+                    button.textContent =
+                        "Sign In";
+
+                    return;
+                }
+
+
+                await verifyProfessional(
+                    data.user
+                );
 
                 button.disabled = false;
-                button.textContent = "Sign In";
+                button.textContent =
+                    "Sign In";
 
-                return;
             }
-
-
-            await verifyProfessional(data.user);
-
-            button.disabled = false;
-            button.textContent = "Sign In";
-
-        });
+        );
 
 
     /* ==========================================================
@@ -1292,6 +1494,7 @@
         currentUser = null;
         currentProfile = null;
         currentApplication = null;
+        currentQuotation = null;
 
         document.getElementById("app").style.display =
             "none";
@@ -1313,7 +1516,11 @@
                 event === "SIGNED_IN" &&
                 session
             ) {
-                await verifyProfessional(session.user);
+
+                await verifyProfessional(
+                    session.user
+                );
+
             }
 
         }
@@ -1327,7 +1534,9 @@
     function showLoginError(message) {
 
         const box =
-            document.getElementById("loginMessage");
+            document.getElementById(
+                "loginMessage"
+            );
 
         box.textContent = message;
 
@@ -1340,7 +1549,9 @@
     function clearLoginMessage() {
 
         const box =
-            document.getElementById("loginMessage");
+            document.getElementById(
+                "loginMessage"
+            );
 
         box.textContent = "";
 
@@ -1354,17 +1565,27 @@
        NAVIGATION
        ========================================================== */
 
-    function showSection(sectionId, button) {
+    function showSection(
+        sectionId,
+        button
+    ) {
 
         document
             .querySelectorAll(".section")
             .forEach(section => {
-                section.classList.remove("active");
+
+                section.classList.remove(
+                    "active"
+                );
+
             });
 
 
         const section =
-            document.getElementById(sectionId);
+            document.getElementById(
+                sectionId
+            );
+
 
         if (section) {
             section.classList.add("active");
@@ -1374,7 +1595,11 @@
         document
             .querySelectorAll(".nav-button")
             .forEach(nav => {
-                nav.classList.remove("active");
+
+                nav.classList.remove(
+                    "active"
+                );
+
             });
 
 
@@ -1396,8 +1621,11 @@
         }
 
         if (sectionId === "pipeline") {
+
             loadPipelineSummary();
+
             loadFullPipeline();
+
         }
 
     }
@@ -1410,7 +1638,9 @@
     async function loadDashboard() {
 
         await loadApplicationStats();
+
         await loadRecentApplications();
+
         await loadPipelineSummary(
             "dashboardPipeline"
         );
@@ -1427,14 +1657,16 @@
         const {
             data,
             error
-        } = await supabaseClient
-            .from("applications")
-            .select("status");
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("status");
 
 
         if (error) {
 
             console.error(error);
+
             return;
 
         }
@@ -1480,17 +1712,25 @@
             }).length;
 
 
-        document.getElementById("statNew")
-            .textContent = newApplications;
+        document.getElementById(
+            "statNew"
+        ).textContent =
+            newApplications;
 
-        document.getElementById("statTotal")
-            .textContent = total;
+        document.getElementById(
+            "statTotal"
+        ).textContent =
+            total;
 
-        document.getElementById("statActive")
-            .textContent = active;
+        document.getElementById(
+            "statActive"
+        ).textContent =
+            active;
 
-        document.getElementById("statCompleted")
-            .textContent = completed;
+        document.getElementById(
+            "statCompleted"
+        ).textContent =
+            completed;
 
     }
 
@@ -1510,13 +1750,17 @@
         const {
             data,
             error
-        } = await supabaseClient
-            .from("applications")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            })
-            .limit(8);
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                )
+                .limit(8);
 
 
         if (error) {
@@ -1570,12 +1814,16 @@
         const {
             data,
             error
-        } = await supabaseClient
-            .from("applications")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            });
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
 
 
         if (error) {
@@ -1612,9 +1860,12 @@
        APPLICATION TABLE
        ========================================================== */
 
-    function buildApplicationsTable(applications) {
+    function buildApplicationsTable(
+        applications
+    ) {
 
         let html = `
+
             <table>
 
                 <thead>
@@ -1635,6 +1886,7 @@
                 </thead>
 
                 <tbody>
+
         `;
 
 
@@ -1651,32 +1903,45 @@
                             class="reference-link"
                             onclick="openCaseFileByReference('${escapeJs(app.application_reference || "")}')"
                         >
-                            ${escapeHtml(app.application_reference || "Pending")}
+                            ${escapeHtml(
+                                app.application_reference ||
+                                "Pending"
+                            )}
                         </a>
 
                     </td>
 
 
                     <td>
+
                         <strong>
-                            ${escapeHtml(app.applicant_name || "")}
+                            ${escapeHtml(
+                                app.applicant_name || ""
+                            )}
                         </strong>
 
                         <br>
 
                         <span style="color:#6b7280;">
-                            ${escapeHtml(app.applicant_email || "")}
+                            ${escapeHtml(
+                                app.applicant_email || ""
+                            )}
                         </span>
+
                     </td>
 
 
                     <td>
-                        ${escapeHtml(app.application_type || "")}
+                        ${escapeHtml(
+                            app.application_type || ""
+                        )}
                     </td>
 
 
                     <td>
-                        ${escapeHtml(app.municipality || "")}
+                        ${escapeHtml(
+                            app.municipality || ""
+                        )}
                     </td>
 
 
@@ -1699,12 +1964,16 @@
 
 
                     <td>
-                        ${statusBadge(app.status)}
+                        ${statusBadge(
+                            app.status
+                        )}
                     </td>
 
 
                     <td>
-                        ${formatDate(app.created_at)}
+                        ${formatDate(
+                            app.created_at
+                        )}
                     </td>
 
                 </tr>
@@ -1715,8 +1984,11 @@
 
 
         html += `
+
                 </tbody>
+
             </table>
+
         `;
 
 
@@ -1729,7 +2001,9 @@
        OPEN CASE FILE
        ========================================================== */
 
-    async function openCaseFileByReference(reference) {
+    async function openCaseFileByReference(
+        reference
+    ) {
 
         if (!reference) {
             return;
@@ -1739,14 +2013,15 @@
         const {
             data,
             error
-        } = await supabaseClient
-            .from("applications")
-            .select("*")
-            .eq(
-                "application_reference",
-                reference
-            )
-            .maybeSingle();
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .eq(
+                    "application_reference",
+                    reference
+                )
+                .maybeSingle();
 
 
         if (error) {
@@ -1773,11 +2048,17 @@
 
         currentApplication = data;
 
+        currentQuotation = null;
+
 
         document
             .querySelectorAll(".section")
             .forEach(section => {
-                section.classList.remove("active");
+
+                section.classList.remove(
+                    "active"
+                );
+
             });
 
 
@@ -1789,16 +2070,22 @@
         document
             .querySelectorAll(".nav-button")
             .forEach(nav => {
-                nav.classList.remove("active");
+
+                nav.classList.remove(
+                    "active"
+                );
+
             });
 
 
         document
-            .getElementById("navCaseFile")
+            .getElementById(
+                "navCaseFile"
+            )
             .classList.add("active");
 
 
-        renderCaseFile(data);
+        await renderCaseFile(data);
 
     }
 
@@ -1807,7 +2094,7 @@
        RENDER CASE FILE
        ========================================================== */
 
-    function renderCaseFile(app) {
+    async function renderCaseFile(app) {
 
         const container =
             document.getElementById(
@@ -1822,13 +2109,15 @@
                 <h3>
                     Case File:
                     ${escapeHtml(
-                        app.application_reference || "Pending"
+                        app.application_reference ||
+                        "Pending"
                     )}
                 </h3>
 
                 <p>
                     ${escapeHtml(
-                        app.application_type || "Planning Application"
+                        app.application_type ||
+                        "Planning Application"
                     )}
                 </p>
 
@@ -1933,7 +2222,8 @@
 
                         ${infoItem(
                             "Number of Units",
-                            app.number_of_units || "Not specified"
+                            app.number_of_units ||
+                            "Not specified"
                         )}
 
                         ${infoItem(
@@ -1999,7 +2289,7 @@
                 </div>
 
 
-                <!-- MANAGEMENT -->
+                <!-- CASE MANAGEMENT -->
 
                 <div class="case-section">
 
@@ -2040,13 +2330,17 @@
 
                         ${infoItem(
                             "Created",
-                            formatDateTime(app.created_at)
+                            formatDateTime(
+                                app.created_at
+                            )
                         )}
 
 
                         ${infoItem(
                             "Last Updated",
-                            formatDateTime(app.updated_at)
+                            formatDateTime(
+                                app.updated_at
+                            )
                         )}
 
                     </div>
@@ -2054,7 +2348,7 @@
                 </div>
 
 
-                <!-- NOTES -->
+                <!-- PROFESSIONAL NOTES -->
 
                 <div class="case-section">
 
@@ -2070,6 +2364,28 @@
                     >${escapeHtml(
                         app.professional_notes || ""
                     )}</textarea>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUOTATION
+                     ================================================= -->
+
+                <div class="case-section">
+
+                    <div class="case-section-title">
+                        Quotation
+                    </div>
+
+
+                    <div id="quotationContainer">
+
+                        <div class="loading">
+                            Loading quotation...
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -2112,6 +2428,11 @@
             </div>
 
         `;
+
+
+        await loadQuotationForApplication(
+            app.id
+        );
 
     }
 
@@ -2156,15 +2477,10 @@
             ).value;
 
 
-        /*
-         * IMMEDIATE CLICK CONFIRMATION
-         */
-
         button.disabled = true;
 
         button.innerHTML =
             "✓ Saving...";
-
 
         message.style.display =
             "none";
@@ -2174,22 +2490,23 @@
 
             const {
                 error
-            } = await supabaseClient
-                .from("applications")
-                .update({
+            } =
+                await supabaseClient
+                    .from("applications")
+                    .update({
 
-                    status: status,
+                        status: status,
 
-                    professional_notes: notes,
+                        professional_notes: notes,
 
-                    assigned_planner:
-                        currentUser.id
+                        assigned_planner:
+                            currentUser.id
 
-                })
-                .eq(
-                    "id",
-                    currentApplication.id
-                );
+                    })
+                    .eq(
+                        "id",
+                        currentApplication.id
+                    );
 
 
             if (error) {
@@ -2204,10 +2521,6 @@
             }
 
 
-            /*
-             * UPDATE LOCAL CASE DATA
-             */
-
             currentApplication.status =
                 status;
 
@@ -2217,10 +2530,6 @@
             currentApplication.assigned_planner =
                 currentUser.id;
 
-
-            /*
-             * SUCCESS CONFIRMATION
-             */
 
             button.innerHTML =
                 "✓ Changes Saved";
@@ -2242,16 +2551,8 @@
                 "#176b3a";
 
 
-            /*
-             * REFRESH DASHBOARD DATA
-             */
-
             await loadApplicationStats();
 
-
-            /*
-             * KEEP SUCCESS STATE FOR 2 SECONDS
-             */
 
             setTimeout(function() {
 
@@ -2274,10 +2575,6 @@
 
             console.error(error);
 
-
-            /*
-             * ERROR CONFIRMATION
-             */
 
             button.innerHTML =
                 "✕ Save Failed";
@@ -2318,6 +2615,1519 @@
 
 
     /* ==========================================================
+       QUOTATION — LOAD
+       ========================================================== */
+
+    async function loadQuotationForApplication(
+        applicationId
+    ) {
+
+        const container =
+            document.getElementById(
+                "quotationContainer"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        container.innerHTML =
+            `<div class="loading">
+                Loading quotation...
+            </div>`;
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("quotations")
+                .select("*")
+                .eq(
+                    "application_id",
+                    applicationId
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                )
+                .limit(1);
+
+
+        if (error) {
+
+            console.error(
+                "Quotation load error:",
+                error
+            );
+
+
+            container.innerHTML = `
+
+                <div class="error-box">
+
+                    Unable to load quotation information.
+
+                    <br><br>
+
+                    ${escapeHtml(
+                        error.message ||
+                        ""
+                    )}
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        if (!data || data.length === 0) {
+
+            currentQuotation = null;
+
+            renderQuotationEmpty();
+
+            return;
+        }
+
+
+        currentQuotation =
+            data[0];
+
+
+        renderQuotation(
+            currentQuotation
+        );
+
+    }
+
+
+    /* ==========================================================
+       QUOTATION — EMPTY
+       ========================================================== */
+
+    function renderQuotationEmpty() {
+
+        const container =
+            document.getElementById(
+                "quotationContainer"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        container.innerHTML = `
+
+            <div class="quotation-empty">
+
+                <h4>
+                    No quotation has been created
+                </h4>
+
+                <p>
+                    Create a professional quotation
+                    from the application's indicative
+                    fee assessment.
+                </p>
+
+                <button
+                    type="button"
+                    class="button button-primary"
+                    onclick="createQuotation()"
+                >
+                    Create Quotation
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* ==========================================================
+       QUOTATION — CREATE
+       ========================================================== */
+
+    async function createQuotation() {
+
+        if (!currentApplication) {
+
+            alert(
+                "No application is currently open."
+            );
+
+            return;
+        }
+
+
+        const button =
+            event && event.target
+                ? event.target
+                : null;
+
+
+        if (button) {
+
+            button.disabled = true;
+
+            button.textContent =
+                "Creating...";
+
+        }
+
+
+        try {
+
+            /*
+             * Default professional fee:
+             * midpoint of the indicative fee range,
+             * excluding VAT.
+             */
+
+            const minFee =
+                Number(
+                    currentApplication
+                        .indicative_fee_min
+                ) || 0;
+
+
+            const maxFee =
+                Number(
+                    currentApplication
+                        .indicative_fee_max
+                ) || 0;
+
+
+            let defaultFee = 0;
+
+
+            if (
+                minFee > 0 ||
+                maxFee > 0
+            ) {
+
+                defaultFee =
+                    (
+                        minFee +
+                        maxFee
+                    ) / 2;
+
+            }
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("quotations")
+                    .insert({
+
+                        application_id:
+                            currentApplication.id,
+
+                        client_name:
+                            currentApplication
+                                .applicant_name,
+
+                        client_email:
+                            currentApplication
+                                .applicant_email,
+
+                        client_phone:
+                            currentApplication
+                                .applicant_phone,
+
+                        project_name:
+                            currentApplication
+                                .proposed_development,
+
+                        erf_number:
+                            currentApplication
+                                .erf_number,
+
+                        property_description:
+                            currentApplication
+                                .property_description,
+
+                        suburb:
+                            currentApplication
+                                .suburb,
+
+                        municipality:
+                            currentApplication
+                                .municipality,
+
+                        province:
+                            currentApplication
+                                .province,
+
+                        application_type:
+                            currentApplication
+                                .application_type,
+
+                        complexity_level:
+                            currentApplication
+                                .complexity_level,
+
+                        professional_category:
+                            currentApplication
+                                .professional_category,
+
+                        professional_fee:
+                            roundMoney(
+                                defaultFee
+                            ),
+
+                        disbursements:
+                            0,
+
+                        vat_rate:
+                            15,
+
+                        validity_days:
+                            14,
+
+                        status:
+                            "draft",
+
+                        scope_of_work:
+                            defaultScopeOfWork(
+                                currentApplication
+                            ),
+
+                        assumptions_exclusions:
+                            defaultAssumptions(),
+
+                        created_by:
+                            currentUser.id,
+
+                        assigned_planner:
+                            currentUser.id
+
+                    })
+                    .select("*")
+                    .single();
+
+
+            if (error) {
+
+                console.error(
+                    "Create quotation error:",
+                    error
+                );
+
+                throw error;
+
+            }
+
+
+            currentQuotation = data;
+
+
+            /*
+             * Move application into quotation stage
+             */
+
+            await updateApplicationToQuotation();
+
+
+            renderQuotation(
+                currentQuotation
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to create quotation.\n\n" +
+                (
+                    error.message ||
+                    "Please try again."
+                )
+            );
+
+            if (button) {
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Create Quotation";
+
+            }
+
+        }
+
+    }
+
+
+    /* ==========================================================
+       QUOTATION — RENDER
+       ========================================================== */
+
+    function renderQuotation(
+        quotation
+    ) {
+
+        const container =
+            document.getElementById(
+                "quotationContainer"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        container.innerHTML = `
+
+            <div class="quotation-card">
+
+                <div class="quotation-header">
+
+                    <div>
+
+                        <h4>
+                            Professional Quotation
+                        </h4>
+
+                        <div class="quotation-reference">
+
+                            ${escapeHtml(
+                                quotation
+                                    .quotation_reference ||
+                                "Pending"
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    ${quotationStatusBadge(
+                        quotation.status
+                    )}
+
+                </div>
+
+
+                <div class="quotation-body">
+
+
+                    <!-- CLIENT / PROJECT -->
+
+                    <div class="quotation-grid">
+
+                        <div>
+
+                            <div class="form-group">
+
+                                <label>
+                                    Client Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="quotationClientName"
+                                    class="form-control"
+                                    value="${escapeHtml(
+                                        quotation.client_name ||
+                                        ""
+                                    )}"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Client Email
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="quotationClientEmail"
+                                    class="form-control"
+                                    value="${escapeHtml(
+                                        quotation.client_email ||
+                                        ""
+                                    )}"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Client Phone
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="quotationClientPhone"
+                                    class="form-control"
+                                    value="${escapeHtml(
+                                        quotation.client_phone ||
+                                        ""
+                                    )}"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="form-group">
+
+                                <label>
+                                    Application
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    value="${escapeHtml(
+                                        quotation.application_type ||
+                                        ""
+                                    )}"
+                                    readonly
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Complexity
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    value="${escapeHtml(
+                                        quotation.complexity_level ||
+                                        ""
+                                    )}"
+                                    readonly
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Professional Category
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    value="${escapeHtml(
+                                        quotation.professional_category ||
+                                        ""
+                                    )}"
+                                    readonly
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PROPERTY -->
+
+                    <div class="quotation-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Erf / Property Reference
+                            </label>
+
+                            <input
+                                type="text"
+                                id="quotationErf"
+                                class="form-control"
+                                value="${escapeHtml(
+                                    quotation.erf_number ||
+                                    ""
+                                )}"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Municipality
+                            </label>
+
+                            <input
+                                type="text"
+                                id="quotationMunicipality"
+                                class="form-control"
+                                value="${escapeHtml(
+                                    quotation.municipality ||
+                                    ""
+                                )}"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FINANCIALS -->
+
+                    <div
+                        class="case-section-title"
+                        style="margin-top:20px;"
+                    >
+                        Quotation Financials
+                    </div>
+
+
+                    <div class="quotation-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Professional Fee (Excl. VAT)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quotationProfessionalFee"
+                                class="form-control money-input"
+                                min="0"
+                                step="0.01"
+                                value="${Number(
+                                    quotation.professional_fee ||
+                                    0
+                                ).toFixed(2)}"
+                                oninput="calculateQuotationPreview()"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Disbursements (Excl. VAT)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quotationDisbursements"
+                                class="form-control money-input"
+                                min="0"
+                                step="0.01"
+                                value="${Number(
+                                    quotation.disbursements ||
+                                    0
+                                ).toFixed(2)}"
+                                oninput="calculateQuotationPreview()"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quotation-financials">
+
+                        <div class="financial-row">
+
+                            <span class="financial-label">
+                                Subtotal Excl. VAT
+                            </span>
+
+                            <span
+                                id="quotationSubtotalPreview"
+                                class="financial-value"
+                            >
+                                ${formatMoney(
+                                    quotation.subtotal_excl_vat
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="financial-row">
+
+                            <span class="financial-label">
+                                VAT 15%
+                            </span>
+
+                            <span
+                                id="quotationVatPreview"
+                                class="financial-value"
+                            >
+                                ${formatMoney(
+                                    quotation.vat_amount
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="financial-row total">
+
+                            <span>
+                                TOTAL
+                            </span>
+
+                            <span
+                                id="quotationTotalPreview"
+                            >
+                                ${formatMoney(
+                                    quotation.total_amount
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- VALIDITY -->
+
+                    <div
+                        class="case-section-title"
+                        style="margin-top:25px;"
+                    >
+                        Quotation Validity
+                    </div>
+
+
+                    <div class="quotation-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Quotation Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="quotationDate"
+                                class="form-control"
+                                value="${escapeHtml(
+                                    quotation.quotation_date ||
+                                    ""
+                                )}"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Validity Period (Days)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quotationValidityDays"
+                                class="form-control"
+                                min="1"
+                                value="${Number(
+                                    quotation.validity_days ||
+                                    14
+                                )}"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quotation-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Quotation Status
+                            </label>
+
+                            <select
+                                id="quotationStatus"
+                                class="form-control"
+                            >
+
+                                ${quotationStatusOptions(
+                                    quotation.status
+                                )}
+
+                            </select>
+
+                        </div>
+
+
+                        ${infoItem(
+                            "Expiry Date",
+                            formatDate(
+                                quotation.expiry_date
+                            )
+                        )}
+
+                    </div>
+
+
+                    <!-- SCOPE -->
+
+                    <div
+                        class="case-section-title"
+                        style="margin-top:20px;"
+                    >
+                        Scope of Work
+                    </div>
+
+
+                    <textarea
+                        id="quotationScope"
+                        class="form-control notes-textarea"
+                    >${escapeHtml(
+                        quotation.scope_of_work ||
+                        ""
+                    )}</textarea>
+
+
+                    <!-- ASSUMPTIONS -->
+
+                    <div
+                        class="case-section-title"
+                        style="margin-top:20px;"
+                    >
+                        Assumptions & Exclusions
+                    </div>
+
+
+                    <textarea
+                        id="quotationAssumptions"
+                        class="form-control notes-textarea"
+                    >${escapeHtml(
+                        quotation.assumptions_exclusions ||
+                        ""
+                    )}</textarea>
+
+
+                    <div class="quotation-note">
+
+                        This quotation represents the
+                        professional services and
+                        disbursements defined in the agreed
+                        scope. Additional work arising from
+                        objections, hearings, appeals,
+                        additional meetings, specialist
+                        requirements, material changes in
+                        instructions or other unforeseen work
+                        should be separately authorised and
+                        charged at the applicable professional
+                        rate.
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="quotation-actions">
+
+                        <button
+                            type="button"
+                            class="button button-secondary"
+                            onclick="reloadCurrentQuotation()"
+                        >
+                            Refresh
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="saveQuotationButton"
+                            class="button button-primary"
+                            onclick="saveQuotation()"
+                        >
+                            Save Quotation
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="quotationSaveMessage"
+                    >
+                        Quotation saved successfully.
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* ==========================================================
+       QUOTATION — PREVIEW CALCULATION
+       ========================================================== */
+
+    function calculateQuotationPreview() {
+
+        const professionalFee =
+            Number(
+                document.getElementById(
+                    "quotationProfessionalFee"
+                ).value
+            ) || 0;
+
+
+        const disbursements =
+            Number(
+                document.getElementById(
+                    "quotationDisbursements"
+                ).value
+            ) || 0;
+
+
+        const subtotal =
+            professionalFee +
+            disbursements;
+
+
+        const vat =
+            subtotal * 0.15;
+
+
+        const total =
+            subtotal + vat;
+
+
+        document.getElementById(
+            "quotationSubtotalPreview"
+        ).textContent =
+            formatMoney(subtotal);
+
+
+        document.getElementById(
+            "quotationVatPreview"
+        ).textContent =
+            formatMoney(vat);
+
+
+        document.getElementById(
+            "quotationTotalPreview"
+        ).textContent =
+            formatMoney(total);
+
+    }
+
+
+    /* ==========================================================
+       QUOTATION — SAVE
+       ========================================================== */
+
+    async function saveQuotation() {
+
+        if (!currentQuotation) {
+
+            alert(
+                "No quotation is currently open."
+            );
+
+            return;
+        }
+
+
+        const button =
+            document.getElementById(
+                "saveQuotationButton"
+            );
+
+
+        const message =
+            document.getElementById(
+                "quotationSaveMessage"
+            );
+
+
+        const professionalFee =
+            Number(
+                document.getElementById(
+                    "quotationProfessionalFee"
+                ).value
+            ) || 0;
+
+
+        const disbursements =
+            Number(
+                document.getElementById(
+                    "quotationDisbursements"
+                ).value
+            ) || 0;
+
+
+        const quotationDate =
+            document.getElementById(
+                "quotationDate"
+            ).value;
+
+
+        const validityDays =
+            Number(
+                document.getElementById(
+                    "quotationValidityDays"
+                ).value
+            ) || 14;
+
+
+        const status =
+            document.getElementById(
+                "quotationStatus"
+            ).value;
+
+
+        const clientName =
+            document.getElementById(
+                "quotationClientName"
+            ).value.trim();
+
+
+        const clientEmail =
+            document.getElementById(
+                "quotationClientEmail"
+            ).value.trim();
+
+
+        const clientPhone =
+            document.getElementById(
+                "quotationClientPhone"
+            ).value.trim();
+
+
+        const erfNumber =
+            document.getElementById(
+                "quotationErf"
+            ).value.trim();
+
+
+        const municipality =
+            document.getElementById(
+                "quotationMunicipality"
+            ).value.trim();
+
+
+        const scope =
+            document.getElementById(
+                "quotationScope"
+            ).value;
+
+
+        const assumptions =
+            document.getElementById(
+                "quotationAssumptions"
+            ).value;
+
+
+        button.disabled = true;
+
+        button.innerHTML =
+            "✓ Saving...";
+
+        message.style.display =
+            "none";
+
+
+        try {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("quotations")
+                    .update({
+
+                        client_name:
+                            clientName,
+
+                        client_email:
+                            clientEmail,
+
+                        client_phone:
+                            clientPhone,
+
+                        erf_number:
+                            erfNumber,
+
+                        municipality:
+                            municipality,
+
+                        professional_fee:
+                            roundMoney(
+                                professionalFee
+                            ),
+
+                        disbursements:
+                            roundMoney(
+                                disbursements
+                            ),
+
+                        quotation_date:
+                            quotationDate ||
+                            undefined,
+
+                        validity_days:
+                            validityDays,
+
+                        status:
+                            status,
+
+                        scope_of_work:
+                            scope,
+
+                        assumptions_exclusions:
+                            assumptions,
+
+                        assigned_planner:
+                            currentUser.id
+
+                    })
+                    .eq(
+                        "id",
+                        currentQuotation.id
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Quotation save error:",
+                    error
+                );
+
+                throw error;
+
+            }
+
+
+            /*
+             * Reload quotation so that
+             * database-calculated totals
+             * and expiry date are displayed.
+             */
+
+            await loadQuotationForApplication(
+                currentApplication.id
+            );
+
+
+            /*
+             * Update application status
+             * when quotation is issued.
+             */
+
+            if (
+                status === "sent" &&
+                currentApplication.status !==
+                "completed"
+            ) {
+
+                await supabaseClient
+                    .from("applications")
+                    .update({
+                        status: "quotation",
+                        assigned_planner:
+                            currentUser.id
+                    })
+                    .eq(
+                        "id",
+                        currentApplication.id
+                    );
+
+            }
+
+
+            button.innerHTML =
+                "✓ Quotation Saved";
+
+            button.style.background =
+                "#198754";
+
+
+            message.textContent =
+                "Quotation saved successfully.";
+
+            message.style.display =
+                "block";
+
+            message.style.background =
+                "#eaf7ef";
+
+            message.style.color =
+                "#176b3a";
+
+
+            setTimeout(function() {
+
+                button.innerHTML =
+                    "Save Quotation";
+
+                button.style.background =
+                    "";
+
+                button.disabled =
+                    false;
+
+                message.style.display =
+                    "none";
+
+            }, 2000);
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            button.innerHTML =
+                "✕ Save Failed";
+
+            button.style.background =
+                "#b42318";
+
+
+            message.textContent =
+                "Unable to save quotation. Please try again.";
+
+            message.style.display =
+                "block";
+
+            message.style.background =
+                "#fcebea";
+
+            message.style.color =
+                "#b42318";
+
+
+            setTimeout(function() {
+
+                button.innerHTML =
+                    "Save Quotation";
+
+                button.style.background =
+                    "";
+
+                button.disabled =
+                    false;
+
+            }, 3000);
+
+        }
+
+    }
+
+
+    /* ==========================================================
+       QUOTATION — RELOAD
+       ========================================================== */
+
+    async function reloadCurrentQuotation() {
+
+        if (!currentApplication) {
+            return;
+        }
+
+
+        await loadQuotationForApplication(
+            currentApplication.id
+        );
+
+    }
+
+
+    /* ==========================================================
+       UPDATE APPLICATION TO QUOTATION
+       ========================================================== */
+
+    async function updateApplicationToQuotation() {
+
+        if (!currentApplication) {
+            return;
+        }
+
+
+        /*
+         * Do not overwrite completed applications.
+         */
+
+        if (
+            (
+                currentApplication.status ||
+                ""
+            ).toLowerCase()
+            === "completed"
+        ) {
+            return;
+        }
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("applications")
+                .update({
+
+                    status: "quotation",
+
+                    assigned_planner:
+                        currentUser.id
+
+                })
+                .eq(
+                    "id",
+                    currentApplication.id
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Application quotation status error:",
+                error
+            );
+
+            return;
+        }
+
+
+        currentApplication.status =
+            "quotation";
+
+    }
+
+
+    /* ==========================================================
+       DEFAULT SCOPE
+       ========================================================== */
+
+    function defaultScopeOfWork(app) {
+
+        return (
+
+            "Professional town planning services " +
+
+            "relating to the proposed " +
+
+            (
+                app.application_type ||
+                "planning application"
+            ) +
+
+            " for the identified property. " +
+
+            "Services include professional assessment, " +
+
+            "preparation and submission of the applicable " +
+
+            "planning application documentation, liaison " +
+
+            "with the relevant authority and reasonable " +
+
+            "follow-up associated with the agreed scope."
+
+        );
+
+    }
+
+
+    /* ==========================================================
+       DEFAULT ASSUMPTIONS
+       ========================================================== */
+
+    function defaultAssumptions() {
+
+        return (
+
+            "This quotation is based on the information " +
+
+            "provided by the client at the time of assessment. " +
+
+            "It assumes that all required information and " +
+
+            "documentation will be supplied timeously. " +
+
+            "Statutory application fees, specialist studies, " +
+
+            "advertising costs, professional fees of other " +
+
+            "consultants and other third-party costs are " +
+
+            "excluded unless specifically stated otherwise."
+
+        );
+
+    }
+
+
+    /* ==========================================================
+       QUOTATION STATUS OPTIONS
+       ========================================================== */
+
+    function quotationStatusOptions(
+        currentStatus
+    ) {
+
+        const statuses = [
+
+            "draft",
+
+            "sent",
+
+            "accepted",
+
+            "declined",
+
+            "expired",
+
+            "cancelled"
+
+        ];
+
+
+        return statuses
+            .map(status => {
+
+                const selected =
+                    (
+                        (
+                            currentStatus ||
+                            ""
+                        ).toLowerCase()
+                        === status
+                    )
+                        ? "selected"
+                        : "";
+
+
+                return `
+
+                    <option
+                        value="${escapeHtml(
+                            status
+                        )}"
+                        ${selected}
+                    >
+                        ${capitalizeWords(
+                            status
+                        )}
+                    </option>
+
+                `;
+
+            })
+            .join("");
+
+    }
+
+
+    /* ==========================================================
+       QUOTATION STATUS BADGE
+       ========================================================== */
+
+    function quotationStatusBadge(
+        status
+    ) {
+
+        const value =
+            (
+                status ||
+                "draft"
+            ).toString();
+
+
+        const lower =
+            value.toLowerCase();
+
+
+        let className =
+            "badge-gray";
+
+
+        if (
+            lower === "sent"
+        ) {
+            className =
+                "badge-blue";
+        }
+
+
+        if (
+            lower === "accepted"
+        ) {
+            className =
+                "badge-green";
+        }
+
+
+        if (
+            lower === "declined" ||
+            lower === "cancelled"
+        ) {
+            className =
+                "badge-red";
+        }
+
+
+        if (
+            lower === "expired"
+        ) {
+            className =
+                "badge-gold";
+        }
+
+
+        return `
+
+            <span class="badge ${className}">
+                ${escapeHtml(
+                    capitalizeWords(value)
+                )}
+            </span>
+
+        `;
+
+    }
+
+
+    /* ==========================================================
        SHOW APPLICATIONS
        ========================================================== */
 
@@ -2326,7 +4136,11 @@
         document
             .querySelectorAll(".section")
             .forEach(section => {
-                section.classList.remove("active");
+
+                section.classList.remove(
+                    "active"
+                );
+
             });
 
 
@@ -2338,12 +4152,18 @@
         document
             .querySelectorAll(".nav-button")
             .forEach(nav => {
-                nav.classList.remove("active");
+
+                nav.classList.remove(
+                    "active"
+                );
+
             });
 
 
         document
-            .getElementById("navApplications")
+            .getElementById(
+                "navApplications"
+            )
             .classList.add("active");
 
 
@@ -2356,7 +4176,9 @@
        STATUS OPTIONS
        ========================================================== */
 
-    function statusOptions(currentStatus) {
+    function statusOptions(
+        currentStatus
+    ) {
 
         const statuses = [
 
@@ -2381,28 +4203,38 @@
         ];
 
 
-        return statuses.map(status => {
+        return statuses
+            .map(status => {
 
-            const selected =
-                (
-                    (currentStatus || "")
-                        .toLowerCase()
-                === status
-                )
-                    ? "selected"
-                    : "";
+                const selected =
+                    (
+                        (
+                            currentStatus ||
+                            ""
+                        ).toLowerCase()
+                        === status
+                    )
+                        ? "selected"
+                        : "";
 
 
-            return `
-                <option
-                    value="${escapeHtml(status)}"
-                    ${selected}
-                >
-                    ${capitalizeWords(status)}
-                </option>
-            `;
+                return `
 
-        }).join("");
+                    <option
+                        value="${escapeHtml(
+                            status
+                        )}"
+                        ${selected}
+                    >
+                        ${capitalizeWords(
+                            status
+                        )}
+                    </option>
+
+                `;
+
+            })
+            .join("");
 
     }
 
@@ -2428,12 +4260,16 @@
         const {
             data,
             error
-        } = await supabaseClient
-            .from("enquiries")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            });
+        } =
+            await supabaseClient
+                .from("enquiries")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
 
 
         if (error) {
@@ -2494,32 +4330,37 @@
                     <td>
                         <strong>
                             ${escapeHtml(
-                                enquiry.full_name || ""
+                                enquiry.full_name ||
+                                ""
                             )}
                         </strong>
                     </td>
 
                     <td>
                         ${escapeHtml(
-                            enquiry.email || ""
+                            enquiry.email ||
+                            ""
                         )}
                     </td>
 
                     <td>
                         ${escapeHtml(
-                            enquiry.phone || ""
+                            enquiry.phone ||
+                            ""
                         )}
                     </td>
 
                     <td>
                         ${escapeHtml(
-                            enquiry.application_type || ""
+                            enquiry.application_type ||
+                            ""
                         )}
                     </td>
 
                     <td>
                         ${escapeHtml(
-                            enquiry.municipality || ""
+                            enquiry.municipality ||
+                            ""
                         )}
                     </td>
 
@@ -2543,8 +4384,11 @@
 
 
         html += `
+
                 </tbody>
+
             </table>
+
         `;
 
 
@@ -2563,7 +4407,9 @@
     ) {
 
         const container =
-            document.getElementById(targetId);
+            document.getElementById(
+                targetId
+            );
 
 
         if (!container) {
@@ -2574,9 +4420,10 @@
         const {
             data,
             error
-        } = await supabaseClient
-            .from("applications")
-            .select("status");
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("status");
 
 
         if (error) {
@@ -2620,35 +4467,40 @@
 
 
         container.innerHTML =
-            statuses.map(status => {
+            statuses
+                .map(status => {
 
-                const count =
-                    applications.filter(
-                        app =>
-                            (
-                                app.status || ""
-                            ).toLowerCase()
-                            === status
-                    ).length;
+                    const count =
+                        applications.filter(
+                            app =>
+                                (
+                                    app.status ||
+                                    ""
+                                ).toLowerCase()
+                                === status
+                        ).length;
 
 
-                return `
+                    return `
 
-                    <div class="pipeline-card">
+                        <div class="pipeline-card">
 
-                        <h4>
-                            ${capitalizeWords(status)}
-                        </h4>
+                            <h4>
+                                ${capitalizeWords(
+                                    status
+                                )}
+                            </h4>
 
-                        <div class="pipeline-number">
-                            ${count}
+                            <div class="pipeline-number">
+                                ${count}
+                            </div>
+
                         </div>
 
-                    </div>
+                    `;
 
-                `;
-
-            }).join("");
+                })
+                .join("");
 
     }
 
@@ -2674,12 +4526,16 @@
         const {
             data,
             error
-        } = await supabaseClient
-            .from("applications")
-            .select("*")
-            .order("updated_at", {
-                ascending: false
-            });
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .order(
+                    "updated_at",
+                    {
+                        ascending: false
+                    }
+                );
 
 
         if (error) {
@@ -2716,7 +4572,9 @@
        BUILD PIPELINE
        ========================================================== */
 
-    function buildPipeline(applications) {
+    function buildPipeline(
+        applications
+    ) {
 
         let html = `
 
@@ -2757,7 +4615,8 @@
                             onclick="openCaseFileByReference('${escapeJs(app.application_reference || "")}')"
                         >
                             ${escapeHtml(
-                                app.application_reference || "Pending"
+                                app.application_reference ||
+                                "Pending"
                             )}
                         </a>
 
@@ -2765,13 +4624,15 @@
 
                     <td>
                         ${escapeHtml(
-                            app.applicant_name || ""
+                            app.applicant_name ||
+                            ""
                         )}
                     </td>
 
                     <td>
                         ${escapeHtml(
-                            app.application_type || ""
+                            app.application_type ||
+                            ""
                         )}
                     </td>
 
@@ -2832,8 +4693,10 @@
     function complexityBadge(level) {
 
         const value =
-            (level || "Pending")
-                .toString();
+            (
+                level ||
+                "Pending"
+            ).toString();
 
 
         let className =
@@ -2844,8 +4707,10 @@
             value.toLowerCase()
             === "simple"
         ) {
+
             className =
                 "badge-green";
+
         }
 
 
@@ -2853,8 +4718,10 @@
             value.toLowerCase()
             === "standard"
         ) {
+
             className =
                 "badge-gold";
+
         }
 
 
@@ -2862,8 +4729,10 @@
             value.toLowerCase()
             === "complex"
         ) {
+
             className =
                 "badge-red";
+
         }
 
 
@@ -2881,8 +4750,10 @@
     function statusBadge(status) {
 
         const value =
-            (status || "New")
-                .toString();
+            (
+                status ||
+                "New"
+            ).toString();
 
 
         let className =
@@ -2897,34 +4768,43 @@
             lower === "new" ||
             lower === "initial assessment"
         ) {
+
             className =
                 "badge-blue";
+
         }
 
 
         if (
             lower === "in progress" ||
             lower === "mandate" ||
-            lower === "submitted"
+            lower === "submitted" ||
+            lower === "quotation"
         ) {
+
             className =
                 "badge-gold";
+
         }
 
 
         if (
             lower === "completed"
         ) {
+
             className =
                 "badge-green";
+
         }
 
 
         if (
             lower === "information required"
         ) {
+
             className =
                 "badge-red";
+
         }
 
 
@@ -2945,7 +4825,10 @@
        INFO ITEM
        ========================================================== */
 
-    function infoItem(label, value) {
+    function infoItem(
+        label,
+        value
+    ) {
 
         return `
 
@@ -2979,10 +4862,14 @@
     function formatFeeRange(app) {
 
         if (
-            app.indicative_total_min === null ||
-            app.indicative_total_min === undefined ||
-            app.indicative_total_max === null ||
-            app.indicative_total_max === undefined
+            app.indicative_total_min ===
+                null ||
+            app.indicative_total_min ===
+                undefined ||
+            app.indicative_total_max ===
+                null ||
+            app.indicative_total_max ===
+                undefined
         ) {
 
             return "Not calculated";
@@ -3015,6 +4902,10 @@
     }
 
 
+    /* ==========================================================
+       MONEY
+       ========================================================== */
+
     function formatMoney(value) {
 
         if (
@@ -3022,7 +4913,9 @@
             value === undefined ||
             value === ""
         ) {
+
             return "R0.00";
+
         }
 
 
@@ -3030,8 +4923,12 @@
             Number(value);
 
 
-        if (Number.isNaN(number)) {
+        if (
+            Number.isNaN(number)
+        ) {
+
             return "R0.00";
+
         }
 
 
@@ -3043,6 +4940,15 @@
                     maximumFractionDigits: 2
                 }
             );
+
+    }
+
+
+    function roundMoney(value) {
+
+        return Math.round(
+            Number(value) * 100
+        ) / 100;
 
     }
 
@@ -3062,8 +4968,14 @@
             new Date(value);
 
 
-        if (Number.isNaN(date.getTime())) {
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
             return "—";
+
         }
 
 
@@ -3090,8 +5002,14 @@
             new Date(value);
 
 
-        if (Number.isNaN(date.getTime())) {
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
             return "—";
+
         }
 
 
@@ -3110,7 +5028,7 @@
 
 
     /* ==========================================================
-       CAPITALIZE WORDS
+       CAPITALIZE
        ========================================================== */
 
     function capitalizeWords(value) {
@@ -3124,7 +5042,8 @@
             .toString()
             .replace(
                 /\b\w/g,
-                letter => letter.toUpperCase()
+                letter =>
+                    letter.toUpperCase()
             );
 
     }
@@ -3140,27 +5059,34 @@
             value === null ||
             value === undefined
         ) {
+
             return "";
+
         }
 
 
         return String(value)
+
             .replace(
                 /&/g,
                 "&amp;"
             )
+
             .replace(
                 /</g,
                 "&lt;"
             )
+
             .replace(
                 />/g,
                 "&gt;"
             )
+
             .replace(
                 /"/g,
                 "&quot;"
             )
+
             .replace(
                 /'/g,
                 "&#039;"
@@ -3170,7 +5096,7 @@
 
 
     /* ==========================================================
-       JAVASCRIPT STRING ESCAPING
+       JAVASCRIPT ESCAPING
        ========================================================== */
 
     function escapeJs(value) {
@@ -3179,27 +5105,34 @@
             value === null ||
             value === undefined
         ) {
+
             return "";
+
         }
 
 
         return String(value)
+
             .replace(
                 /\\/g,
                 "\\\\"
             )
+
             .replace(
                 /'/g,
                 "\\'"
             )
+
             .replace(
                 /"/g,
                 '\\"'
             )
+
             .replace(
                 /\n/g,
                 "\\n"
             )
+
             .replace(
                 /\r/g,
                 "\\r"
