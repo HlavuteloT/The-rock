@@ -1403,98 +1403,130 @@
 
             <div class="contact-form">
 
-                <form>
+                <form id="enquiryForm">
 
-                    <label for="name">
-                        Name
-                    </label>
+    <label for="name">
+        Name
+    </label>
 
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="Your name"
-                    >
+    <input
+        type="text"
+        id="name"
+        name="full_name"
+        placeholder="Your name"
+        required
+    >
 
+    <label for="email">
+        Email
+    </label>
 
-                    <label for="email">
-                        Email
-                    </label>
+    <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Your email address"
+        required
+    >
 
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Your email address"
-                    >
+    <label for="phone">
+        Phone
+    </label>
 
+    <input
+        type="tel"
+        id="phone"
+        name="phone"
+        placeholder="Your phone number"
+    >
 
-                    <label for="application">
-                        Planning Requirement
-                    </label>
+    <label for="application">
+        Planning Requirement
+    </label>
 
-                    <select id="application">
+    <select
+        id="application"
+        name="application_type"
+        required
+    >
 
-                        <option value="">
-                            Select an option
-                        </option>
+        <option value="">
+            Select an option
+        </option>
 
-                        <option>
-                            Rezoning
-                        </option>
+        <option value="Rezoning">
+            Rezoning
+        </option>
 
-                        <option>
-                            Consent Use
-                        </option>
+        <option value="Consent Use">
+            Consent Use
+        </option>
 
-                        <option>
-                            Subdivision
-                        </option>
+        <option value="Subdivision">
+            Subdivision
+        </option>
 
-                        <option>
-                            Consolidation
-                        </option>
+        <option value="Consolidation">
+            Consolidation
+        </option>
 
-                        <option>
-                            Township Establishment
-                        </option>
+        <option value="Township Establishment">
+            Township Establishment
+        </option>
 
-                        <option>
-                            Development Assessment
-                        </option>
+        <option value="Development Assessment">
+            Development Assessment
+        </option>
 
-                        <option>
-                            Other
-                        </option>
+        <option value="Other">
+            Other
+        </option>
 
-                    </select>
+    </select>
 
+    <label for="property">
+        Property / Erf Number
+    </label>
 
-                    <label for="message">
-                        Tell us about your project
-                    </label>
+    <input
+        type="text"
+        id="property"
+        name="property_reference"
+        placeholder="e.g. Erf 123, Extension 2"
+    >
 
-                    <textarea
-                        id="message"
-                        placeholder="Briefly describe your property and proposal..."
-                    ></textarea>
+    <label for="municipality">
+        Municipality
+    </label>
 
+    <input
+        type="text"
+        id="municipality"
+        name="municipality"
+        placeholder="Municipality"
+    >
 
-                    <button
-                        type="button"
-                        class="button button-primary"
-                        onclick="alert('Thank you. The enquiry system will be connected in the next version.')"
-                    >
-                        Submit Enquiry
-                    </button>
+    <label for="message">
+        Tell us about your project
+    </label>
 
-                </form>
+    <textarea
+        id="message"
+        name="message"
+        placeholder="Briefly describe your property and proposal..."
+        required
+    ></textarea>
 
-            </div>
+    <button
+        type="submit"
+        class="button button-primary"
+    >
+        Submit Enquiry
+    </button>
 
-        </div>
+    <p id="formMessage"></p>
 
-    </div>
-
-</section>
+</form>
 
 
 
@@ -1612,3 +1644,55 @@
 
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    const SUPABASE_URL = "https://iuwnsrvlmicgdilmrftl.supabase.co";
+
+    const SUPABASE_KEY = "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
+
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+    const enquiryForm = document.getElementById("enquiryForm");
+    const formMessage = document.getElementById("formMessage");
+
+    enquiryForm.addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        formMessage.textContent = "Submitting your enquiry...";
+
+        const enquiry = {
+            full_name: document.getElementById("name").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            application_type: document.getElementById("application").value,
+            property_reference: document.getElementById("property").value.trim(),
+            municipality: document.getElementById("municipality").value.trim(),
+            message: document.getElementById("message").value.trim()
+        };
+
+        const { error } = await supabaseClient
+            .from("enquiries")
+            .insert([enquiry]);
+
+        if (error) {
+
+            console.error(error);
+
+            formMessage.textContent =
+                "Sorry, your enquiry could not be submitted. Please try again.";
+
+            return;
+        }
+
+        formMessage.textContent =
+            "Thank you. Your enquiry has been submitted successfully.";
+
+        enquiryForm.reset();
+
+    });
+</script>
