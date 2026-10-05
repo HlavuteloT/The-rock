@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>The Rock | Town Planning & Land Use Management</title>
 
-    <meta name="description"
-          content="Professional town planning, environmental planning and land use management services in South Africa.">
+    <meta
+        name="description"
+        content="Professional town planning, environmental planning and land use management services in South Africa."
+    >
 
     <style>
 
-        /* =========================
-           GENERAL SETTINGS
-        ========================= */
+        /* =====================================================
+           GENERAL
+        ===================================================== */
 
         * {
             margin: 0;
@@ -32,9 +35,20 @@
             background: #ffffff;
         }
 
+        body.no-scroll {
+            overflow: hidden;
+        }
+
         a {
             text-decoration: none;
             color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
         }
 
         .container {
@@ -44,9 +58,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            HEADER
-        ========================= */
+        ===================================================== */
 
         header {
             background: #ffffff;
@@ -109,20 +123,26 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            HERO
-        ========================= */
+        ===================================================== */
 
         .hero {
             min-height: 650px;
             display: flex;
             align-items: center;
+
             background:
                 linear-gradient(
                     rgba(15, 42, 30, 0.90),
                     rgba(15, 42, 30, 0.90)
                 ),
-                linear-gradient(135deg, #183c2c, #315c48);
+                linear-gradient(
+                    135deg,
+                    #183c2c,
+                    #315c48
+                );
+
             color: white;
         }
 
@@ -167,6 +187,7 @@
             font-size: 14px;
             transition: 0.3s;
             cursor: pointer;
+            border: none;
         }
 
         .button-primary {
@@ -182,6 +203,7 @@
         .button-outline {
             border: 1px solid #ffffff;
             color: white;
+            background: transparent;
         }
 
         .button-outline:hover {
@@ -190,9 +212,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            INTRO
-        ========================= */
+        ===================================================== */
 
         .intro {
             padding: 85px 0;
@@ -222,9 +244,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            SERVICES
-        ========================= */
+        ===================================================== */
 
         .services {
             padding: 90px 0;
@@ -292,9 +314,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            APPLICATION SECTION
-        ========================= */
+        ===================================================== */
 
         .application {
             padding: 95px 0;
@@ -354,9 +376,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            FEE ESTIMATOR
-        ========================= */
+        ===================================================== */
 
         .fee-estimator {
             padding: 95px 0;
@@ -392,9 +414,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            ABOUT
-        ========================= */
+        ===================================================== */
 
         .about {
             padding: 95px 0;
@@ -430,9 +452,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            KNOWLEDGE
-        ========================= */
+        ===================================================== */
 
         .knowledge {
             padding: 90px 0;
@@ -470,9 +492,9 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            CONTACT
-        ========================= */
+        ===================================================== */
 
         .contact {
             padding: 95px 0;
@@ -536,10 +558,15 @@
             resize: vertical;
         }
 
+        #formMessage {
+            margin-top: 15px;
+            font-weight: 600;
+        }
 
-        /* =========================
+
+        /* =====================================================
            FOOTER
-        ========================= */
+        ===================================================== */
 
         footer {
             background: #102a1f;
@@ -581,9 +608,203 @@
         }
 
 
-        /* =========================
-           MOBILE
-        ========================= */
+        /* =====================================================
+           APPLICATION WIZARD
+        ===================================================== */
+
+        .wizard-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 30px 15px;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wizard-box {
+            position: relative;
+            width: 100%;
+            max-width: 760px;
+            background: #ffffff;
+            padding: 45px;
+            border-radius: 18px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+            color: #1d2b24;
+        }
+
+        .wizard-close {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            border: none;
+            background: transparent;
+            font-size: 32px;
+            cursor: pointer;
+            color: #777;
+            line-height: 1;
+        }
+
+        .wizard-close:hover {
+            color: #111;
+        }
+
+        .wizard-intro {
+            max-width: 620px;
+            margin-bottom: 30px;
+            color: #68736d;
+        }
+
+
+        /* Progress */
+
+        .wizard-progress {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 25px 0 35px;
+        }
+
+        .progress-step {
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+            padding: 10px 5px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .progress-step span {
+            display: block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            margin: 0 auto 7px;
+            border-radius: 50%;
+            background: #ddd;
+            color: #666;
+            font-weight: 700;
+        }
+
+        .progress-step.active {
+            color: #a78332;
+            border-bottom-color: #a78332;
+        }
+
+        .progress-step.active span {
+            background: #a78332;
+            color: white;
+        }
+
+
+        /* Steps */
+
+        .wizard-step {
+            display: none;
+        }
+
+        .wizard-step.active {
+            display: block;
+        }
+
+        .wizard-step h3 {
+            margin-bottom: 10px;
+            color: #183c2c;
+        }
+
+
+        /* Wizard form */
+
+        .wizard-step label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .wizard-step input,
+        .wizard-step select,
+        .wizard-step textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d8ddd9;
+            border-radius: 8px;
+            font: inherit;
+            background: #fafbfa;
+        }
+
+        .wizard-step textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .wizard-step input:focus,
+        .wizard-step select:focus,
+        .wizard-step textarea:focus {
+            outline: none;
+            border-color: #a78332;
+            box-shadow: 0 0 0 3px rgba(167, 131, 50, 0.12);
+        }
+
+        .wizard-note {
+            font-size: 13px;
+            color: #777;
+            margin-top: 8px;
+        }
+
+
+        /* Buttons */
+
+        .wizard-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+
+        /* Summary */
+
+        .application-summary {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f4f6f4;
+            border-left: 4px solid #a78332;
+        }
+
+        .application-summary h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #183c2c;
+        }
+
+        .application-summary p {
+            margin: 8px 0;
+            color: #445149;
+        }
+
+
+        /* Application message */
+
+        #applicationMessage {
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .message-success {
+            color: #18733b;
+        }
+
+        .message-error {
+            color: #b42318;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
 
         @media (max-width: 900px) {
 
@@ -647,262 +868,102 @@
             }
 
         }
-/* ================================
-   APPLICATION WIZARD
-================================ */
-
-.wizard-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.75);
-    padding: 30px 15px;
-    overflow-y: auto;
-    align-items: center;
-    justify-content: center;
-}
-
-.wizard-box {
-    position: relative;
-    width: 100%;
-    max-width: 760px;
-    background: #ffffff;
-    padding: 45px;
-    border-radius: 18px;
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
-    color: #1d2b24;
-}
-
-.wizard-close {
-    position: absolute;
-    top: 15px;
-    right: 18px;
-    border: none;
-    background: transparent;
-    font-size: 32px;
-    cursor: pointer;
-    color: #777;
-    line-height: 1;
-}
-
-.wizard-close:hover {
-    color: #111;
-}
-
-.wizard-intro {
-    max-width: 620px;
-    margin-bottom: 30px;
-}
 
 
-/* Progress */
+        @media (max-width: 700px) {
 
-.wizard-progress {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin: 25px 0 35px;
-}
+            .wizard-overlay {
+                padding: 10px;
+                align-items: flex-start;
+            }
 
-.progress-step {
-    text-align: center;
-    font-size: 13px;
-    color: #999;
-    padding: 10px 5px;
-    border-bottom: 2px solid #ddd;
-}
+            .wizard-box {
+                margin-top: 10px;
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
 
-.progress-step span {
-    display: block;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    margin: 0 auto 7px;
-    border-radius: 50%;
-    background: #ddd;
-    color: #666;
-    font-weight: 700;
-}
+            .wizard-progress {
+                gap: 3px;
+            }
 
-.progress-step.active {
-    color: #a78332;
-    border-bottom-color: #a78332;
-}
+            .progress-step {
+                font-size: 11px;
+            }
 
-.progress-step.active span {
-    background: #a78332;
-    color: white;
-}
+            .progress-step span {
+                width: 26px;
+                height: 26px;
+                line-height: 26px;
+            }
 
+            .wizard-buttons {
+                flex-direction: column-reverse;
+            }
 
-/* Steps */
+            .wizard-buttons .button {
+                width: 100%;
+            }
 
-.wizard-step {
-    display: none;
-}
+        }
 
-.wizard-step.active {
-    display: block;
-}
-
-.wizard-step h3 {
-    margin-bottom: 10px;
-}
-
-
-/* Form */
-
-.wizard-step label {
-    display: block;
-    margin-top: 20px;
-    margin-bottom: 7px;
-    font-weight: 600;
-}
-
-.wizard-step input,
-.wizard-step select,
-.wizard-step textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 13px 14px;
-    border: 1px solid #d8ddd9;
-    border-radius: 8px;
-    font: inherit;
-    background: #fafbfa;
-}
-
-.wizard-step textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.wizard-step input:focus,
-.wizard-step select:focus,
-.wizard-step textarea:focus {
-    outline: none;
-    border-color: #a78332;
-    box-shadow: 0 0 0 3px rgba(167, 131, 50, 0.12);
-}
-
-.wizard-note {
-    font-size: 13px;
-    color: #777;
-    margin-top: 8px;
-}
-
-
-/* Buttons */
-
-.wizard-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-top: 30px;
-}
-
-
-/* Summary */
-
-.application-summary {
-    margin-top: 30px;
-    padding: 20px;
-    border-radius: 10px;
-    background: #f4f6f4;
-    border-left: 4px solid #a78332;
-}
-
-.application-summary h4 {
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-
-.application-summary p {
-    margin: 8px 0;
-}
-
-
-/* Message */
-
-#applicationMessage {
-    margin-top: 20px;
-    font-weight: 600;
-}
-
-
-/* Mobile */
-
-@media (max-width: 700px) {
-
-    .wizard-overlay {
-        padding: 10px;
-        align-items: flex-start;
-    }
-
-    .wizard-box {
-        margin-top: 10px;
-        padding: 30px 20px;
-        border-radius: 12px;
-    }
-
-    .wizard-progress {
-        gap: 3px;
-    }
-
-    .progress-step {
-        font-size: 11px;
-    }
-
-    .progress-step span {
-        width: 26px;
-        height: 26px;
-        line-height: 26px;
-    }
-
-    .wizard-buttons {
-        flex-direction: column-reverse;
-    }
-
-    .wizard-buttons .button {
-        width: 100%;
-    }
-
-}
     </style>
+
 </head>
 
 
 <body>
 
 
-<!-- =========================
+<!-- =====================================================
      HEADER
-========================= -->
+===================================================== -->
 
 <header>
 
     <div class="container navbar">
 
-        <a href="#" class="logo">
+        <a href="#home" class="logo">
+
             THE ROCK
-            <span>PLANNING & LAND USE MANAGEMENT</span>
+
+            <span>
+                PLANNING & LAND USE MANAGEMENT
+            </span>
+
         </a>
+
 
         <nav>
 
-            <a href="#home">Home</a>
+            <a href="#home">
+                Home
+            </a>
 
-            <a href="#services">Services</a>
+            <a href="#services">
+                Services
+            </a>
 
-            <a href="#applications">Applications</a>
+            <a href="#applications">
+                Applications
+            </a>
 
-            <a href="#about">About</a>
+            <a href="#about">
+                About
+            </a>
 
-            <a href="#knowledge">Knowledge</a>
+            <a href="#knowledge">
+                Knowledge
+            </a>
 
-            <a href="#contact">Contact</a>
+            <a href="#contact">
+                Contact
+            </a>
 
-            <a href="#applications" class="nav-button">
+            <a
+                href="#applications"
+                class="nav-button"
+            >
                 Start an Application
             </a>
 
@@ -914,9 +975,9 @@
 
 
 
-<!-- =========================
+<!-- =====================================================
      HERO
-========================= -->
+===================================================== -->
 
 <section class="hero" id="home">
 
@@ -940,13 +1001,17 @@
 
             <div class="hero-buttons">
 
-                <a href="#applications"
-                   class="button button-primary">
+                <a
+                    href="#applications"
+                    class="button button-primary"
+                >
                     Start an Application
                 </a>
 
-                <a href="#contact"
-                   class="button button-outline">
+                <a
+                    href="#contact"
+                    class="button button-outline"
+                >
                     Speak to a Planner
                 </a>
 
@@ -960,9 +1025,9 @@
 
 
 
-<!-- =========================
-     INTRODUCTION
-========================= -->
+<!-- =====================================================
+     INTRO
+===================================================== -->
 
 <section class="intro">
 
@@ -992,9 +1057,9 @@
 
 
 
-<!-- =========================
+<!-- =====================================================
      SERVICES
-========================= -->
+===================================================== -->
 
 <section class="services" id="services">
 
@@ -1022,8 +1087,6 @@
         <div class="service-grid">
 
 
-            <!-- SERVICE 1 -->
-
             <div class="service-card">
 
                 <div class="service-number">
@@ -1042,13 +1105,9 @@
                 <ul>
 
                     <li>Rezoning applications</li>
-
                     <li>Consent use</li>
-
                     <li>Special consent</li>
-
                     <li>Departures</li>
-
                     <li>Restrictive conditions</li>
 
                 </ul>
@@ -1056,8 +1115,6 @@
             </div>
 
 
-
-            <!-- SERVICE 2 -->
 
             <div class="service-card">
 
@@ -1078,13 +1135,9 @@
                 <ul>
 
                     <li>Subdivision</li>
-
                     <li>Consolidation</li>
-
                     <li>Development applications</li>
-
                     <li>Development feasibility</li>
-
                     <li>Site planning</li>
 
                 </ul>
@@ -1092,8 +1145,6 @@
             </div>
 
 
-
-            <!-- SERVICE 3 -->
 
             <div class="service-card">
 
@@ -1114,13 +1165,9 @@
                 <ul>
 
                     <li>Planning assessments</li>
-
                     <li>Planning motivations</li>
-
                     <li>Land use due diligence</li>
-
                     <li>Municipal liaison</li>
-
                     <li>Professional representation</li>
 
                 </ul>
@@ -1128,8 +1175,6 @@
             </div>
 
 
-
-            <!-- SERVICE 4 -->
 
             <div class="service-card">
 
@@ -1149,13 +1194,9 @@
                 <ul>
 
                     <li>Spatial assessments</li>
-
                     <li>Policy analysis</li>
-
                     <li>Development frameworks</li>
-
                     <li>Land use analysis</li>
-
                     <li>Planning research</li>
 
                 </ul>
@@ -1163,8 +1204,6 @@
             </div>
 
 
-
-            <!-- SERVICE 5 -->
 
             <div class="service-card">
 
@@ -1184,13 +1223,9 @@
                 <ul>
 
                     <li>Township establishment</li>
-
                     <li>Land development</li>
-
                     <li>Subdivision</li>
-
                     <li>Infrastructure coordination</li>
-
                     <li>Development planning</li>
 
                 </ul>
@@ -1198,8 +1233,6 @@
             </div>
 
 
-
-            <!-- SERVICE 6 -->
 
             <div class="service-card">
 
@@ -1219,13 +1252,9 @@
                 <ul>
 
                     <li>Municipal liaison</li>
-
                     <li>Public participation</li>
-
                     <li>Objection processes</li>
-
                     <li>Appeals</li>
-
                     <li>Planning hearings</li>
 
                 </ul>
@@ -1240,15 +1269,16 @@
 
 
 
-<!-- =========================
+<!-- =====================================================
      APPLICATION
-========================= -->
+===================================================== -->
 
 <section class="application" id="applications">
 
     <div class="container">
 
         <div class="application-grid">
+
 
             <div>
 
@@ -1290,6 +1320,7 @@
 
             </div>
 
+
             <div class="application-box">
 
                 <h3>
@@ -1318,9 +1349,12 @@
     </div>
 
 </section>
-<!-- =========================
+
+
+
+<!-- =====================================================
      FEE ESTIMATOR
-========================= -->
+===================================================== -->
 
 <section class="fee-estimator">
 
@@ -1347,8 +1381,10 @@
 
             </p>
 
-            <a href="#contact"
-               class="button button-primary">
+            <a
+                href="#contact"
+                class="button button-primary"
+            >
                 Estimate My Planning Fee
             </a>
 
@@ -1369,9 +1405,9 @@
 
 
 
-<!-- =========================
+<!-- =====================================================
      ABOUT
-========================= -->
+===================================================== -->
 
 <section class="about" id="about">
 
@@ -1420,7 +1456,6 @@
             </div>
 
 
-
             <div class="about-panel">
 
                 <h3>
@@ -1459,9 +1494,9 @@
 
 
 
-<!-- =========================
+<!-- =====================================================
      KNOWLEDGE
-========================= -->
+===================================================== -->
 
 <section class="knowledge" id="knowledge">
 
@@ -1488,7 +1523,6 @@
         </div>
 
 
-
         <div class="knowledge-grid">
 
 
@@ -1506,12 +1540,14 @@
 
                 </p>
 
-                <a href="#contact" class="read-more">
+                <a
+                    href="#contact"
+                    class="read-more"
+                >
                     Read More →
                 </a>
 
             </div>
-
 
 
             <div class="knowledge-card">
@@ -1528,12 +1564,14 @@
 
                 </p>
 
-                <a href="#contact" class="read-more">
+                <a
+                    href="#contact"
+                    class="read-more"
+                >
                     Read More →
                 </a>
 
             </div>
-
 
 
             <div class="knowledge-card">
@@ -1550,7 +1588,10 @@
 
                 </p>
 
-                <a href="#contact" class="read-more">
+                <a
+                    href="#contact"
+                    class="read-more"
+                >
                     Read More →
                 </a>
 
@@ -1564,9 +1605,9 @@
 
 
 
-<!-- =========================
+<!-- =====================================================
      CONTACT
-========================= -->
+===================================================== -->
 
 <section class="contact" id="contact">
 
@@ -1615,139 +1656,141 @@
             </div>
 
 
-
             <div class="contact-form">
 
                 <form id="enquiryForm">
 
-    <label for="name">
-        Name
-    </label>
+                    <label for="name">
+                        Name
+                    </label>
 
-    <input
-        type="text"
-        id="name"
-        name="full_name"
-        placeholder="Your name"
-        required
-    >
-
-    <label for="email">
-        Email
-    </label>
-
-    <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="Your email address"
-        required
-    >
-
-    <label for="phone">
-        Phone
-    </label>
-
-    <input
-        type="tel"
-        id="phone"
-        name="phone"
-        placeholder="Your phone number"
-    >
-
-    <label for="application">
-        Planning Requirement
-    </label>
-
-    <select
-        id="application"
-        name="application_type"
-        required
-    >
-
-        <option value="">
-            Select an option
-        </option>
-
-        <option value="Rezoning">
-            Rezoning
-        </option>
-
-        <option value="Consent Use">
-            Consent Use
-        </option>
-
-        <option value="Subdivision">
-            Subdivision
-        </option>
-
-        <option value="Consolidation">
-            Consolidation
-        </option>
-
-        <option value="Township Establishment">
-            Township Establishment
-        </option>
-
-        <option value="Development Assessment">
-            Development Assessment
-        </option>
-
-        <option value="Other">
-            Other
-        </option>
-
-    </select>
-
-    <label for="property">
-        Property / Erf Number
-    </label>
-
-    <input
-        type="text"
-        id="property"
-        name="property_reference"
-        placeholder="e.g. Erf 123, Extension 2"
-    >
-
-    <label for="municipality">
-        Municipality
-    </label>
-
-    <input
-        type="text"
-        id="municipality"
-        name="municipality"
-        placeholder="Municipality"
-    >
-
-    <label for="message">
-        Tell us about your project
-    </label>
-
-    <textarea
-        id="message"
-        name="message"
-        placeholder="Briefly describe your property and proposal..."
-        required
-    ></textarea>
-
-    <button
-        type="submit"
-        class="button button-primary"
-    >
-        Submit Enquiry
-    </button>
-
-    <p id="formMessage"></p>
-
-</form>
+                    <input
+                        type="text"
+                        id="name"
+                        name="full_name"
+                        placeholder="Your name"
+                        required
+                    >
 
 
+                    <label for="email">
+                        Email
+                    </label>
 
-<!-- =========================
-     CLOSE CONTACT SECTION
-========================= -->
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Your email address"
+                        required
+                    >
+
+
+                    <label for="phone">
+                        Phone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Your phone number"
+                    >
+
+
+                    <label for="application">
+                        Planning Requirement
+                    </label>
+
+                    <select
+                        id="application"
+                        name="application_type"
+                        required
+                    >
+
+                        <option value="">
+                            Select an option
+                        </option>
+
+                        <option value="Rezoning">
+                            Rezoning
+                        </option>
+
+                        <option value="Consent Use">
+                            Consent Use
+                        </option>
+
+                        <option value="Subdivision">
+                            Subdivision
+                        </option>
+
+                        <option value="Consolidation">
+                            Consolidation
+                        </option>
+
+                        <option value="Township Establishment">
+                            Township Establishment
+                        </option>
+
+                        <option value="Development Assessment">
+                            Development Assessment
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+
+                    <label for="property">
+                        Property / Erf Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="property"
+                        name="property_reference"
+                        placeholder="e.g. Erf 123, Extension 2"
+                    >
+
+
+                    <label for="municipality">
+                        Municipality
+                    </label>
+
+                    <input
+                        type="text"
+                        id="municipality"
+                        name="municipality"
+                        placeholder="Municipality"
+                    >
+
+
+                    <label for="message">
+                        Tell us about your project
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        placeholder="Briefly describe your property and proposal..."
+                        required
+                    ></textarea>
+
+
+                    <button
+                        type="submit"
+                        class="button button-primary"
+                        id="enquirySubmitButton"
+                    >
+                        Submit Enquiry
+                    </button>
+
+
+                    <p id="formMessage"></p>
+
+                </form>
 
             </div>
 
@@ -1758,15 +1801,17 @@
 </section>
 
 
-<!-- =========================
+
+<!-- =====================================================
      FOOTER
-========================= -->
+===================================================== -->
 
 <footer>
 
     <div class="container">
 
         <div class="footer-grid">
+
 
             <div>
 
@@ -1792,11 +1837,15 @@
                 <ul>
 
                     <li>
-                        <a href="#home">Home</a>
+                        <a href="#home">
+                            Home
+                        </a>
                     </li>
 
                     <li>
-                        <a href="#services">Services</a>
+                        <a href="#services">
+                            Services
+                        </a>
                     </li>
 
                     <li>
@@ -1806,7 +1855,9 @@
                     </li>
 
                     <li>
-                        <a href="#about">About</a>
+                        <a href="#about">
+                            About
+                        </a>
                     </li>
 
                 </ul>
@@ -1872,27 +1923,31 @@
 <div
     id="applicationWizard"
     class="wizard-overlay"
+    aria-hidden="true"
 >
 
-    <div class="wizard-box">
+    <div
+        class="wizard-box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="wizardTitle"
+    >
 
-
-        <!-- CLOSE -->
 
         <button
             type="button"
             class="wizard-close"
             onclick="closeApplicationWizard()"
+            aria-label="Close application"
         >
             &times;
         </button>
 
 
-        <!-- TITLE -->
-
-        <h2>
+        <h2 id="wizardTitle">
             Planning Application
         </h2>
+
 
         <p class="wizard-intro">
 
@@ -1907,7 +1962,10 @@
 
         <div class="wizard-progress">
 
-            <div class="progress-step active">
+            <div
+                class="progress-step active"
+                data-step="1"
+            >
 
                 <span>1</span>
 
@@ -1918,7 +1976,10 @@
             </div>
 
 
-            <div class="progress-step">
+            <div
+                class="progress-step"
+                data-step="2"
+            >
 
                 <span>2</span>
 
@@ -1929,7 +1990,10 @@
             </div>
 
 
-            <div class="progress-step">
+            <div
+                class="progress-step"
+                data-step="3"
+            >
 
                 <span>3</span>
 
@@ -1940,7 +2004,10 @@
             </div>
 
 
-            <div class="progress-step">
+            <div
+                class="progress-step"
+                data-step="4"
+            >
 
                 <span>4</span>
 
@@ -1959,9 +2026,9 @@
         <form id="applicationForm">
 
 
-            <!-- =========================
+            <!-- =================================================
                  STEP 1
-            ========================= -->
+            ================================================= -->
 
             <div
                 id="applicationStep1"
@@ -2042,10 +2109,12 @@
 
                 <div class="wizard-buttons">
 
+                    <span></span>
+
                     <button
                         type="button"
                         class="button button-primary"
-                        onclick="nextApplicationStep(2)"
+                        onclick="goToApplicationStep(2)"
                     >
                         Next
                     </button>
@@ -2056,9 +2125,9 @@
 
 
 
-            <!-- =========================
+            <!-- =================================================
                  STEP 2
-            ========================= -->
+            ================================================= -->
 
             <div
                 id="applicationStep2"
@@ -2174,7 +2243,7 @@
                     <button
                         type="button"
                         class="button button-outline"
-                        onclick="nextApplicationStep(1)"
+                        onclick="goToApplicationStep(1)"
                     >
                         Back
                     </button>
@@ -2182,7 +2251,7 @@
                     <button
                         type="button"
                         class="button button-primary"
-                        onclick="nextApplicationStep(3)"
+                        onclick="goToApplicationStep(3)"
                     >
                         Next
                     </button>
@@ -2193,9 +2262,9 @@
 
 
 
-            <!-- =========================
+            <!-- =================================================
                  STEP 3
-            ========================= -->
+            ================================================= -->
 
             <div
                 id="applicationStep3"
@@ -2247,7 +2316,7 @@
                     <button
                         type="button"
                         class="button button-outline"
-                        onclick="nextApplicationStep(2)"
+                        onclick="goToApplicationStep(2)"
                     >
                         Back
                     </button>
@@ -2255,7 +2324,7 @@
                     <button
                         type="button"
                         class="button button-primary"
-                        onclick="nextApplicationStep(4)"
+                        onclick="goToApplicationStep(4)"
                     >
                         Review Application
                     </button>
@@ -2266,9 +2335,9 @@
 
 
 
-            <!-- =========================
+            <!-- =================================================
                  STEP 4
-            ========================= -->
+            ================================================= -->
 
             <div
                 id="applicationStep4"
@@ -2316,13 +2385,12 @@
                 >
 
 
-                <!-- SUMMARY -->
-
                 <div class="application-summary">
 
                     <h4>
                         Application Summary
                     </h4>
+
 
                     <p>
                         <strong>
@@ -2356,10 +2424,24 @@
                         </span>
                     </p>
 
+
+                    <p>
+                        <strong>
+                            Proposed Development:
+                        </strong>
+
+                        <span id="summaryProposal">
+                            Not provided
+                        </span>
+                    </p>
+
                 </div>
 
 
-                <div id="applicationMessage"></div>
+                <div
+                    id="applicationMessage"
+                    aria-live="polite"
+                ></div>
 
 
                 <div class="wizard-buttons">
@@ -2367,7 +2449,7 @@
                     <button
                         type="button"
                         class="button button-outline"
-                        onclick="nextApplicationStep(3)"
+                        onclick="goToApplicationStep(3)"
                     >
                         Back
                     </button>
@@ -2375,6 +2457,7 @@
                     <button
                         type="submit"
                         class="button button-primary"
+                        id="applicationSubmitButton"
                     >
                         Submit Application
                     </button>
@@ -2400,532 +2483,805 @@
 
 <script>
 
-const SUPABASE_URL =
-    "https://iuwnsrvlmicgdilmrftl.supabase.co";
+    /* =====================================================
+       SUPABASE CONFIGURATION
+    ===================================================== */
 
-const SUPABASE_KEY =
-    "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
+    const SUPABASE_URL =
+        "https://iuwnsrvlmicgdilmrftl.supabase.co";
 
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+    const SUPABASE_KEY =
+        "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
 
 
-
-/* =========================================
-   OPEN WIZARD
-========================================= */
-
-function openApplicationWizard() {
-
-    const wizard =
-        document.getElementById(
-            "applicationWizard"
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
         );
 
-    if (!wizard) {
 
-        console.error(
-            "Application wizard was not found."
-        );
+    /* =====================================================
+       HELPER
+    ===================================================== */
 
-        return;
+    function getElement(id) {
+
+        return document.getElementById(id);
 
     }
 
 
-    wizard.style.display = "flex";
+    /* =====================================================
+       APPLICATION WIZARD
+    ===================================================== */
 
-    document.body.style.overflow = "hidden";
-
-
-    nextApplicationStep(1);
-
-}
+    let currentApplicationStep = 1;
 
 
+    function openApplicationWizard() {
 
-/* =========================================
-   CLOSE WIZARD
-========================================= */
+        const wizard =
+            getElement("applicationWizard");
 
-function closeApplicationWizard() {
+        if (!wizard) {
 
-    const wizard =
-        document.getElementById(
-            "applicationWizard"
+            console.error(
+                "Application wizard was not found."
+            );
+
+            return;
+
+        }
+
+        wizard.style.display = "flex";
+
+        wizard.setAttribute(
+            "aria-hidden",
+            "false"
         );
 
-    if (!wizard) {
+        document.body.classList.add(
+            "no-scroll"
+        );
 
-        return;
+        currentApplicationStep = 1;
+
+        showApplicationStep(1);
 
     }
 
 
-    wizard.style.display = "none";
+    function closeApplicationWizard() {
 
-    document.body.style.overflow = "";
+        const wizard =
+            getElement("applicationWizard");
 
-}
+        if (!wizard) {
+            return;
+        }
+
+        wizard.style.display = "none";
+
+        wizard.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.classList.remove(
+            "no-scroll"
+        );
+
+    }
 
 
+    function showApplicationStep(step) {
 
-/* =========================================
-   APPLICATION STEPS
-========================================= */
-
-function nextApplicationStep(step) {
-
-
-    document
-        .querySelectorAll(".wizard-step")
-        .forEach(
-            function(element) {
+        document
+            .querySelectorAll(".wizard-step")
+            .forEach(function(element) {
 
                 element.classList.remove(
                     "active"
                 );
+
+            });
+
+
+        const selectedStep =
+            getElement(
+                "applicationStep" + step
+            );
+
+
+        if (selectedStep) {
+
+            selectedStep.classList.add(
+                "active"
+            );
+
+        }
+
+
+        document
+            .querySelectorAll(".progress-step")
+            .forEach(function(element) {
+
+                const elementStep =
+                    parseInt(
+                        element.getAttribute(
+                            "data-step"
+                        )
+                    );
+
+
+                element.classList.toggle(
+                    "active",
+                    elementStep <= step
+                );
+
+            });
+
+
+        currentApplicationStep = step;
+
+
+        if (step === 4) {
+
+            updateApplicationSummary();
+
+        }
+
+    }
+
+
+    function validateCurrentApplicationStep() {
+
+        const currentStep =
+            getElement(
+                "applicationStep" +
+                currentApplicationStep
+            );
+
+
+        if (!currentStep) {
+            return true;
+        }
+
+
+        const requiredFields =
+            currentStep.querySelectorAll(
+                "input[required], select[required], textarea[required]"
+            );
+
+
+        for (
+            let i = 0;
+            i < requiredFields.length;
+            i++
+        ) {
+
+            if (
+                !requiredFields[i].checkValidity()
+            ) {
+
+                requiredFields[i].reportValidity();
+
+                return false;
 
             }
-        );
+
+        }
 
 
-    const selectedStep =
-        document.getElementById(
-            "applicationStep" + step
-        );
-
-
-    if (selectedStep) {
-
-        selectedStep.classList.add(
-            "active"
-        );
+        return true;
 
     }
 
 
-    document
-        .querySelectorAll(".progress-step")
-        .forEach(
-            function(element, index) {
+    function goToApplicationStep(step) {
 
-                element.classList.remove(
-                    "active"
-                );
+        if (
+            step > currentApplicationStep &&
+            !validateCurrentApplicationStep()
+        ) {
+
+            return;
+
+        }
 
 
-                if (index < step) {
+        showApplicationStep(step);
 
-                    element.classList.add(
-                        "active"
-                    );
+    }
+
+
+    function updateApplicationSummary() {
+
+        const type =
+            getElement("appType");
+
+        const erf =
+            getElement("appErf");
+
+        const municipality =
+            getElement("appMunicipality");
+
+        const proposal =
+            getElement("appProposal");
+
+
+        getElement(
+            "summaryType"
+        ).textContent =
+            type && type.value
+                ? type.value
+                : "Not provided";
+
+
+        getElement(
+            "summaryProperty"
+        ).textContent =
+            erf && erf.value.trim()
+                ? erf.value.trim()
+                : "Not provided";
+
+
+        getElement(
+            "summaryMunicipality"
+        ).textContent =
+            municipality &&
+            municipality.value.trim()
+                ? municipality.value.trim()
+                : "Not provided";
+
+
+        getElement(
+            "summaryProposal"
+        ).textContent =
+            proposal &&
+            proposal.value.trim()
+                ? proposal.value.trim()
+                : "Not provided";
+
+    }
+
+
+    /* =====================================================
+       CLOSE WIZARD WHEN CLICKING OUTSIDE
+    ===================================================== */
+
+    const applicationWizard =
+        getElement(
+            "applicationWizard"
+        );
+
+
+    if (applicationWizard) {
+
+        applicationWizard.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target ===
+                    applicationWizard
+                ) {
+
+                    closeApplicationWizard();
 
                 }
 
             }
         );
 
-
-    if (step === 4) {
-
-        document.getElementById(
-            "summaryType"
-        ).textContent =
-            document.getElementById(
-                "appType"
-            ).value ||
-            "Not provided";
-
-
-        document.getElementById(
-            "summaryProperty"
-        ).textContent =
-            document.getElementById(
-                "appErf"
-            ).value ||
-            "Not provided";
-
-
-        document.getElementById(
-            "summaryMunicipality"
-        ).textContent =
-            document.getElementById(
-                "appMunicipality"
-            ).value ||
-            "Not provided";
-
     }
 
-}
 
+    /* =====================================================
+       ESCAPE KEY
+    ===================================================== */
 
+    document.addEventListener(
+        "keydown",
+        function(event) {
 
-/* =========================================
-   APPLICATION SUBMISSION
-========================================= */
+            if (
+                event.key === "Escape"
+            ) {
 
-const applicationForm =
-    document.getElementById(
-        "applicationForm"
-    );
-
-
-if (applicationForm) {
-
-    applicationForm.addEventListener(
-        "submit",
-        async function(event) {
-
-            event.preventDefault();
-
-
-            const message =
-                document.getElementById(
-                    "applicationMessage"
-                );
-
-
-            message.textContent =
-                "Submitting your application...";
-
-
-            const applicationData = {
-
-                applicant_name:
-                    document
-                        .getElementById(
-                            "applicantName"
-                        )
-                        .value
-                        .trim(),
-
-
-                applicant_email:
-                    document
-                        .getElementById(
-                            "applicantEmail"
-                        )
-                        .value
-                        .trim(),
-
-
-                applicant_phone:
-                    document
-                        .getElementById(
-                            "applicantPhone"
-                        )
-                        .value
-                        .trim(),
-
-
-                application_type:
-                    document
-                        .getElementById(
-                            "appType"
-                        )
-                        .value,
-
-
-                erf_number:
-                    document
-                        .getElementById(
-                            "appErf"
-                        )
-                        .value
-                        .trim(),
-
-
-                property_description:
-                    document
-                        .getElementById(
-                            "appDescription"
-                        )
-                        .value
-                        .trim(),
-
-
-                suburb:
-                    document
-                        .getElementById(
-                            "appSuburb"
-                        )
-                        .value
-                        .trim(),
-
-
-                municipality:
-                    document
-                        .getElementById(
-                            "appMunicipality"
-                        )
-                        .value
-                        .trim(),
-
-
-                province:
-                    document
-                        .getElementById(
-                            "appProvince"
-                        )
-                        .value,
-
-
-                current_use:
-                    document
-                        .getElementById(
-                            "appCurrentUse"
-                        )
-                        .value
-                        .trim(),
-
-
-                current_zoning:
-                    document
-                        .getElementById(
-                            "appZoning"
-                        )
-                        .value
-                        .trim(),
-
-
-                proposed_development:
-                    document
-                        .getElementById(
-                            "appProposal"
-                        )
-                        .value
-                        .trim(),
-
-
-                number_of_units:
-                    document
-                        .getElementById(
-                            "appUnits"
-                        )
-                        .value
-                        ?
-                        parseInt(
-                            document
-                                .getElementById(
-                                    "appUnits"
-                                )
-                                .value
-                        )
-                        :
-                        null
-
-            };
-
-
-            console.log(
-                "Submitting application:",
-                applicationData
-            );
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from(
-                        "applications"
-                    )
-                    .insert(
-                        [applicationData]
-                    )
-                    .select();
-
-
-            if (error) {
-
-                console.error(
-                    "Application submission error:",
-                    error
-                );
-
-
-                message.textContent =
-                    "Database error: " +
-                    error.message;
-
-                return;
-
-            }
-
-
-            console.log(
-                "Application submitted:",
-                data
-            );
-
-
-            message.textContent =
-                "Your application has been submitted successfully.";
-
-
-            applicationForm.reset();
-
-
-            setTimeout(
-                function() {
-
-                    closeApplicationWizard();
-
-                    message.textContent = "";
-
-                    nextApplicationStep(1);
-
-                },
-                2000
-            );
-
-        }
-    );
-
-}
-
-
-
-/* =========================================
-   ENQUIRY FORM
-========================================= */
-
-const enquiryForm =
-    document.getElementById(
-        "enquiryForm"
-    );
-
-
-const formMessage =
-    document.getElementById(
-        "formMessage"
-    );
-
-
-if (enquiryForm) {
-
-    enquiryForm.addEventListener(
-        "submit",
-        async function(event) {
-
-            event.preventDefault();
-
-
-            formMessage.textContent =
-                "Submitting your enquiry...";
-
-
-            const enquiry = {
-
-                full_name:
-                    document
-                        .getElementById(
-                            "name"
-                        )
-                        .value
-                        .trim(),
-
-
-                email:
-                    document
-                        .getElementById(
-                            "email"
-                        )
-                        .value
-                        .trim(),
-
-
-                phone:
-                    document
-                        .getElementById(
-                            "phone"
-                        )
-                        .value
-                        .trim(),
-
-
-                application_type:
-                    document
-                        .getElementById(
-                            "application"
-                        )
-                        .value,
-
-
-                property_reference:
-                    document
-                        .getElementById(
-                            "property"
-                        )
-                        .value
-                        .trim(),
-
-
-                municipality:
-                    document
-                        .getElementById(
-                            "municipality"
-                        )
-                        .value
-                        .trim(),
-
-
-                message:
-                    document
-                        .getElementById(
-                            "message"
-                        )
-                        .value
-                        .trim()
-
-            };
-
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from(
-                        "enquiries"
-                    )
-                    .insert(
-                        [enquiry]
+                const wizard =
+                    getElement(
+                        "applicationWizard"
                     );
 
 
-            if (error) {
+                if (
+                    wizard &&
+                    wizard.style.display === "flex"
+                ) {
 
-                console.error(
-                    "Enquiry submission error:",
-                    error
-                );
+                    closeApplicationWizard();
 
-
-                formMessage.textContent =
-                    "Sorry, your enquiry could not be submitted: " +
-                    error.message;
-
-                return;
+                }
 
             }
-
-
-            formMessage.textContent =
-                "Thank you. Your enquiry has been submitted successfully.";
-
-
-            enquiryForm.reset();
 
         }
     );
 
-}
+
+    /* =====================================================
+       APPLICATION SUBMISSION
+    ===================================================== */
+
+    const applicationForm =
+        getElement(
+            "applicationForm"
+        );
+
+
+    if (applicationForm) {
+
+        applicationForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                const message =
+                    getElement(
+                        "applicationMessage"
+                    );
+
+
+                const submitButton =
+                    getElement(
+                        "applicationSubmitButton"
+                    );
+
+
+                if (
+                    !validateCurrentApplicationStep()
+                ) {
+
+                    return;
+
+                }
+
+
+                message.className = "";
+
+                message.textContent =
+                    "Submitting your application...";
+
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    "Submitting...";
+
+
+                try {
+
+                    const unitsValue =
+                        getElement(
+                            "appUnits"
+                        ).value;
+
+
+                    const applicationData = {
+
+                        applicant_name:
+                            getElement(
+                                "applicantName"
+                            ).value.trim(),
+
+
+                        applicant_email:
+                            getElement(
+                                "applicantEmail"
+                            ).value.trim(),
+
+
+                        applicant_phone:
+                            getElement(
+                                "applicantPhone"
+                            ).value.trim(),
+
+
+                        application_type:
+                            getElement(
+                                "appType"
+                            ).value,
+
+
+                        erf_number:
+                            getElement(
+                                "appErf"
+                            ).value.trim(),
+
+
+                        property_description:
+                            getElement(
+                                "appDescription"
+                            ).value.trim(),
+
+
+                        suburb:
+                            getElement(
+                                "appSuburb"
+                            ).value.trim(),
+
+
+                        municipality:
+                            getElement(
+                                "appMunicipality"
+                            ).value.trim(),
+
+
+                        province:
+                            getElement(
+                                "appProvince"
+                            ).value,
+
+
+                        current_use:
+                            getElement(
+                                "appCurrentUse"
+                            ).value.trim(),
+
+
+                        current_zoning:
+                            getElement(
+                                "appZoning"
+                            ).value.trim(),
+
+
+                        proposed_development:
+                            getElement(
+                                "appProposal"
+                            ).value.trim(),
+
+
+                        number_of_units:
+                            unitsValue
+                                ? parseInt(
+                                    unitsValue,
+                                    10
+                                )
+                                : null,
+
+
+                        complexity:
+                            "pending",
+
+
+                        status:
+                            "new"
+
+                    };
+
+
+                    console.log(
+                        "Submitting application:",
+                        applicationData
+                    );
+
+
+                    /*
+                     * IMPORTANT:
+                     * No .select() here.
+                     *
+                     * The website only needs to INSERT
+                     * the application.
+                     */
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient
+                            .from(
+                                "applications"
+                            )
+                            .insert(
+                                [applicationData]
+                            );
+
+
+                    if (error) {
+
+                        console.error(
+                            "Application submission error:",
+                            error
+                        );
+
+
+                        message.className =
+                            "message-error";
+
+
+                        message.textContent =
+                            "Database error: " +
+                            error.message;
+
+
+                        submitButton.disabled =
+                            false;
+
+
+                        submitButton.textContent =
+                            "Submit Application";
+
+
+                        return;
+
+                    }
+
+
+                    console.log(
+                        "Application submitted successfully."
+                    );
+
+
+                    message.className =
+                        "message-success";
+
+
+                    message.textContent =
+                        "Your application has been submitted successfully.";
+
+
+                    applicationForm.reset();
+
+
+                    submitButton.disabled =
+                        false;
+
+
+                    submitButton.textContent =
+                        "Submit Application";
+
+
+                    setTimeout(
+                        function() {
+
+                            closeApplicationWizard();
+
+                            message.textContent =
+                                "";
+
+                            message.className =
+                                "";
+
+                            showApplicationStep(1);
+
+                        },
+                        2500
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Unexpected application error:",
+                        error
+                    );
+
+
+                    message.className =
+                        "message-error";
+
+
+                    message.textContent =
+                        "Something went wrong while submitting your application. Please try again.";
+
+
+                    submitButton.disabled =
+                        false;
+
+
+                    submitButton.textContent =
+                        "Submit Application";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ENQUIRY FORM
+    ===================================================== */
+
+    const enquiryForm =
+        getElement(
+            "enquiryForm"
+        );
+
+
+    const formMessage =
+        getElement(
+            "formMessage"
+        );
+
+
+    const enquirySubmitButton =
+        getElement(
+            "enquirySubmitButton"
+        );
+
+
+    if (enquiryForm) {
+
+        enquiryForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                formMessage.className = "";
+
+                formMessage.textContent =
+                    "Submitting your enquiry...";
+
+
+                enquirySubmitButton.disabled =
+                    true;
+
+
+                enquirySubmitButton.textContent =
+                    "Submitting...";
+
+
+                try {
+
+                    const enquiry = {
+
+                        full_name:
+                            getElement(
+                                "name"
+                            ).value.trim(),
+
+
+                        email:
+                            getElement(
+                                "email"
+                            ).value.trim(),
+
+
+                        phone:
+                            getElement(
+                                "phone"
+                            ).value.trim(),
+
+
+                        application_type:
+                            getElement(
+                                "application"
+                            ).value,
+
+
+                        property_reference:
+                            getElement(
+                                "property"
+                            ).value.trim(),
+
+
+                        municipality:
+                            getElement(
+                                "municipality"
+                            ).value.trim(),
+
+
+                        message:
+                            getElement(
+                                "message"
+                            ).value.trim()
+
+                    };
+
+
+                    console.log(
+                        "Submitting enquiry:",
+                        enquiry
+                    );
+
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient
+                            .from(
+                                "enquiries"
+                            )
+                            .insert(
+                                [enquiry]
+                            );
+
+
+                    if (error) {
+
+                        console.error(
+                            "Enquiry submission error:",
+                            error
+                        );
+
+
+                        formMessage.className =
+                            "message-error";
+
+
+                        formMessage.textContent =
+                            "Sorry, your enquiry could not be submitted: " +
+                            error.message;
+
+
+                        enquirySubmitButton.disabled =
+                            false;
+
+
+                        enquirySubmitButton.textContent =
+                            "Submit Enquiry";
+
+
+                        return;
+
+                    }
+
+
+                    formMessage.className =
+                        "message-success";
+
+
+                    formMessage.textContent =
+                        "Thank you. Your enquiry has been submitted successfully.";
+
+
+                    enquiryForm.reset();
+
+
+                    enquirySubmitButton.disabled =
+                        false;
+
+
+                    enquirySubmitButton.textContent =
+                        "Submit Enquiry";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Unexpected enquiry error:",
+                        error
+                    );
+
+
+                    formMessage.className =
+                        "message-error";
+
+
+                    formMessage.textContent =
+                        "Something went wrong while submitting your enquiry. Please try again.";
+
+
+                    enquirySubmitButton.disabled =
+                        false;
+
+
+                    enquirySubmitButton.textContent =
+                        "Submit Enquiry";
+
+                }
+
+            }
+        );
+
+    }
 
 </script>
 
