@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>The Rock | Town Planning & Land Use Management</title>
+    <title>THE ROCK | Planning & Land Use Management</title>
 
     <meta
         name="description"
-        content="Professional town planning, environmental planning and land use management services in South Africa."
+        content="Professional town planning and land use management services across South Africa."
     >
 
     <style>
-
-        /* =====================================================
-           GENERAL
-        ===================================================== */
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         html {
@@ -31,12 +25,8 @@
         body {
             font-family: Arial, Helvetica, sans-serif;
             line-height: 1.6;
-            color: #24312b;
-            background: #ffffff;
-        }
-
-        body.no-scroll {
-            overflow: hidden;
+            color: #1f2a24;
+            background: #f7f8f5;
         }
 
         a {
@@ -48,128 +38,104 @@
         input,
         select,
         textarea {
-            font-family: inherit;
+            font: inherit;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-        }
-
-
-        /* =====================================================
+        /* ================================
            HEADER
-        ===================================================== */
+        ================================= */
 
         header {
-            background: #ffffff;
-            border-bottom: 1px solid #e5e8e6;
+            background: #10261d;
+            color: white;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
         }
 
-        .navbar {
-            min-height: 78px;
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 18px 25px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             gap: 30px;
         }
 
         .logo {
             font-size: 25px;
             font-weight: 800;
-            letter-spacing: 1px;
-            color: #183c2c;
+            letter-spacing: 2px;
+            color: #d8b45a;
         }
 
         .logo span {
             display: block;
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 1.5px;
-            color: #777;
-            margin-top: -3px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: white;
+            margin-top: 2px;
         }
 
         nav {
             display: flex;
-            align-items: center;
             gap: 25px;
+            align-items: center;
         }
 
         nav a {
+            color: white;
             font-size: 14px;
             font-weight: 600;
-            color: #33423a;
             transition: 0.3s;
         }
 
         nav a:hover {
-            color: #b58a45;
+            color: #d8b45a;
         }
 
-        .nav-button {
-            background: #183c2c;
-            color: #ffffff !important;
-            padding: 11px 18px;
-            border-radius: 5px;
-        }
-
-        .nav-button:hover {
-            background: #b58a45;
-        }
-
-
-        /* =====================================================
+        /* ================================
            HERO
-        ===================================================== */
+        ================================= */
 
         .hero {
-            min-height: 650px;
-            display: flex;
-            align-items: center;
-
             background:
                 linear-gradient(
-                    rgba(15, 42, 30, 0.90),
-                    rgba(15, 42, 30, 0.90)
+                    rgba(16,38,29,0.92),
+                    rgba(16,38,29,0.92)
                 ),
-                linear-gradient(
-                    135deg,
-                    #183c2c,
-                    #315c48
+                radial-gradient(
+                    circle at top right,
+                    #49634e,
+                    #10261d 60%
                 );
 
             color: white;
+            padding: 110px 25px;
         }
 
-        .hero-content {
-            max-width: 850px;
-        }
-
-        .hero-label {
-            color: #d3b06b;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
+        .hero-container {
+            max-width: 1100px;
+            margin: auto;
         }
 
         .hero h1 {
-            font-size: clamp(42px, 6vw, 72px);
-            line-height: 1.08;
+            font-size: clamp(38px, 6vw, 70px);
+            line-height: 1.05;
             margin-bottom: 25px;
-            letter-spacing: -2px;
+            max-width: 850px;
+        }
+
+        .hero h1 span {
+            color: #d8b45a;
         }
 
         .hero p {
-            font-size: 19px;
             max-width: 720px;
-            color: #e8eeea;
+            font-size: 20px;
+            color: #e7ece8;
             margin-bottom: 35px;
         }
 
@@ -179,526 +145,462 @@
             flex-wrap: wrap;
         }
 
+        /* ================================
+           BUTTONS
+        ================================= */
+
         .button {
-            display: inline-block;
-            padding: 14px 24px;
-            border-radius: 5px;
-            font-weight: 700;
-            font-size: 14px;
-            transition: 0.3s;
-            cursor: pointer;
             border: none;
+            border-radius: 5px;
+            padding: 14px 24px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+            display: inline-block;
         }
 
         .button-primary {
-            background: #b58a45;
-            color: white;
+            background: #d8b45a;
+            color: #10261d;
         }
 
         .button-primary:hover {
-            background: #d0aa67;
+            background: #c9a447;
             transform: translateY(-2px);
         }
 
-        .button-outline {
-            border: 1px solid #ffffff;
-            color: white;
+        .button-secondary {
             background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.5);
         }
 
-        .button-outline:hover {
-            background: white;
-            color: #183c2c;
+        .button-secondary:hover {
+            border-color: #d8b45a;
+            color: #d8b45a;
         }
 
-
-        /* =====================================================
-           INTRO
-        ===================================================== */
-
-        .intro {
-            padding: 85px 0;
-            text-align: center;
+        .button-dark {
+            background: #10261d;
+            color: white;
         }
 
-        .section-label {
-            color: #b58a45;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 12px;
+        .button-dark:hover {
+            background: #1c3a2d;
         }
 
-        .section-title {
-            font-size: 38px;
-            color: #183c2c;
-            margin-bottom: 20px;
+        /* ================================
+           GENERAL SECTIONS
+        ================================= */
+
+        section {
+            padding: 80px 25px;
         }
 
-        .section-text {
-            max-width: 760px;
+        .container {
+            max-width: 1100px;
             margin: auto;
-            color: #66716b;
-            font-size: 17px;
-        }
-
-
-        /* =====================================================
-           SERVICES
-        ===================================================== */
-
-        .services {
-            padding: 90px 0;
-            background: #f5f7f5;
         }
 
         .section-heading {
-            text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 45px;
+        }
+
+        .section-heading h2 {
+            font-size: 38px;
+            color: #10261d;
+            margin-bottom: 12px;
+        }
+
+        .section-heading p {
+            max-width: 700px;
+            color: #68736c;
+        }
+
+        .gold-line {
+            width: 60px;
+            height: 4px;
+            background: #d8b45a;
+            margin-bottom: 20px;
+        }
+
+        /* ================================
+           INTRO
+        ================================= */
+
+        .intro {
+            background: white;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .intro h2 {
+            font-size: 38px;
+            margin-bottom: 20px;
+            color: #10261d;
+        }
+
+        .intro p {
+            color: #58645c;
+            margin-bottom: 15px;
+        }
+
+        .intro-card {
+            background: #10261d;
+            color: white;
+            padding: 40px;
+            border-left: 5px solid #d8b45a;
+        }
+
+        .intro-card h3 {
+            color: #d8b45a;
+            margin-bottom: 15px;
+        }
+
+        /* ================================
+           SERVICES
+        ================================= */
+
+        .services {
+            background: #f7f8f5;
         }
 
         .service-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            gap: 22px;
         }
 
         .service-card {
-            background: #ffffff;
-            padding: 35px 30px;
-            border: 1px solid #e2e7e3;
-            border-radius: 8px;
+            background: white;
+            padding: 30px;
+            border-radius: 7px;
+            border-top: 4px solid #d8b45a;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
             transition: 0.3s;
         }
 
         .service-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-        }
-
-        .service-number {
-            color: #b58a45;
-            font-size: 14px;
-            font-weight: 800;
-            margin-bottom: 15px;
         }
 
         .service-card h3 {
-            color: #183c2c;
-            font-size: 21px;
+            color: #10261d;
             margin-bottom: 12px;
         }
 
         .service-card p {
-            color: #69736e;
+            color: #68736c;
             font-size: 15px;
-            margin-bottom: 20px;
         }
 
-        .service-card ul {
-            list-style: none;
-        }
+        /* ================================
+           APPLICATION
+        ================================= */
 
-        .service-card li {
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: #46534c;
-        }
-
-        .service-card li::before {
-            content: "✓";
-            color: #b58a45;
-            font-weight: bold;
-            margin-right: 8px;
-        }
-
-
-        /* =====================================================
-           APPLICATION SECTION
-        ===================================================== */
-
-        .application {
-            padding: 95px 0;
-            background: #183c2c;
+        .applications {
+            background: #10261d;
             color: white;
         }
 
-        .application-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
+        .applications .section-heading h2 {
+            color: white;
         }
 
-        .application h2 {
-            font-size: 42px;
-            line-height: 1.15;
-            margin-bottom: 20px;
-        }
-
-        .application p {
-            color: #dce6e0;
-            margin-bottom: 25px;
-        }
-
-        .application-list {
-            list-style: none;
-        }
-
-        .application-list li {
-            margin-bottom: 12px;
-            color: #e7eee9;
-        }
-
-        .application-list li::before {
-            content: "✓";
-            color: #d3b06b;
-            font-weight: bold;
-            margin-right: 10px;
+        .applications .section-heading p {
+            color: #cdd6d0;
         }
 
         .application-box {
-            background: #ffffff;
-            color: #24312b;
+            background: white;
+            color: #1f2a24;
             padding: 40px;
-            border-radius: 10px;
+            border-radius: 8px;
+            max-width: 850px;
         }
 
         .application-box h3 {
-            color: #183c2c;
-            font-size: 25px;
-            margin-bottom: 12px;
+            color: #10261d;
+            margin-bottom: 10px;
         }
 
         .application-box p {
-            color: #66716b;
+            color: #68736c;
+            margin-bottom: 25px;
         }
 
-
-        /* =====================================================
+        /* ================================
            FEE ESTIMATOR
-        ===================================================== */
+        ================================= */
 
-        .fee-estimator {
-            padding: 95px 0;
-            background: #ffffff;
+        .fee-section {
+            background: white;
         }
 
         .fee-box {
-            max-width: 950px;
-            margin: auto;
-            background: #f5f7f5;
-            border: 1px solid #e1e6e2;
-            border-radius: 10px;
-            padding: 50px;
-            text-align: center;
+            background: #f7f8f5;
+            padding: 45px;
+            border-left: 5px solid #d8b45a;
+            max-width: 900px;
         }
 
-        .fee-box h2 {
-            color: #183c2c;
-            font-size: 35px;
-            margin-bottom: 15px;
+        .fee-box h3 {
+            color: #10261d;
+            font-size: 28px;
+            margin-bottom: 12px;
         }
 
         .fee-box p {
-            color: #68736d;
-            max-width: 700px;
-            margin: 0 auto 25px;
+            color: #68736c;
+            margin-bottom: 20px;
         }
 
-        .notice {
-            font-size: 13px;
-            color: #7a817d;
-            margin-top: 18px;
-        }
-
-
-        /* =====================================================
+        /* ================================
            ABOUT
-        ===================================================== */
+        ================================= */
 
         .about {
-            padding: 95px 0;
+            background: #eef1ed;
         }
 
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 70px;
-            align-items: center;
+            gap: 50px;
         }
 
         .about h2 {
-            font-size: 40px;
-            color: #183c2c;
+            color: #10261d;
+            font-size: 38px;
             margin-bottom: 20px;
         }
 
         .about p {
-            color: #68736d;
-            margin-bottom: 18px;
-        }
-
-        .about-panel {
-            background: #f5f7f5;
-            padding: 40px;
-            border-left: 5px solid #b58a45;
-        }
-
-        .about-panel h3 {
-            color: #183c2c;
+            color: #59645d;
             margin-bottom: 15px;
         }
 
+        .about-list {
+            list-style: none;
+        }
 
-        /* =====================================================
+        .about-list li {
+            padding: 14px 0;
+            border-bottom: 1px solid #d5dbd6;
+        }
+
+        .about-list li::before {
+            content: "✓";
+            color: #b28b2d;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* ================================
            KNOWLEDGE
-        ===================================================== */
+        ================================= */
 
         .knowledge {
-            padding: 90px 0;
-            background: #f5f7f5;
+            background: white;
         }
 
         .knowledge-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            gap: 22px;
         }
 
         .knowledge-card {
-            background: white;
             padding: 30px;
-            border-radius: 8px;
-            border: 1px solid #e1e6e2;
+            background: #f7f8f5;
+            border-radius: 6px;
         }
 
         .knowledge-card h3 {
-            color: #183c2c;
+            color: #10261d;
             margin-bottom: 12px;
         }
 
         .knowledge-card p {
-            color: #68736d;
-            font-size: 15px;
-            margin-bottom: 15px;
+            color: #68736c;
         }
 
-        .read-more {
-            color: #b58a45;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-
-        /* =====================================================
+        /* ================================
            CONTACT
-        ===================================================== */
+        ================================= */
 
         .contact {
-            padding: 95px 0;
+            background: #10261d;
+            color: white;
         }
 
         .contact-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 50px;
         }
 
         .contact h2 {
-            font-size: 40px;
-            color: #183c2c;
+            color: white;
+            font-size: 38px;
             margin-bottom: 20px;
         }
 
-        .contact p {
-            color: #68736d;
-            margin-bottom: 25px;
-        }
-
-        .contact-details {
-            list-style: none;
-        }
-
-        .contact-details li {
+        .contact-info p {
             margin-bottom: 15px;
-            color: #445149;
+            color: #d6ded9;
+        }
+
+        .contact-info strong {
+            color: #d8b45a;
         }
 
         .contact-form {
-            background: #f5f7f5;
+            background: white;
             padding: 35px;
-            border-radius: 8px;
+            border-radius: 7px;
+            color: #1f2a24;
         }
 
-        .contact-form label {
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
             display: block;
             font-size: 14px;
             font-weight: 700;
             margin-bottom: 7px;
-            color: #344139;
         }
 
-        .contact-form input,
-        .contact-form textarea,
-        .contact-form select {
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
-            padding: 13px;
-            border: 1px solid #d5ddd8;
-            border-radius: 5px;
-            margin-bottom: 18px;
-            font-family: inherit;
-            font-size: 14px;
-            background: white;
+            border: 1px solid #d3d8d4;
+            border-radius: 4px;
+            padding: 12px;
+            outline: none;
         }
 
-        .contact-form textarea {
-            min-height: 120px;
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #d8b45a;
+        }
+
+        textarea {
             resize: vertical;
+            min-height: 120px;
         }
 
-        #formMessage {
+        .form-message {
             margin-top: 15px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
-
-        /* =====================================================
+        /* ================================
            FOOTER
-        ===================================================== */
+        ================================= */
 
         footer {
-            background: #102a1f;
-            color: #d9e1dc;
-            padding: 45px 0 25px;
+            background: #091710;
+            color: #aeb9b2;
+            padding: 30px 25px;
         }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 50px;
-            margin-bottom: 35px;
+        .footer-container {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        footer h3 {
-            color: white;
-            margin-bottom: 15px;
+        footer strong {
+            color: #d8b45a;
         }
 
-        footer p,
-        footer li {
-            font-size: 14px;
-            color: #aebbb3;
-        }
-
-        footer ul {
-            list-style: none;
-        }
-
-        footer li {
-            margin-bottom: 8px;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.12);
-            padding-top: 20px;
-            font-size: 13px;
-            color: #8f9d95;
-        }
-
-
-        /* =====================================================
+        /* ================================
            APPLICATION WIZARD
-        ===================================================== */
+        ================================= */
 
         .wizard-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            z-index: 9999;
-            background: rgba(0, 0, 0, 0.75);
-            padding: 30px 15px;
+            background: rgba(0,0,0,0.75);
+            z-index: 2000;
             overflow-y: auto;
-            align-items: center;
+            padding: 30px 15px;
+        }
+
+        .wizard-overlay.active {
+            display: flex;
             justify-content: center;
+            align-items: flex-start;
         }
 
         .wizard-box {
-            position: relative;
             width: 100%;
-            max-width: 760px;
-            background: #ffffff;
-            padding: 45px;
-            border-radius: 18px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
-            color: #1d2b24;
+            max-width: 750px;
+            background: white;
+            border-radius: 8px;
+            margin: 20px auto;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .wizard-header {
+            background: #10261d;
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wizard-header h2 {
+            color: #d8b45a;
         }
 
         .wizard-close {
-            position: absolute;
-            top: 15px;
-            right: 18px;
+            background: none;
             border: none;
-            background: transparent;
-            font-size: 32px;
+            color: white;
+            font-size: 28px;
             cursor: pointer;
-            color: #777;
-            line-height: 1;
         }
-
-        .wizard-close:hover {
-            color: #111;
-        }
-
-        .wizard-intro {
-            max-width: 620px;
-            margin-bottom: 30px;
-            color: #68736d;
-        }
-
-
-        /* Progress */
 
         .wizard-progress {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin: 25px 0 35px;
+            background: #eef1ed;
         }
 
         .progress-step {
             text-align: center;
-            font-size: 13px;
-            color: #999;
-            padding: 10px 5px;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .progress-step span {
-            display: block;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            margin: 0 auto 7px;
-            border-radius: 50%;
-            background: #ddd;
-            color: #666;
-            font-weight: 700;
+            padding: 12px 5px;
+            font-size: 12px;
+            color: #6c756e;
+            border-bottom: 3px solid transparent;
         }
 
         .progress-step.active {
-            color: #a78332;
-            border-bottom-color: #a78332;
+            color: #10261d;
+            font-weight: 700;
+            border-bottom-color: #d8b45a;
         }
 
-        .progress-step.active span {
-            background: #a78332;
-            color: white;
+        .wizard-body {
+            padding: 30px;
         }
-
-
-        /* Steps */
 
         .wizard-step {
             display: none;
@@ -709,270 +611,143 @@
         }
 
         .wizard-step h3 {
-            margin-bottom: 10px;
-            color: #183c2c;
+            color: #10261d;
+            margin-bottom: 8px;
         }
 
-
-        /* Wizard form */
-
-        .wizard-step label {
-            display: block;
-            margin-top: 20px;
-            margin-bottom: 7px;
-            font-weight: 600;
+        .wizard-step > p {
+            color: #68736c;
+            margin-bottom: 25px;
         }
 
-        .wizard-step input,
-        .wizard-step select,
-        .wizard-step textarea {
-            width: 100%;
-            padding: 13px 14px;
-            border: 1px solid #d8ddd9;
-            border-radius: 8px;
-            font: inherit;
-            background: #fafbfa;
-        }
-
-        .wizard-step textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .wizard-step input:focus,
-        .wizard-step select:focus,
-        .wizard-step textarea:focus {
-            outline: none;
-            border-color: #a78332;
-            box-shadow: 0 0 0 3px rgba(167, 131, 50, 0.12);
-        }
-
-        .wizard-note {
-            font-size: 13px;
-            color: #777;
-            margin-top: 8px;
-        }
-
-
-        /* Buttons */
-
-        .wizard-buttons {
+        .wizard-actions {
             display: flex;
             justify-content: space-between;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 10px;
+            margin-top: 25px;
         }
 
-
-        /* Summary */
-
-        .application-summary {
-            margin-top: 30px;
+        .wizard-summary {
+            background: #f7f8f5;
             padding: 20px;
-            border-radius: 10px;
-            background: #f4f6f4;
-            border-left: 4px solid #a78332;
-        }
-
-        .application-summary h4 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            color: #183c2c;
-        }
-
-        .application-summary p {
-            margin: 8px 0;
-            color: #445149;
-        }
-
-
-        /* Application message */
-
-        #applicationMessage {
+            border-left: 4px solid #d8b45a;
             margin-top: 20px;
-            font-weight: 600;
         }
 
-        .message-success {
-            color: #18733b;
+        .wizard-summary p {
+            margin-bottom: 8px;
         }
 
-        .message-error {
-            color: #b42318;
+        .application-confirmation {
+            text-align: center;
+            padding: 30px 10px;
         }
 
+        .confirmation-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            background: #e6efe9;
+            color: #17613d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            margin: 0 auto 20px;
+        }
 
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
+        .application-reference {
+            background: #f7f8f5;
+            border: 1px solid #dce2dd;
+            padding: 18px;
+            margin: 25px 0;
+            font-size: 22px;
+            font-weight: 800;
+            color: #10261d;
+            letter-spacing: 1px;
+        }
 
-        @media (max-width: 900px) {
+        .confirmation-note {
+            color: #68736c;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* ================================
+           MOBILE
+        ================================= */
+
+        @media (max-width: 800px) {
 
             nav {
                 display: none;
             }
 
-            .service-grid,
-            .knowledge-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .application-grid,
+            .intro-grid,
             .about-grid,
             .contact-grid {
                 grid-template-columns: 1fr;
             }
 
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            .container {
-                width: 92%;
-            }
-
-            .hero {
-                min-height: 600px;
-            }
-
-            .hero h1 {
-                font-size: 43px;
-            }
-
-            .hero p {
-                font-size: 17px;
-            }
-
             .service-grid,
-            .knowledge-grid,
-            .footer-grid {
+            .knowledge-grid {
                 grid-template-columns: 1fr;
             }
 
-            .section-title,
-            .application h2,
-            .about h2,
-            .contact h2 {
-                font-size: 32px;
+            .hero {
+                padding: 80px 20px;
             }
 
-            .fee-box,
+            section {
+                padding: 60px 20px;
+            }
+
             .application-box,
-            .contact-form {
-                padding: 28px 22px;
+            .contact-form,
+            .fee-box {
+                padding: 25px;
             }
 
-        }
-
-
-        @media (max-width: 700px) {
-
-            .wizard-overlay {
-                padding: 10px;
-                align-items: flex-start;
-            }
-
-            .wizard-box {
-                margin-top: 10px;
-                padding: 30px 20px;
-                border-radius: 12px;
+            .wizard-body {
+                padding: 20px;
             }
 
             .wizard-progress {
-                gap: 3px;
+                grid-template-columns: repeat(4, 1fr);
             }
 
             .progress-step {
-                font-size: 11px;
+                font-size: 10px;
             }
-
-            .progress-step span {
-                width: 26px;
-                height: 26px;
-                line-height: 26px;
-            }
-
-            .wizard-buttons {
-                flex-direction: column-reverse;
-            }
-
-            .wizard-buttons .button {
-                width: 100%;
-            }
-
         }
-
     </style>
-
 </head>
 
-
 <body>
-
 
 <!-- =====================================================
      HEADER
 ===================================================== -->
 
 <header>
-
-    <div class="container navbar">
+    <div class="nav-container">
 
         <a href="#home" class="logo">
-
             THE ROCK
-
-            <span>
-                PLANNING & LAND USE MANAGEMENT
-            </span>
-
+            <span>PLANNING & LAND USE MANAGEMENT</span>
         </a>
 
-
         <nav>
-
-            <a href="#home">
-                Home
-            </a>
-
-            <a href="#services">
-                Services
-            </a>
-
-            <a href="#applications">
-                Applications
-            </a>
-
-            <a href="#about">
-                About
-            </a>
-
-            <a href="#knowledge">
-                Knowledge
-            </a>
-
-            <a href="#contact">
-                Contact
-            </a>
-
-            <a
-                href="#applications"
-                class="nav-button"
-            >
-                Start an Application
-            </a>
-
+            <a href="#services">Services</a>
+            <a href="#applications">Applications</a>
+            <a href="#fees">Fees</a>
+            <a href="#about">About</a>
+            <a href="#knowledge">Knowledge</a>
+            <a href="#contact">Contact</a>
         </nav>
 
     </div>
-
 </header>
-
 
 
 <!-- =====================================================
@@ -981,48 +756,41 @@
 
 <section class="hero" id="home">
 
-    <div class="container">
+    <div class="hero-container">
 
-        <div class="hero-content">
+        <div class="gold-line"></div>
 
-            <div class="hero-label">
-                Professional Planning Services
-            </div>
+        <h1>
+            Town Planning &
+            <span>Land Use Solutions</span>
+        </h1>
 
-            <h1>
-                Town Planning &
-                Land Use Solutions
-            </h1>
+        <p>
+            Turning property opportunities into compliant,
+            well-planned and development-ready solutions.
+        </p>
 
-            <p>
-                Turning property opportunities into compliant,
-                well-planned and development-ready solutions.
-            </p>
+        <div class="hero-buttons">
 
-            <div class="hero-buttons">
+            <a
+                href="#applications"
+                class="button button-primary"
+            >
+                Start an Application
+            </a>
 
-                <a
-                    href="#applications"
-                    class="button button-primary"
-                >
-                    Start an Application
-                </a>
-
-                <a
-                    href="#contact"
-                    class="button button-outline"
-                >
-                    Speak to a Planner
-                </a>
-
-            </div>
+            <a
+                href="#contact"
+                class="button button-secondary"
+            >
+                Contact a Planner
+            </a>
 
         </div>
 
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -1033,28 +801,62 @@
 
     <div class="container">
 
-        <div class="section-label">
-            Professional Planning
+        <div class="intro-grid">
+
+            <div>
+
+                <div class="gold-line"></div>
+
+                <h2>
+                    Planning with Purpose.
+                </h2>
+
+                <p>
+                    THE ROCK provides professional town planning
+                    and land use management solutions designed
+                    to help property owners, developers,
+                    businesses and institutions navigate the
+                    development process.
+                </p>
+
+                <p>
+                    Our approach combines planning knowledge,
+                    regulatory understanding and practical
+                    development considerations to help move
+                    projects from an idea to an implementable
+                    planning solution.
+                </p>
+
+            </div>
+
+            <div class="intro-card">
+
+                <h3>
+                    Our Approach
+                </h3>
+
+                <p>
+                    We assess the planning context of each
+                    project before recommending the appropriate
+                    land use management pathway.
+                </p>
+
+                <br>
+
+                <p>
+                    From initial feasibility to applications,
+                    approvals and development considerations,
+                    our objective is to provide clear,
+                    professional and practical planning advice.
+                </p>
+
+            </div>
+
         </div>
-
-        <h2 class="section-title">
-            Planning With Purpose
-        </h2>
-
-        <p class="section-text">
-
-            We provide professional town planning,
-            land use management and development planning
-            solutions designed to help property owners,
-            developers and organisations navigate
-            planning processes with confidence.
-
-        </p>
 
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -1067,18 +869,16 @@
 
         <div class="section-heading">
 
-            <div class="section-label">
-                What We Do
-            </div>
+            <div class="gold-line"></div>
 
-            <h2 class="section-title">
-                Our Services
+            <h2>
+                Planning Services
             </h2>
 
-            <p class="section-text">
-                Professional planning services across
-                the property development and land use
-                management process.
+            <p>
+                Professional planning services supporting
+                property development, land use management
+                and regulatory processes.
             </p>
 
         </div>
@@ -1086,178 +886,94 @@
 
         <div class="service-grid">
 
-
             <div class="service-card">
 
-                <div class="service-number">
-                    01
-                </div>
-
                 <h3>
-                    Land Use Management
+                    Land Use Applications
                 </h3>
 
                 <p>
-                    Assistance with statutory land use
-                    applications and planning approvals.
+                    Professional assistance with rezoning,
+                    consent use, departures, subdivision,
+                    consolidation and related land use
+                    applications.
                 </p>
-
-                <ul>
-
-                    <li>Rezoning applications</li>
-                    <li>Consent use</li>
-                    <li>Special consent</li>
-                    <li>Departures</li>
-                    <li>Restrictive conditions</li>
-
-                </ul>
 
             </div>
 
 
-
             <div class="service-card">
 
-                <div class="service-number">
-                    02
-                </div>
-
                 <h3>
-                    Property Development
+                    Development Planning
                 </h3>
 
                 <p>
-                    Planning support for property owners
-                    and developers seeking to unlock
-                    development potential.
+                    Planning advice for residential,
+                    commercial, industrial, institutional
+                    and mixed-use development proposals.
                 </p>
-
-                <ul>
-
-                    <li>Subdivision</li>
-                    <li>Consolidation</li>
-                    <li>Development applications</li>
-                    <li>Development feasibility</li>
-                    <li>Site planning</li>
-
-                </ul>
 
             </div>
 
 
-
             <div class="service-card">
 
-                <div class="service-number">
-                    03
-                </div>
-
                 <h3>
-                    Planning Advisory
+                    Land Use Feasibility
                 </h3>
 
                 <p>
-                    Professional planning advice and
-                    strategic support throughout the
-                    development process.
+                    Preliminary assessment of planning
+                    opportunities, zoning considerations,
+                    development potential and regulatory
+                    constraints.
                 </p>
-
-                <ul>
-
-                    <li>Planning assessments</li>
-                    <li>Planning motivations</li>
-                    <li>Land use due diligence</li>
-                    <li>Municipal liaison</li>
-                    <li>Professional representation</li>
-
-                </ul>
 
             </div>
 
 
-
             <div class="service-card">
 
-                <div class="service-number">
-                    04
-                </div>
-
                 <h3>
-                    Spatial Planning
+                    Property Development Advice
                 </h3>
 
                 <p>
-                    Planning analysis supporting sustainable
-                    development and appropriate land use.
+                    Planning guidance for property owners
+                    and developers seeking to understand
+                    the development potential of their land.
                 </p>
-
-                <ul>
-
-                    <li>Spatial assessments</li>
-                    <li>Policy analysis</li>
-                    <li>Development frameworks</li>
-                    <li>Land use analysis</li>
-                    <li>Planning research</li>
-
-                </ul>
 
             </div>
 
 
-
             <div class="service-card">
 
-                <div class="service-number">
-                    05
-                </div>
-
                 <h3>
-                    Township & Development
+                    Municipal Planning Processes
                 </h3>
 
                 <p>
-                    Planning services for larger-scale
-                    development and land development projects.
+                    Assistance in navigating municipal land
+                    use management procedures and statutory
+                    planning requirements.
                 </p>
-
-                <ul>
-
-                    <li>Township establishment</li>
-                    <li>Land development</li>
-                    <li>Subdivision</li>
-                    <li>Infrastructure coordination</li>
-                    <li>Development planning</li>
-
-                </ul>
 
             </div>
 
 
-
             <div class="service-card">
 
-                <div class="service-number">
-                    06
-                </div>
-
                 <h3>
-                    Professional Representation
+                    Planning Reports
                 </h3>
 
                 <p>
-                    Assistance with planning processes,
-                    municipal engagement and representation.
+                    Preparation of professional planning
+                    reports, motivations and supporting
+                    planning documentation.
                 </p>
-
-                <ul>
-
-                    <li>Municipal liaison</li>
-                    <li>Public participation</li>
-                    <li>Objection processes</li>
-                    <li>Appeals</li>
-                    <li>Planning hearings</li>
-
-                </ul>
 
             </div>
 
@@ -1266,143 +982,120 @@
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
-     APPLICATION
+     APPLICATIONS
 ===================================================== -->
 
-<section class="application" id="applications">
+<section class="applications" id="applications">
 
     <div class="container">
 
-        <div class="application-grid">
+        <div class="section-heading">
+
+            <div class="gold-line"></div>
+
+            <h2>
+                Start Your Planning Application
+            </h2>
+
+            <p>
+                Provide the basic details of your project
+                and property. Your information will be
+                assessed before the appropriate planning
+                pathway is confirmed.
+            </p>
+
+        </div>
 
 
-            <div>
+        <div class="application-box">
 
-                <div class="section-label">
-                    Start Your Project
-                </div>
+            <h3>
+                Planning Application Assessment
+            </h3>
 
-                <h2>
-                    Not sure which planning
-                    application you need?
-                </h2>
+            <p>
+                Complete the short application questionnaire
+                to submit your project for an initial
+                professional assessment.
+            </p>
 
-                <p>
-                    Tell us what you want to do with your
-                    property. Our application assessment
-                    will help identify the likely planning
-                    process and information required.
-                </p>
-
-                <ul class="application-list">
-
-                    <li>
-                        Identify the likely application type
-                    </li>
-
-                    <li>
-                        Assess the complexity of your proposal
-                    </li>
-
-                    <li>
-                        Identify potential planning requirements
-                    </li>
-
-                    <li>
-                        Receive an indicative professional fee
-                    </li>
-
-                </ul>
-
-            </div>
-
-
-            <div class="application-box">
-
-                <h3>
-                    Start an Application
-                </h3>
-
-                <p>
-                    Begin with a few questions about your
-                    property and proposed development.
-                </p>
-
-                <br>
-
-                <button
-                    type="button"
-                    class="button button-primary"
-                    onclick="openApplicationWizard()"
-                >
-                    Start Application
-                </button>
-
-            </div>
+            <button
+                type="button"
+                class="button button-dark"
+                onclick="openApplicationWizard()"
+            >
+                Start Application
+            </button>
 
         </div>
 
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
      FEE ESTIMATOR
 ===================================================== -->
 
-<section class="fee-estimator">
+<section class="fee-section" id="fees">
 
     <div class="container">
 
-        <div class="fee-box">
+        <div class="section-heading">
 
-            <div class="section-label">
-                Indicative Fee Estimator
-            </div>
+            <div class="gold-line"></div>
 
             <h2>
-                Understand Your Potential
-                Planning Costs
+                Indicative Planning Fee Estimator
             </h2>
 
             <p>
+                Planning fees depend on the nature,
+                complexity and professional scope of a
+                project.
+            </p>
 
-                Planning projects differ in complexity.
-                Our indicative fee assessment is designed
-                to consider the type of application,
-                level of professional work and services
-                likely to be required.
+        </div>
 
+
+        <div class="fee-box">
+
+            <h3>
+                Professional Planning Fees
+            </h3>
+
+            <p>
+                Once sufficient project information has been
+                provided, an indicative scope and fee range
+                can be developed for consideration.
+            </p>
+
+            <p>
+                The estimator is intended for preliminary
+                guidance only. Final professional fees may
+                differ depending on the actual scope of work,
+                complexity, municipal requirements,
+                specialist inputs, meetings, public
+                participation and other project-specific
+                requirements.
             </p>
 
             <a
                 href="#contact"
-                class="button button-primary"
+                class="button button-dark"
             >
-                Estimate My Planning Fee
+                Request a Planning Assessment
             </a>
-
-            <p class="notice">
-
-                Indicative estimates are subject to
-                professional assessment and confirmation.
-                Specialist professional costs and
-                disbursements may apply separately.
-
-            </p>
 
         </div>
 
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -1415,74 +1108,60 @@
 
         <div class="about-grid">
 
-
             <div>
 
-                <div class="section-label">
-                    About The Practice
-                </div>
+                <div class="gold-line"></div>
 
                 <h2>
-                    Professional Planning
-                    For Better Development
+                    About THE ROCK
                 </h2>
 
                 <p>
-
-                    Our approach combines professional
-                    planning knowledge, land use management
-                    experience and practical development
-                    understanding.
-
+                    THE ROCK is a professional planning platform
+                    focused on practical town planning and land
+                    use management solutions.
                 </p>
 
                 <p>
-
-                    We assist property owners, developers,
-                    organisations and other stakeholders
-                    in navigating planning and development
-                    processes.
-
-                </p>
-
-                <p>
-
-                    Our objective is simple: provide clear,
-                    professional and practical planning
-                    solutions.
-
+                    The platform is designed to simplify the
+                    initial planning journey for property owners,
+                    developers, businesses and institutions while
+                    connecting project information to professional
+                    planning assessment.
                 </p>
 
             </div>
 
 
-            <div class="about-panel">
+            <div>
 
-                <h3>
-                    Our Approach
-                </h3>
+                <ul class="about-list">
 
-                <p>
+                    <li>
+                        Professional planning assessment
+                    </li>
 
-                    Every property and development proposal
-                    is different. We assess the planning
-                    context, applicable land use controls,
-                    development objectives and potential
-                    statutory requirements before providing
-                    professional advice.
+                    <li>
+                        Land use management guidance
+                    </li>
 
-                </p>
+                    <li>
+                        Development feasibility considerations
+                    </li>
 
-                <br>
+                    <li>
+                        Application preparation
+                    </li>
 
-                <p>
+                    <li>
+                        Planning documentation
+                    </li>
 
-                    <strong>
-                        Professional assessment comes before
-                        final advice, scope and quotation.
-                    </strong>
+                    <li>
+                        National service approach
+                    </li>
 
-                </p>
+                </ul>
 
             </div>
 
@@ -1493,9 +1172,8 @@
 </section>
 
 
-
 <!-- =====================================================
-     KNOWLEDGE
+     PLANNING KNOWLEDGE
 ===================================================== -->
 
 <section class="knowledge" id="knowledge">
@@ -1504,20 +1182,16 @@
 
         <div class="section-heading">
 
-            <div class="section-label">
-                Planning Knowledge
-            </div>
+            <div class="gold-line"></div>
 
-            <h2 class="section-title">
-                Planning Resources
+            <h2>
+                Planning Knowledge
             </h2>
 
-            <p class="section-text">
-
-                Practical information to help property
-                owners and developers understand planning
-                and land use processes.
-
+            <p>
+                Practical information to help property owners
+                and developers better understand the planning
+                process.
             </p>
 
         </div>
@@ -1525,27 +1199,17 @@
 
         <div class="knowledge-grid">
 
-
             <div class="knowledge-card">
 
                 <h3>
-                    What Is Rezoning?
+                    What is Land Use Management?
                 </h3>
 
                 <p>
-
-                    Understand when a property may require
-                    a change in land use rights and what
-                    the process generally involves.
-
+                    Land use management regulates how land may
+                    be used and developed within the applicable
+                    planning framework.
                 </p>
-
-                <a
-                    href="#contact"
-                    class="read-more"
-                >
-                    Read More →
-                </a>
 
             </div>
 
@@ -1553,23 +1217,15 @@
             <div class="knowledge-card">
 
                 <h3>
-                    Subdivision Explained
+                    Do I Need a Planning Application?
                 </h3>
 
                 <p>
-
-                    Learn about the planning considerations
-                    involved when dividing a property into
-                    separate portions.
-
+                    The requirement depends on the existing
+                    zoning, proposed land use, development
+                    parameters and applicable municipal
+                    legislation.
                 </p>
-
-                <a
-                    href="#contact"
-                    class="read-more"
-                >
-                    Read More →
-                </a>
 
             </div>
 
@@ -1577,23 +1233,15 @@
             <div class="knowledge-card">
 
                 <h3>
-                    Planning Before Buying
+                    Why Conduct a Feasibility Assessment?
                 </h3>
 
                 <p>
-
-                    Why understanding zoning, land use rights
-                    and development restrictions can be
-                    important before purchasing property.
-
+                    Early planning assessment can help identify
+                    opportunities, restrictions and potential
+                    approval requirements before significant
+                    development costs are incurred.
                 </p>
-
-                <a
-                    href="#contact"
-                    class="read-more"
-                >
-                    Read More →
-                </a>
 
             </div>
 
@@ -1602,7 +1250,6 @@
     </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -1616,42 +1263,35 @@
         <div class="contact-grid">
 
 
-            <div>
+            <div class="contact-info">
 
-                <div class="section-label">
-                    Contact
-                </div>
+                <div class="gold-line"></div>
 
                 <h2>
-                    Let's Discuss Your
-                    Planning Project
+                    Let's Discuss Your Project
                 </h2>
 
                 <p>
-
-                    Tell us about your property, development
-                    proposal or planning requirement.
-
+                    Have a property development idea or need
+                    assistance understanding a land use issue?
                 </p>
 
-                <ul class="contact-details">
+                <br>
 
-                    <li>
-                        <strong>Email:</strong>
-                        info@yourpractice.co.za
-                    </li>
+                <p>
+                    <strong>Email</strong><br>
+                    info@yourpractice.co.za
+                </p>
 
-                    <li>
-                        <strong>Phone:</strong>
-                        +27 XX XXX XXXX
-                    </li>
+                <p>
+                    <strong>Phone</strong><br>
+                    +27 XX XXX XXXX
+                </p>
 
-                    <li>
-                        <strong>Service Area:</strong>
-                        South Africa
-                    </li>
-
-                </ul>
+                <p>
+                    <strong>Service Area</strong><br>
+                    South Africa
+                </p>
 
             </div>
 
@@ -1660,123 +1300,144 @@
 
                 <form id="enquiryForm">
 
-                    <label for="name">
-                        Name
-                    </label>
+                    <div class="form-group">
 
-                    <input
-                        type="text"
-                        id="name"
-                        name="full_name"
-                        placeholder="Your name"
-                        required
-                    >
+                        <label for="fullName">
+                            Full Name
+                        </label>
 
+                        <input
+                            type="text"
+                            id="fullName"
+                            required
+                        >
 
-                    <label for="email">
-                        Email
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Your email address"
-                        required
-                    >
+                    </div>
 
 
-                    <label for="phone">
-                        Phone
-                    </label>
+                    <div class="form-group">
 
-                    <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        placeholder="Your phone number"
-                    >
+                        <label for="email">
+                            Email Address
+                        </label>
 
+                        <input
+                            type="email"
+                            id="email"
+                            required
+                        >
 
-                    <label for="application">
-                        Planning Requirement
-                    </label>
-
-                    <select
-                        id="application"
-                        name="application_type"
-                        required
-                    >
-
-                        <option value="">
-                            Select an option
-                        </option>
-
-                        <option value="Rezoning">
-                            Rezoning
-                        </option>
-
-                        <option value="Consent Use">
-                            Consent Use
-                        </option>
-
-                        <option value="Subdivision">
-                            Subdivision
-                        </option>
-
-                        <option value="Consolidation">
-                            Consolidation
-                        </option>
-
-                        <option value="Township Establishment">
-                            Township Establishment
-                        </option>
-
-                        <option value="Development Assessment">
-                            Development Assessment
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
-
-                    </select>
+                    </div>
 
 
-                    <label for="property">
-                        Property / Erf Number
-                    </label>
+                    <div class="form-group">
 
-                    <input
-                        type="text"
-                        id="property"
-                        name="property_reference"
-                        placeholder="e.g. Erf 123, Extension 2"
-                    >
+                        <label for="phone">
+                            Phone Number
+                        </label>
 
+                        <input
+                            type="text"
+                            id="phone"
+                        >
 
-                    <label for="municipality">
-                        Municipality
-                    </label>
-
-                    <input
-                        type="text"
-                        id="municipality"
-                        name="municipality"
-                        placeholder="Municipality"
-                    >
+                    </div>
 
 
-                    <label for="message">
-                        Tell us about your project
-                    </label>
+                    <div class="form-group">
 
-                    <textarea
-                        id="message"
-                        name="message"
-                        placeholder="Briefly describe your property and proposal..."
-                        required
-                    ></textarea>
+                        <label for="applicationType">
+                            Application / Service Type
+                        </label>
+
+                        <select
+                            id="applicationType"
+                            required
+                        >
+
+                            <option value="">
+                                Select an option
+                            </option>
+
+                            <option value="Rezoning">
+                                Rezoning
+                            </option>
+
+                            <option value="Consent Use">
+                                Consent Use
+                            </option>
+
+                            <option value="Departure">
+                                Departure
+                            </option>
+
+                            <option value="Subdivision">
+                                Subdivision
+                            </option>
+
+                            <option value="Consolidation">
+                                Consolidation
+                            </option>
+
+                            <option value="Township Establishment">
+                                Township Establishment
+                            </option>
+
+                            <option value="Land Use Feasibility">
+                                Land Use Feasibility
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="propertyReference">
+                            Property Reference
+                        </label>
+
+                        <input
+                            type="text"
+                            id="propertyReference"
+                            placeholder="Erf / Farm / Property description"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="municipality">
+                            Municipality
+                        </label>
+
+                        <input
+                            type="text"
+                            id="municipality"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="message">
+                            Message
+                        </label>
+
+                        <textarea
+                            id="message"
+                            placeholder="Tell us briefly about your planning requirement..."
+                            required
+                        ></textarea>
+
+                    </div>
 
 
                     <button
@@ -1788,7 +1449,10 @@
                     </button>
 
 
-                    <p id="formMessage"></p>
+                    <div
+                        id="formMessage"
+                        class="form-message"
+                    ></div>
 
                 </form>
 
@@ -1801,119 +1465,27 @@
 </section>
 
 
-
 <!-- =====================================================
      FOOTER
 ===================================================== -->
 
 <footer>
 
-    <div class="container">
+    <div class="footer-container">
 
-        <div class="footer-grid">
-
-
-            <div>
-
-                <h3>
-                    THE ROCK
-                </h3>
-
-                <p>
-                    Professional Environmental,
-                    Town Planning & Land Use Management
-                    Services.
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <h3>
-                    Navigation
-                </h3>
-
-                <ul>
-
-                    <li>
-                        <a href="#home">
-                            Home
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#services">
-                            Services
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#applications">
-                            Applications
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#about">
-                            About
-                        </a>
-                    </li>
-
-                </ul>
-
-            </div>
-
-
-            <div>
-
-                <h3>
-                    Planning
-                </h3>
-
-                <ul>
-
-                    <li>
-                        <a href="#knowledge">
-                            Planning Knowledge
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#contact">
-                            Contact
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#applications">
-                            Request a Quote
-                        </a>
-                    </li>
-
-                </ul>
-
-            </div>
-
+        <div>
+            <strong>THE ROCK</strong>
+            <br>
+            Planning & Land Use Management
         </div>
 
-
-        <div class="footer-bottom">
-
-            © 2026 The Rock. All rights reserved.
-
-            <br>
-
-            Professional planning services are subject
-            to professional assessment and applicable
-            legislation.
-
+        <div>
+            © 2026 THE ROCK. All rights reserved.
         </div>
 
     </div>
 
 </footer>
-
 
 
 <!-- =====================================================
@@ -1923,555 +1495,534 @@
 <div
     id="applicationWizard"
     class="wizard-overlay"
-    aria-hidden="true"
 >
 
-    <div
-        class="wizard-box"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="wizardTitle"
-    >
+    <div class="wizard-box" id="wizardBox">
 
+        <div class="wizard-header">
 
-        <button
-            type="button"
-            class="wizard-close"
-            onclick="closeApplicationWizard()"
-            aria-label="Close application"
-        >
-            &times;
-        </button>
+            <h2>
+                Planning Application
+            </h2>
 
+            <button
+                type="button"
+                class="wizard-close"
+                onclick="closeApplicationWizard()"
+            >
+                ×
+            </button>
 
-        <h2 id="wizardTitle">
-            Planning Application
-        </h2>
+        </div>
 
-
-        <p class="wizard-intro">
-
-            Please provide the information below so that we
-            can understand your planning application and
-            assess the appropriate next steps.
-
-        </p>
-
-
-        <!-- PROGRESS -->
 
         <div class="wizard-progress">
 
             <div
                 class="progress-step active"
-                data-step="1"
+                id="progress1"
             >
-
-                <span>1</span>
-
-                <small>
-                    Project
-                </small>
-
+                Project
             </div>
-
 
             <div
                 class="progress-step"
-                data-step="2"
+                id="progress2"
             >
-
-                <span>2</span>
-
-                <small>
-                    Property
-                </small>
-
+                Property
             </div>
-
 
             <div
                 class="progress-step"
-                data-step="3"
+                id="progress3"
             >
-
-                <span>3</span>
-
-                <small>
-                    Proposal
-                </small>
-
+                Proposal
             </div>
-
 
             <div
                 class="progress-step"
-                data-step="4"
+                id="progress4"
             >
-
-                <span>4</span>
-
-                <small>
-                    Review
-                </small>
-
+                Review
             </div>
 
         </div>
 
 
+        <div class="wizard-body">
 
-        <!-- APPLICATION FORM -->
+            <form id="applicationForm">
 
-        <form id="applicationForm">
 
-
-            <!-- =================================================
-                 STEP 1
-            ================================================= -->
-
-            <div
-                id="applicationStep1"
-                class="wizard-step active"
-            >
-
-                <h3>
-                    Step 1 — Project Information
-                </h3>
-
-
-                <label for="appType">
-                    Application Type
-                </label>
-
-                <select
-                    id="appType"
-                    required
-                >
-
-                    <option value="">
-                        Select application type
-                    </option>
-
-                    <option value="Rezoning">
-                        Rezoning
-                    </option>
-
-                    <option value="Consent Use">
-                        Consent Use
-                    </option>
-
-                    <option value="Subdivision">
-                        Subdivision
-                    </option>
-
-                    <option value="Consolidation">
-                        Consolidation
-                    </option>
-
-                    <option value="Township Establishment">
-                        Township Establishment
-                    </option>
-
-                    <option value="Removal of Restrictions">
-                        Removal of Restrictions
-                    </option>
-
-                    <option value="Departure / Relaxation">
-                        Departure / Relaxation
-                    </option>
-
-                    <option value="Site Development">
-                        Site Development
-                    </option>
-
-                    <option value="Land Use Management">
-                        Land Use Management
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-
-                <label for="appDescription">
-                    Brief Project Description
-                </label>
-
-                <textarea
-                    id="appDescription"
-                    placeholder="Briefly describe what you would like to do with the property..."
-                    required
-                ></textarea>
-
-
-                <div class="wizard-buttons">
-
-                    <span></span>
-
-                    <button
-                        type="button"
-                        class="button button-primary"
-                        onclick="goToApplicationStep(2)"
-                    >
-                        Next
-                    </button>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 STEP 2
-            ================================================= -->
-
-            <div
-                id="applicationStep2"
-                class="wizard-step"
-            >
-
-                <h3>
-                    Step 2 — Property Information
-                </h3>
-
-
-                <label for="appErf">
-                    Erf / Farm Number
-                </label>
-
-                <input
-                    type="text"
-                    id="appErf"
-                    placeholder="e.g. Erf 1234"
-                    required
-                >
-
-
-                <label for="appSuburb">
-                    Suburb / Area
-                </label>
-
-                <input
-                    type="text"
-                    id="appSuburb"
-                    placeholder="Suburb or area"
-                    required
-                >
-
-
-                <label for="appMunicipality">
-                    Municipality
-                </label>
-
-                <input
-                    type="text"
-                    id="appMunicipality"
-                    placeholder="Municipality"
-                    required
-                >
-
-
-                <label for="appProvince">
-                    Province
-                </label>
-
-                <select
-                    id="appProvince"
-                    required
-                >
-
-                    <option value="">
-                        Select province
-                    </option>
-
-                    <option value="Eastern Cape">
-                        Eastern Cape
-                    </option>
-
-                    <option value="Free State">
-                        Free State
-                    </option>
-
-                    <option value="Gauteng">
-                        Gauteng
-                    </option>
-
-                    <option value="KwaZulu-Natal">
-                        KwaZulu-Natal
-                    </option>
-
-                    <option value="Limpopo">
-                        Limpopo
-                    </option>
-
-                    <option value="Mpumalanga">
-                        Mpumalanga
-                    </option>
-
-                    <option value="Northern Cape">
-                        Northern Cape
-                    </option>
-
-                    <option value="North West">
-                        North West
-                    </option>
-
-                    <option value="Western Cape">
-                        Western Cape
-                    </option>
-
-                </select>
-
-
-                <label for="appZoning">
-                    Current Zoning
-                </label>
-
-                <input
-                    type="text"
-                    id="appZoning"
-                    placeholder="If known"
-                >
-
-
-                <div class="wizard-buttons">
-
-                    <button
-                        type="button"
-                        class="button button-outline"
-                        onclick="goToApplicationStep(1)"
-                    >
-                        Back
-                    </button>
-
-                    <button
-                        type="button"
-                        class="button button-primary"
-                        onclick="goToApplicationStep(3)"
-                    >
-                        Next
-                    </button>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 STEP 3
-            ================================================= -->
-
-            <div
-                id="applicationStep3"
-                class="wizard-step"
-            >
-
-                <h3>
-                    Step 3 — Development Proposal
-                </h3>
-
-
-                <label for="appCurrentUse">
-                    Current Use of Property
-                </label>
-
-                <input
-                    type="text"
-                    id="appCurrentUse"
-                    placeholder="e.g. Residential, vacant land, agricultural"
-                    required
-                >
-
-
-                <label for="appProposal">
-                    Proposed Development
-                </label>
-
-                <textarea
-                    id="appProposal"
-                    placeholder="Describe the proposed development..."
-                    required
-                ></textarea>
-
-
-                <label for="appUnits">
-                    Number of Units / Dwellings
-                </label>
-
-                <input
-                    type="number"
-                    id="appUnits"
-                    min="0"
-                    placeholder="If applicable"
-                >
-
-
-                <div class="wizard-buttons">
-
-                    <button
-                        type="button"
-                        class="button button-outline"
-                        onclick="goToApplicationStep(2)"
-                    >
-                        Back
-                    </button>
-
-                    <button
-                        type="button"
-                        class="button button-primary"
-                        onclick="goToApplicationStep(4)"
-                    >
-                        Review Application
-                    </button>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 STEP 4
-            ================================================= -->
-
-            <div
-                id="applicationStep4"
-                class="wizard-step"
-            >
-
-                <h3>
-                    Step 4 — Applicant Details
-                </h3>
-
-
-                <label for="applicantName">
-                    Full Name
-                </label>
-
-                <input
-                    type="text"
-                    id="applicantName"
-                    placeholder="Your full name"
-                    required
-                >
-
-
-                <label for="applicantEmail">
-                    Email Address
-                </label>
-
-                <input
-                    type="email"
-                    id="applicantEmail"
-                    placeholder="you@example.com"
-                    required
-                >
-
-
-                <label for="applicantPhone">
-                    Phone Number
-                </label>
-
-                <input
-                    type="tel"
-                    id="applicantPhone"
-                    placeholder="+27..."
-                    required
-                >
-
-
-                <div class="application-summary">
-
-                    <h4>
-                        Application Summary
-                    </h4>
-
-
-                    <p>
-                        <strong>
-                            Application Type:
-                        </strong>
-
-                        <span id="summaryType">
-                            Not provided
-                        </span>
-                    </p>
-
-
-                    <p>
-                        <strong>
-                            Erf / Farm:
-                        </strong>
-
-                        <span id="summaryProperty">
-                            Not provided
-                        </span>
-                    </p>
-
-
-                    <p>
-                        <strong>
-                            Municipality:
-                        </strong>
-
-                        <span id="summaryMunicipality">
-                            Not provided
-                        </span>
-                    </p>
-
-
-                    <p>
-                        <strong>
-                            Proposed Development:
-                        </strong>
-
-                        <span id="summaryProposal">
-                            Not provided
-                        </span>
-                    </p>
-
-                </div>
-
+                <!-- STEP 1 -->
 
                 <div
-                    id="applicationMessage"
-                    aria-live="polite"
-                ></div>
+                    class="wizard-step active"
+                    id="wizardStep1"
+                >
+
+                    <h3>
+                        Project Information
+                    </h3>
+
+                    <p>
+                        Tell us what type of planning
+                        application or service you require.
+                    </p>
 
 
-                <div class="wizard-buttons">
+                    <div class="form-group">
 
-                    <button
-                        type="button"
-                        class="button button-outline"
-                        onclick="goToApplicationStep(3)"
-                    >
-                        Back
-                    </button>
+                        <label for="appType">
+                            Application Type
+                        </label>
 
-                    <button
-                        type="submit"
-                        class="button button-primary"
-                        id="applicationSubmitButton"
-                    >
-                        Submit Application
-                    </button>
+                        <select
+                            id="appType"
+                            required
+                        >
+
+                            <option value="">
+                                Select application type
+                            </option>
+
+                            <option value="Rezoning">
+                                Rezoning
+                            </option>
+
+                            <option value="Subdivision">
+                                Subdivision
+                            </option>
+
+                            <option value="Consent Use">
+                                Consent Use
+                            </option>
+
+                            <option value="Departure">
+                                Departure
+                            </option>
+
+                            <option value="Consolidation">
+                                Consolidation
+                            </option>
+
+                            <option value="Township Establishment">
+                                Township Establishment
+                            </option>
+
+                            <option value="Land Use Feasibility">
+                                Land Use Feasibility
+                            </option>
+
+                            <option value="Other Planning Application">
+                                Other Planning Application
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="appDescription">
+                            Brief Project Description
+                        </label>
+
+                        <textarea
+                            id="appDescription"
+                            placeholder="Describe what you would like to do with the property..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="wizard-actions">
+
+                        <button
+                            type="button"
+                            class="button button-dark"
+                            onclick="closeApplicationWizard()"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="button"
+                            class="button button-primary"
+                            onclick="nextWizardStep(2)"
+                        >
+                            Continue
+                        </button>
+
+                    </div>
 
                 </div>
 
-            </div>
 
-        </form>
+                <!-- STEP 2 -->
+
+                <div
+                    class="wizard-step"
+                    id="wizardStep2"
+                >
+
+                    <h3>
+                        Property Information
+                    </h3>
+
+                    <p>
+                        Provide the basic information available
+                        about the property.
+                    </p>
+
+
+                    <div class="form-group">
+
+                        <label for="appErf">
+                            Erf / Farm Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="appErf"
+                            placeholder="e.g. Erf 123"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="appSuburb">
+                            Suburb / Area
+                        </label>
+
+                        <input
+                            type="text"
+                            id="appSuburb"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="appMunicipality">
+                            Municipality
+                        </label>
+
+                        <input
+                            type="text"
+                            id="appMunicipality"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="appProvince">
+                            Province
+                        </label>
+
+                        <select
+                            id="appProvince"
+                            required
+                        >
+
+                            <option value="">
+                                Select province
+                            </option>
+
+                            <option value="Eastern Cape">
+                                Eastern Cape
+                            </option>
+
+                            <option value="Free State">
+                                Free State
+                            </option>
+
+                            <option value="Gauteng">
+                                Gauteng
+                            </option>
+
+                            <option value="KwaZulu-Natal">
+                                KwaZulu-Natal
+                            </option>
+
+                            <option value="Limpopo">
+                                Limpopo
+                            </option>
+
+                            <option value="Mpumalanga">
+                                Mpumalanga
+                            </option>
+
+                            <option value="Northern Cape">
+                                Northern Cape
+                            </option>
+
+                            <option value="North West">
+                                North West
+                            </option>
+
+                            <option value="Western Cape">
+                                Western Cape
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="appZoning">
+                            Current Zoning
+                        </label>
+
+                        <input
+                            type="text"
+                            id="appZoning"
+                            placeholder="e.g. Residential 1 / Business 1 / Unknown"
+                        >
+
+                    </div>
+
+
+                    <div class="wizard-actions">
+
+                        <button
+                            type="button"
+                            class="button button-dark"
+                            onclick="nextWizardStep(1)"
+                        >
+                            Back
+                        </button>
+
+                        <button
+                            type="button"
+                            class="button button-primary"
+                            onclick="nextWizardStep(3)"
+                        >
+                            Continue
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STEP 3 -->
+
+                <div
+                    class="wizard-step"
+                    id="wizardStep3"
+                >
+
+                    <h3>
+                        Proposed Development
+                    </h3>
+
+                    <p>
+                        Provide information about the existing
+                        and proposed use of the property.
+                    </p>
+
+
+                    <div class="form-group">
+
+                        <label for="appCurrentUse">
+                            Current Use
+                        </label>
+
+                        <input
+                            type="text"
+                            id="appCurrentUse"
+                            placeholder="e.g. Vacant land / Dwelling / Agricultural"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="appProposal">
+                            Proposed Development
+                        </label>
+
+                        <textarea
+                            id="appProposal"
+                            placeholder="Describe the proposed development..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="appUnits">
+                            Number of Units
+                        </label>
+
+                        <input
+                            type="number"
+                            id="appUnits"
+                            min="0"
+                            placeholder="If applicable"
+                        >
+
+                    </div>
+
+
+                    <div class="wizard-actions">
+
+                        <button
+                            type="button"
+                            class="button button-dark"
+                            onclick="nextWizardStep(2)"
+                        >
+                            Back
+                        </button>
+
+                        <button
+                            type="button"
+                            class="button button-primary"
+                            onclick="nextWizardStep(4)"
+                        >
+                            Continue
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STEP 4 -->
+
+                <div
+                    class="wizard-step"
+                    id="wizardStep4"
+                >
+
+                    <h3>
+                        Review & Submit
+                    </h3>
+
+                    <p>
+                        Provide your contact information and
+                        review your application before submitting.
+                    </p>
+
+
+                    <div class="form-group">
+
+                        <label for="applicantName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="applicantName"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="applicantEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="applicantEmail"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="applicantPhone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="applicantPhone"
+                        >
+
+                    </div>
+
+
+                    <div class="wizard-summary">
+
+                        <p>
+                            <strong>Application:</strong>
+                            <span id="summaryType"></span>
+                        </p>
+
+                        <p>
+                            <strong>Property:</strong>
+                            <span id="summaryProperty"></span>
+                        </p>
+
+                        <p>
+                            <strong>Municipality:</strong>
+                            <span id="summaryMunicipality"></span>
+                        </p>
+
+                        <p>
+                            <strong>Proposal:</strong>
+                            <span id="summaryProposal"></span>
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        id="applicationMessage"
+                        class="form-message"
+                    ></div>
+
+
+                    <div class="wizard-actions">
+
+                        <button
+                            type="button"
+                            class="button button-dark"
+                            onclick="nextWizardStep(3)"
+                        >
+                            Back
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="button button-primary"
+                            id="applicationSubmitButton"
+                        >
+                            Submit Application
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 
 </div>
-
 
 
 <!-- =====================================================
@@ -2493,7 +2044,6 @@
     const SUPABASE_KEY =
         "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
 
-
     const supabaseClient =
         window.supabase.createClient(
             SUPABASE_URL,
@@ -2502,128 +2052,68 @@
 
 
     /* =====================================================
-       HELPER
-    ===================================================== */
-
-    function getElement(id) {
-
-        return document.getElementById(id);
-
-    }
-
-
-    /* =====================================================
        APPLICATION WIZARD
     ===================================================== */
 
-    let currentApplicationStep = 1;
+    let currentWizardStep = 1;
 
 
     function openApplicationWizard() {
 
-        const wizard =
-            getElement("applicationWizard");
+        document
+            .getElementById("applicationWizard")
+            .classList.add("active");
 
-        if (!wizard) {
+        currentWizardStep = 1;
 
-            console.error(
-                "Application wizard was not found."
-            );
+        showWizardStep(1);
 
-            return;
-
-        }
-
-        wizard.style.display = "flex";
-
-        wizard.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        document.body.classList.add(
-            "no-scroll"
-        );
-
-        currentApplicationStep = 1;
-
-        showApplicationStep(1);
+        document
+            .getElementById("applicationMessage")
+            .textContent = "";
 
     }
 
 
     function closeApplicationWizard() {
 
-        const wizard =
-            getElement("applicationWizard");
-
-        if (!wizard) {
-            return;
-        }
-
-        wizard.style.display = "none";
-
-        wizard.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        document.body.classList.remove(
-            "no-scroll"
-        );
+        document
+            .getElementById("applicationWizard")
+            .classList.remove("active");
 
     }
 
 
-    function showApplicationStep(step) {
+    function showWizardStep(step) {
+
+        currentWizardStep = step;
 
         document
             .querySelectorAll(".wizard-step")
             .forEach(function(element) {
 
-                element.classList.remove(
-                    "active"
-                );
+                element.classList.remove("active");
 
             });
 
 
-        const selectedStep =
-            getElement(
-                "applicationStep" + step
-            );
-
-
-        if (selectedStep) {
-
-            selectedStep.classList.add(
-                "active"
-            );
-
-        }
+        document
+            .getElementById("wizardStep" + step)
+            .classList.add("active");
 
 
         document
             .querySelectorAll(".progress-step")
             .forEach(function(element) {
 
-                const elementStep =
-                    parseInt(
-                        element.getAttribute(
-                            "data-step"
-                        )
-                    );
-
-
-                element.classList.toggle(
-                    "active",
-                    elementStep <= step
-                );
+                element.classList.remove("active");
 
             });
 
 
-        currentApplicationStep = step;
+        document
+            .getElementById("progress" + step)
+            .classList.add("active");
 
 
         if (step === 4) {
@@ -2635,227 +2125,128 @@
     }
 
 
-    function validateCurrentApplicationStep() {
+    function nextWizardStep(step) {
 
-        const currentStep =
-            getElement(
-                "applicationStep" +
-                currentApplicationStep
-            );
+        if (step > currentWizardStep) {
 
-
-        if (!currentStep) {
-            return true;
-        }
-
-
-        const requiredFields =
-            currentStep.querySelectorAll(
-                "input[required], select[required], textarea[required]"
-            );
-
-
-        for (
-            let i = 0;
-            i < requiredFields.length;
-            i++
-        ) {
-
-            if (
-                !requiredFields[i].checkValidity()
-            ) {
-
-                requiredFields[i].reportValidity();
-
-                return false;
-
+            if (!validateCurrentStep()) {
+                return;
             }
 
         }
 
-
-        return true;
+        showWizardStep(step);
 
     }
 
 
-    function goToApplicationStep(step) {
+    function validateCurrentStep() {
 
-        if (
-            step > currentApplicationStep &&
-            !validateCurrentApplicationStep()
-        ) {
+        let valid = true;
 
-            return;
+        const step =
+            document.getElementById(
+                "wizardStep" + currentWizardStep
+            );
+
+
+        const requiredFields =
+            step.querySelectorAll(
+                "input[required], select[required], textarea[required]"
+            );
+
+
+        requiredFields.forEach(function(field) {
+
+            if (!field.value.trim()) {
+
+                field.style.borderColor = "#c0392b";
+
+                valid = false;
+
+            } else {
+
+                field.style.borderColor = "";
+
+            }
+
+        });
+
+
+        if (!valid) {
+
+            alert(
+                "Please complete the required fields before continuing."
+            );
 
         }
 
 
-        showApplicationStep(step);
+        return valid;
 
     }
 
 
     function updateApplicationSummary() {
 
-        const type =
-            getElement("appType");
+        document.getElementById("summaryType").textContent =
+            document.getElementById("appType").value ||
+            "Not provided";
+
 
         const erf =
-            getElement("appErf");
+            document.getElementById("appErf").value;
 
-        const municipality =
-            getElement("appMunicipality");
+        const suburb =
+            document.getElementById("appSuburb").value;
 
-        const proposal =
-            getElement("appProposal");
-
-
-        getElement(
-            "summaryType"
-        ).textContent =
-            type && type.value
-                ? type.value
-                : "Not provided";
+        document.getElementById("summaryProperty").textContent =
+            [erf, suburb]
+                .filter(Boolean)
+                .join(", ") ||
+            "Not provided";
 
 
-        getElement(
-            "summaryProperty"
-        ).textContent =
-            erf && erf.value.trim()
-                ? erf.value.trim()
-                : "Not provided";
+        document.getElementById("summaryMunicipality").textContent =
+            document.getElementById("appMunicipality").value ||
+            "Not provided";
 
 
-        getElement(
-            "summaryMunicipality"
-        ).textContent =
-            municipality &&
-            municipality.value.trim()
-                ? municipality.value.trim()
-                : "Not provided";
-
-
-        getElement(
-            "summaryProposal"
-        ).textContent =
-            proposal &&
-            proposal.value.trim()
-                ? proposal.value.trim()
-                : "Not provided";
+        document.getElementById("summaryProposal").textContent =
+            document.getElementById("appProposal").value ||
+            "Not provided";
 
     }
-
-
-    /* =====================================================
-       CLOSE WIZARD WHEN CLICKING OUTSIDE
-    ===================================================== */
-
-    const applicationWizard =
-        getElement(
-            "applicationWizard"
-        );
-
-
-    if (applicationWizard) {
-
-        applicationWizard.addEventListener(
-            "click",
-            function(event) {
-
-                if (
-                    event.target ===
-                    applicationWizard
-                ) {
-
-                    closeApplicationWizard();
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       ESCAPE KEY
-    ===================================================== */
-
-    document.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key === "Escape"
-            ) {
-
-                const wizard =
-                    getElement(
-                        "applicationWizard"
-                    );
-
-
-                if (
-                    wizard &&
-                    wizard.style.display === "flex"
-                ) {
-
-                    closeApplicationWizard();
-
-                }
-
-            }
-
-        }
-    );
 
 
     /* =====================================================
        APPLICATION SUBMISSION
     ===================================================== */
 
-    const applicationForm =
-        getElement(
-            "applicationForm"
-        );
-
-
-    if (applicationForm) {
-
-        applicationForm.addEventListener(
+    document
+        .getElementById("applicationForm")
+        .addEventListener(
             "submit",
             async function(event) {
 
                 event.preventDefault();
 
 
+                const submitButton =
+                    document.getElementById(
+                        "applicationSubmitButton"
+                    );
+
                 const message =
-                    getElement(
+                    document.getElementById(
                         "applicationMessage"
                     );
 
 
-                const submitButton =
-                    getElement(
-                        "applicationSubmitButton"
-                    );
-
-
-                if (
-                    !validateCurrentApplicationStep()
-                ) {
-
-                    return;
-
-                }
-
-
-                message.className = "";
-
                 message.textContent =
                     "Submitting your application...";
 
+                message.style.color = "#10261d";
 
                 submitButton.disabled = true;
 
@@ -2865,129 +2256,128 @@
 
                 try {
 
-                    const unitsValue =
-                        getElement(
-                            "appUnits"
-                        ).value;
+                    const numberOfUnitsValue =
+                        document
+                            .getElementById("appUnits")
+                            .value;
 
 
-                    const applicationData = {
+                    const numberOfUnits =
+                        numberOfUnitsValue === ""
+                            ? 0
+                            : parseInt(
+                                numberOfUnitsValue,
+                                10
+                            );
 
-                        applicant_name:
-                            getElement(
-                                "applicantName"
-                            ).value.trim(),
-
-
-                        applicant_email:
-                            getElement(
-                                "applicantEmail"
-                            ).value.trim(),
-
-
-                        applicant_phone:
-                            getElement(
-                                "applicantPhone"
-                            ).value.trim(),
-
-
-                        application_type:
-                            getElement(
-                                "appType"
-                            ).value,
-
-
-                        erf_number:
-                            getElement(
-                                "appErf"
-                            ).value.trim(),
-
-
-                        property_description:
-                            getElement(
-                                "appDescription"
-                            ).value.trim(),
-
-
-                        suburb:
-                            getElement(
-                                "appSuburb"
-                            ).value.trim(),
-
-
-                        municipality:
-                            getElement(
-                                "appMunicipality"
-                            ).value.trim(),
-
-
-                        province:
-                            getElement(
-                                "appProvince"
-                            ).value,
-
-
-                        current_use:
-                            getElement(
-                                "appCurrentUse"
-                            ).value.trim(),
-
-
-                        current_zoning:
-                            getElement(
-                                "appZoning"
-                            ).value.trim(),
-
-
-                        proposed_development:
-                            getElement(
-                                "appProposal"
-                            ).value.trim(),
-
-
-                        number_of_units:
-                            unitsValue
-                                ? parseInt(
-                                    unitsValue,
-                                    10
-                                )
-                                : null,
-
-
-                        complexity:
-                            "pending",
-
-
-                        status:
-                            "new"
-
-                    };
-
-
-                    console.log(
-                        "Submitting application:",
-                        applicationData
-                    );
-
-
-                    /*
-                     * IMPORTANT:
-                     * No .select() here.
-                     *
-                     * The website only needs to INSERT
-                     * the application.
-                     */
 
                     const {
+                        data,
                         error
                     } =
-                        await supabaseClient
-                            .from(
-                                "applications"
-                            )
-                            .insert(
-                                [applicationData]
-                            );
+                        await supabaseClient.rpc(
+                            "submit_planning_application",
+                            {
+
+                                p_applicant_name:
+                                    document
+                                        .getElementById(
+                                            "applicantName"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_applicant_email:
+                                    document
+                                        .getElementById(
+                                            "applicantEmail"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_applicant_phone:
+                                    document
+                                        .getElementById(
+                                            "applicantPhone"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_application_type:
+                                    document
+                                        .getElementById(
+                                            "appType"
+                                        )
+                                        .value,
+
+                                p_erf_number:
+                                    document
+                                        .getElementById(
+                                            "appErf"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_property_description:
+                                    document
+                                        .getElementById(
+                                            "appDescription"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_suburb:
+                                    document
+                                        .getElementById(
+                                            "appSuburb"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_municipality:
+                                    document
+                                        .getElementById(
+                                            "appMunicipality"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_province:
+                                    document
+                                        .getElementById(
+                                            "appProvince"
+                                        )
+                                        .value,
+
+                                p_current_use:
+                                    document
+                                        .getElementById(
+                                            "appCurrentUse"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_current_zoning:
+                                    document
+                                        .getElementById(
+                                            "appZoning"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_proposed_development:
+                                    document
+                                        .getElementById(
+                                            "appProposal"
+                                        )
+                                        .value
+                                        .trim(),
+
+                                p_number_of_units:
+                                    numberOfUnits
+
+                            }
+                        );
 
 
                     if (error) {
@@ -2997,90 +2387,43 @@
                             error
                         );
 
-
-                        message.className =
-                            "message-error";
-
-
-                        message.textContent =
-                            "Database error: " +
-                            error.message;
-
-
-                        submitButton.disabled =
-                            false;
-
-
-                        submitButton.textContent =
-                            "Submit Application";
-
-
-                        return;
+                        throw error;
 
                     }
 
 
-                    console.log(
-                        "Application submitted successfully."
-                    );
+                    const result =
+                        data && data.length
+                            ? data[0]
+                            : null;
 
 
-                    message.className =
-                        "message-success";
+                    if (!result) {
+
+                        throw new Error(
+                            "Application was submitted but no confirmation was returned."
+                        );
+
+                    }
 
 
-                    message.textContent =
-                        "Your application has been submitted successfully.";
-
-
-                    applicationForm.reset();
-
-
-                    submitButton.disabled =
-                        false;
-
-
-                    submitButton.textContent =
-                        "Submit Application";
-
-
-                    setTimeout(
-                        function() {
-
-                            closeApplicationWizard();
-
-                            message.textContent =
-                                "";
-
-                            message.className =
-                                "";
-
-                            showApplicationStep(1);
-
-                        },
-                        2500
+                    showApplicationConfirmation(
+                        result.application_reference,
+                        result.status
                     );
 
 
                 } catch (error) {
 
-                    console.error(
-                        "Unexpected application error:",
-                        error
-                    );
-
-
-                    message.className =
-                        "message-error";
-
+                    console.error(error);
 
                     message.textContent =
-                        "Something went wrong while submitting your application. Please try again.";
+                        "We could not submit your application. Please try again or contact us directly.";
 
+                    message.style.color =
+                        "#c0392b";
 
-                    submitButton.disabled =
-                        false;
-
+                    submitButton.disabled = false;
 
                     submitButton.textContent =
                         "Submit Application";
@@ -3089,6 +2432,98 @@
 
             }
         );
+
+
+    /* =====================================================
+       APPLICATION CONFIRMATION
+    ===================================================== */
+
+    function showApplicationConfirmation(
+        reference,
+        status
+    ) {
+
+        const wizardBox =
+            document.getElementById("wizardBox");
+
+
+        wizardBox.innerHTML = `
+
+            <div class="wizard-header">
+
+                <h2>
+                    THE ROCK
+                </h2>
+
+                <button
+                    type="button"
+                    class="wizard-close"
+                    onclick="closeApplicationWizard()"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="wizard-body">
+
+                <div class="application-confirmation">
+
+                    <div class="confirmation-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Application Received
+                    </h2>
+
+                    <p>
+                        Thank you. Your planning application
+                        has been successfully submitted for
+                        initial assessment.
+                    </p>
+
+
+                    <div class="application-reference">
+
+                        ${reference}
+
+                    </div>
+
+
+                    <p>
+                        <strong>
+                            Status:
+                        </strong>
+
+                        Initial Assessment
+
+                    </p>
+
+
+                    <p class="confirmation-note">
+
+                        Please keep your application reference
+                        for future communication regarding
+                        your project.
+
+                    </p>
+
+
+                    <button
+                        type="button"
+                        class="button button-dark"
+                        onclick="closeApplicationWizard()"
+                    >
+                        Close
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
 
     }
 
@@ -3097,45 +2532,36 @@
        ENQUIRY FORM
     ===================================================== */
 
-    const enquiryForm =
-        getElement(
-            "enquiryForm"
-        );
-
-
-    const formMessage =
-        getElement(
-            "formMessage"
-        );
-
-
-    const enquirySubmitButton =
-        getElement(
-            "enquirySubmitButton"
-        );
-
-
-    if (enquiryForm) {
-
-        enquiryForm.addEventListener(
+    document
+        .getElementById("enquiryForm")
+        .addEventListener(
             "submit",
             async function(event) {
 
                 event.preventDefault();
 
 
-                formMessage.className = "";
+                const button =
+                    document.getElementById(
+                        "enquirySubmitButton"
+                    );
+
+                const formMessage =
+                    document.getElementById(
+                        "formMessage"
+                    );
+
+
+                button.disabled = true;
+
+                button.textContent =
+                    "Submitting...";
 
                 formMessage.textContent =
                     "Submitting your enquiry...";
 
-
-                enquirySubmitButton.disabled =
-                    true;
-
-
-                enquirySubmitButton.textContent =
-                    "Submitting...";
+                formMessage.style.color =
+                    "#10261d";
 
 
                 try {
@@ -3143,148 +2569,149 @@
                     const enquiry = {
 
                         full_name:
-                            getElement(
-                                "name"
-                            ).value.trim(),
-
+                            document
+                                .getElementById(
+                                    "fullName"
+                                )
+                                .value
+                                .trim(),
 
                         email:
-                            getElement(
-                                "email"
-                            ).value.trim(),
-
+                            document
+                                .getElementById(
+                                    "email"
+                                )
+                                .value
+                                .trim(),
 
                         phone:
-                            getElement(
-                                "phone"
-                            ).value.trim(),
-
+                            document
+                                .getElementById(
+                                    "phone"
+                                )
+                                .value
+                                .trim(),
 
                         application_type:
-                            getElement(
-                                "application"
-                            ).value,
-
+                            document
+                                .getElementById(
+                                    "applicationType"
+                                )
+                                .value,
 
                         property_reference:
-                            getElement(
-                                "property"
-                            ).value.trim(),
-
+                            document
+                                .getElementById(
+                                    "propertyReference"
+                                )
+                                .value
+                                .trim(),
 
                         municipality:
-                            getElement(
-                                "municipality"
-                            ).value.trim(),
-
+                            document
+                                .getElementById(
+                                    "municipality"
+                                )
+                                .value
+                                .trim(),
 
                         message:
-                            getElement(
-                                "message"
-                            ).value.trim()
+                            document
+                                .getElementById(
+                                    "message"
+                                )
+                                .value
+                                .trim(),
+
+                        status:
+                            "new"
 
                     };
-
-
-                    console.log(
-                        "Submitting enquiry:",
-                        enquiry
-                    );
 
 
                     const {
                         error
                     } =
                         await supabaseClient
-                            .from(
-                                "enquiries"
-                            )
-                            .insert(
-                                [enquiry]
-                            );
+                            .from("enquiries")
+                            .insert([
+                                enquiry
+                            ]);
 
 
                     if (error) {
 
                         console.error(
-                            "Enquiry submission error:",
+                            "Enquiry error:",
                             error
                         );
 
-
-                        formMessage.className =
-                            "message-error";
-
-
-                        formMessage.textContent =
-                            "Sorry, your enquiry could not be submitted: " +
-                            error.message;
-
-
-                        enquirySubmitButton.disabled =
-                            false;
-
-
-                        enquirySubmitButton.textContent =
-                            "Submit Enquiry";
-
-
-                        return;
+                        throw error;
 
                     }
-
-
-                    formMessage.className =
-                        "message-success";
 
 
                     formMessage.textContent =
                         "Thank you. Your enquiry has been submitted successfully.";
 
-
-                    enquiryForm.reset();
-
-
-                    enquirySubmitButton.disabled =
-                        false;
+                    formMessage.style.color =
+                        "#17613d";
 
 
-                    enquirySubmitButton.textContent =
-                        "Submit Enquiry";
+                    document
+                        .getElementById(
+                            "enquiryForm"
+                        )
+                        .reset();
 
 
                 } catch (error) {
 
-                    console.error(
-                        "Unexpected enquiry error:",
-                        error
-                    );
-
-
-                    formMessage.className =
-                        "message-error";
-
+                    console.error(error);
 
                     formMessage.textContent =
-                        "Something went wrong while submitting your enquiry. Please try again.";
+                        "We could not submit your enquiry. Please try again.";
+
+                    formMessage.style.color =
+                        "#c0392b";
+
+                }
 
 
-                    enquirySubmitButton.disabled =
-                        false;
+                button.disabled = false;
+
+                button.textContent =
+                    "Submit Enquiry";
+
+            }
+        );
 
 
-                    enquirySubmitButton.textContent =
-                        "Submit Enquiry";
+    /* =====================================================
+       CLOSE WIZARD WHEN CLICKING OUTSIDE
+    ===================================================== */
+
+    document
+        .getElementById("applicationWizard")
+        .addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target ===
+                    document.getElementById(
+                        "applicationWizard"
+                    )
+                ) {
+
+                    closeApplicationWizard();
 
                 }
 
             }
         );
 
-    }
-
 </script>
-
 
 </body>
 </html>
