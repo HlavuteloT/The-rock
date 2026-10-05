@@ -2385,7 +2385,7 @@ document
 
         event.preventDefault();
 
-        formMessage.textContent = "Submitting your enquiry...";
+        applicationMessage.textContent = "Submitting your enquiry...";
 
         const enquiry = {
             full_name: document.getElementById("name").value.trim(),
@@ -2405,13 +2405,13 @@ document
 
             console.error(error);
 
-            formMessage.textContent =
+            applicationMessage.textContent =
                 "Sorry, your enquiry could not be submitted. Please try again.";
 
             return;
         }
 
-        formMessage.textContent =
+        applicationMessage.textContent =
             "Thank you. Your enquiry has been submitted successfully.";
 
         enquiryForm.reset();
