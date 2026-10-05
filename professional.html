@@ -1,483 +1,652 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>THE ROCK | Professional Portal</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
-        :root {
-            --green: #123c2b;
-            --green-dark: #0b291e;
-            --green-light: #1f5a42;
-            --gold: #c9a227;
-            --cream: #f5f1e7;
-            --white: #ffffff;
-            --text: #1d2923;
-            --muted: #6d7771;
-            --border: #dfe5df;
-            --danger: #a33b32;
-            --shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f4;
-            color: var(--text);
-        }
-
-        button,
-        input {
-            font: inherit;
-        }
-
-        /* LOGIN */
-
-        #loginScreen {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            background:
-                linear-gradient(rgba(11,41,30,0.94), rgba(18,60,43,0.96)),
-                #123c2b;
-        }
-
-        .login-card {
-            width: 100%;
-            max-width: 430px;
-            background: white;
-            padding: 42px;
-            border-radius: 18px;
-            box-shadow: 0 25px 70px rgba(0,0,0,0.25);
-        }
-
-        .brand {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .brand h1 {
-            color: var(--green);
-            font-size: 34px;
-            letter-spacing: 4px;
-        }
-
-        .brand span {
-            display: block;
-            margin-top: 8px;
-            color: var(--gold);
-            font-size: 12px;
-            letter-spacing: 2px;
-            font-weight: bold;
-        }
-
-        .login-card h2 {
-            margin-bottom: 8px;
-            color: var(--green);
-        }
-
-        .login-card p {
-            color: var(--muted);
-            margin-bottom: 24px;
-            line-height: 1.5;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 7px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 13px 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            outline: none;
-        }
-
-        .form-group input:focus {
-            border-color: var(--green-light);
-            box-shadow: 0 0 0 3px rgba(31,90,66,0.10);
-        }
-
-        .button {
-            border: none;
-            border-radius: 8px;
-            padding: 13px 18px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .button-primary {
-            width: 100%;
-            background: var(--green);
-            color: white;
-        }
-
-        .button-primary:hover {
-            background: var(--green-dark);
-        }
-
-        .message {
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 8px;
-            display: none;
-            font-size: 14px;
-        }
-
-        .message.error {
-            display: block;
-            background: #fbeaea;
-            color: var(--danger);
-        }
-
-        /* APP */
-
-        #app {
-            display: none;
-            min-height: 100vh;
-        }
-
-        .topbar {
-            height: 72px;
-            background: var(--green);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 28px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .topbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .topbar-brand strong {
-            font-size: 22px;
-            letter-spacing: 3px;
-        }
-
-        .topbar-brand small {
-            color: #d9c46e;
-            font-size: 10px;
-            letter-spacing: 1.5px;
-        }
-
-        .user-area {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .user-email {
-            font-size: 13px;
-            opacity: 0.85;
-        }
-
-        .logout-button {
-            background: transparent;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.4);
-            padding: 8px 14px;
-            border-radius: 7px;
-            cursor: pointer;
-        }
-
-        .layout {
-            display: flex;
-            min-height: calc(100vh - 72px);
-        }
-
-        .sidebar {
-            width: 235px;
-            background: var(--green-dark);
-            color: white;
-            padding: 24px 14px;
-        }
-
-        .sidebar-title {
-            color: #aebdb5;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-            padding: 10px 12px;
-            margin-bottom: 8px;
-        }
-
-        .nav-button {
-            width: 100%;
-            text-align: left;
-            background: transparent;
-            color: #dce6e0;
-            border: none;
-            padding: 13px 12px;
-            border-radius: 7px;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
-
-        .nav-button:hover,
-        .nav-button.active {
-            background: rgba(255,255,255,0.10);
-            color: white;
-        }
-
-        .main {
-            flex: 1;
-            padding: 32px;
-            overflow-x: auto;
-        }
-
-        .page-heading {
-            margin-bottom: 28px;
-        }
-
-        .page-heading h1 {
-            color: var(--green);
-            font-size: 28px;
-            margin-bottom: 7px;
-        }
-
-        .page-heading p {
-            color: var(--muted);
-        }
-
-        /* CARDS */
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(180px, 1fr));
-            gap: 18px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 22px;
-            box-shadow: var(--shadow);
-        }
-
-        .stat-card .label {
-            color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 12px;
-        }
-
-        .stat-card .value {
-            font-size: 30px;
-            font-weight: bold;
-            color: var(--green);
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 22px;
-        }
-
-        .panel {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .panel-header {
-            padding: 20px 22px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .panel-header h2 {
-            font-size: 17px;
-            color: var(--green);
-        }
-
-        .panel-body {
-            padding: 20px;
-        }
-
-        /* TABLE */
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 700px;
-        }
-
-        th,
-        td {
-            padding: 14px 16px;
-            text-align: left;
-            border-bottom: 1px solid #edf0ed;
-            font-size: 13px;
-        }
-
-        th {
-            background: #f8faf8;
-            color: var(--muted);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.7px;
-        }
-
-        td {
-            color: #34423b;
-        }
-
-        .reference {
-            color: var(--green);
-            font-weight: bold;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 5px 9px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .badge-simple {
-            background: #e7f3eb;
-            color: #2e6b43;
-        }
-
-        .badge-standard {
-            background: #fff4d7;
-            color: #876713;
-        }
-
-        .badge-complex {
-            background: #f9e4e1;
-            color: #8a382f;
-        }
-
-        .badge-status {
-            background: #edf1f0;
-            color: #52615a;
-        }
-
-        .empty-state {
-            padding: 35px 20px;
-            text-align: center;
-            color: var(--muted);
-        }
-
-        .pipeline-item {
-            margin-bottom: 18px;
-        }
-
-        .pipeline-top {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 7px;
-            font-size: 13px;
-        }
-
-        .pipeline-bar {
-            height: 8px;
-            background: #edf1ee;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .pipeline-fill {
-            height: 100%;
-            background: var(--green);
-            border-radius: 20px;
-        }
-
-        .loading {
-            color: var(--muted);
-            padding: 20px;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 900px) {
-            .sidebar {
-                display: none;
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .topbar {
-                padding: 0 16px;
-            }
-
-            .topbar-brand small,
-            .user-email {
-                display: none;
-            }
-
-            .main {
-                padding: 20px 14px;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .login-card {
-                padding: 30px 24px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>THE ROCK | Professional Portal</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+    --green:#123c2b;
+    --green-dark:#0b291e;
+    --green-light:#1f5a42;
+    --gold:#c9a227;
+    --cream:#f5f1e7;
+    --white:#ffffff;
+    --text:#1d2923;
+    --muted:#6d7771;
+    --border:#dfe5df;
+    --danger:#a33b32;
+    --success:#2f7047;
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f4;
+    color:var(--text);
+}
+
+button,input,select,textarea{
+    font:inherit;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+#loginScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:
+        linear-gradient(rgba(11,41,30,.94),rgba(18,60,43,.96));
+}
+
+.login-card{
+    width:100%;
+    max-width:430px;
+    background:white;
+    padding:42px;
+    border-radius:18px;
+    box-shadow:0 25px 70px rgba(0,0,0,.25);
+}
+
+.brand{
+    text-align:center;
+    margin-bottom:32px;
+}
+
+.brand h1{
+    color:var(--green);
+    font-size:34px;
+    letter-spacing:4px;
+}
+
+.brand span{
+    display:block;
+    margin-top:8px;
+    color:var(--gold);
+    font-size:12px;
+    letter-spacing:2px;
+    font-weight:bold;
+}
+
+.login-card h2{
+    margin-bottom:8px;
+    color:var(--green);
+}
+
+.login-card p{
+    color:var(--muted);
+    margin-bottom:24px;
+    line-height:1.5;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:7px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    outline:none;
+    background:white;
+}
+
+.form-group textarea{
+    min-height:160px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:var(--green-light);
+    box-shadow:0 0 0 3px rgba(31,90,66,.10);
+}
+
+.button{
+    border:none;
+    border-radius:8px;
+    padding:13px 18px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.button-primary{
+    background:var(--green);
+    color:white;
+}
+
+.button-primary:hover{
+    background:var(--green-dark);
+}
+
+.button-secondary{
+    background:#edf1ee;
+    color:var(--green);
+}
+
+.button-danger{
+    background:#f8e6e4;
+    color:var(--danger);
+}
+
+.message{
+    margin-top:16px;
+    padding:12px;
+    border-radius:8px;
+    display:none;
+    font-size:14px;
+}
+
+.message.error{
+    display:block;
+    background:#fbeaea;
+    color:var(--danger);
+}
+
+.message.success{
+    display:block;
+    background:#e8f4eb;
+    color:var(--success);
+}
+
+/* =========================
+   APP
+========================= */
+
+#app{
+    display:none;
+    min-height:100vh;
+}
+
+.topbar{
+    height:72px;
+    background:var(--green);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.topbar-brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.topbar-brand strong{
+    font-size:22px;
+    letter-spacing:3px;
+}
+
+.topbar-brand small{
+    color:#d9c46e;
+    font-size:10px;
+    letter-spacing:1.5px;
+}
+
+.user-area{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.user-email{
+    font-size:13px;
+    opacity:.85;
+}
+
+.logout-button{
+    background:transparent;
+    color:white;
+    border:1px solid rgba(255,255,255,.4);
+    padding:8px 14px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.layout{
+    display:flex;
+    min-height:calc(100vh - 72px);
+}
+
+.sidebar{
+    width:235px;
+    background:var(--green-dark);
+    color:white;
+    padding:24px 14px;
+}
+
+.sidebar-title{
+    color:#aebdb5;
+    font-size:11px;
+    letter-spacing:1.5px;
+    padding:10px 12px;
+    margin-bottom:8px;
+}
+
+.nav-button{
+    width:100%;
+    text-align:left;
+    background:transparent;
+    color:#dce6e0;
+    border:none;
+    padding:13px 12px;
+    border-radius:7px;
+    margin-bottom:5px;
+    cursor:pointer;
+}
+
+.nav-button:hover,
+.nav-button.active{
+    background:rgba(255,255,255,.10);
+    color:white;
+}
+
+.main{
+    flex:1;
+    padding:32px;
+    overflow-x:auto;
+}
+
+.page-heading{
+    margin-bottom:28px;
+}
+
+.page-heading h1{
+    color:var(--green);
+    font-size:28px;
+    margin-bottom:7px;
+}
+
+.page-heading p{
+    color:var(--muted);
+}
+
+/* =========================
+   STAT CARDS
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(180px,1fr));
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:22px;
+    box-shadow:var(--shadow);
+}
+
+.stat-card .label{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:12px;
+}
+
+.stat-card .value{
+    font-size:30px;
+    font-weight:bold;
+    color:var(--green);
+}
+
+/* =========================
+   PANELS
+========================= */
+
+.content-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:22px;
+}
+
+.panel{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.panel-header{
+    padding:20px 22px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.panel-header h2{
+    font-size:17px;
+    color:var(--green);
+}
+
+.panel-body{
+    padding:20px;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+th,td{
+    padding:14px 16px;
+    text-align:left;
+    border-bottom:1px solid #edf0ed;
+    font-size:13px;
+}
+
+th{
+    background:#f8faf8;
+    color:var(--muted);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+}
+
+td{
+    color:#34423b;
+}
+
+.reference{
+    color:var(--green);
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.reference:hover{
+    text-decoration:underline;
+}
+
+.empty-state{
+    padding:35px 20px;
+    text-align:center;
+    color:var(--muted);
+}
+
+.loading{
+    color:var(--muted);
+    padding:20px;
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.badge-simple{
+    background:#e7f3eb;
+    color:#2e6b43;
+}
+
+.badge-standard{
+    background:#fff4d7;
+    color:#876713;
+}
+
+.badge-complex{
+    background:#f9e4e1;
+    color:#8a382f;
+}
+
+.badge-status{
+    background:#edf1f0;
+    color:#52615a;
+}
+
+/* =========================
+   PIPELINE
+========================= */
+
+.pipeline-item{
+    margin-bottom:18px;
+}
+
+.pipeline-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:7px;
+    font-size:13px;
+}
+
+.pipeline-bar{
+    height:8px;
+    background:#edf1ee;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.pipeline-fill{
+    height:100%;
+    background:var(--green);
+    border-radius:20px;
+}
+
+/* =========================
+   CASE FILE
+========================= */
+
+.case-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    margin-bottom:24px;
+}
+
+.case-title h1{
+    color:var(--green);
+    margin-bottom:7px;
+}
+
+.case-reference{
+    color:var(--gold);
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.case-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.case-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:22px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:0;
+}
+
+.info-item{
+    padding:17px 18px;
+    border-bottom:1px solid #edf0ed;
+}
+
+.info-item:nth-child(odd){
+    border-right:1px solid #edf0ed;
+}
+
+.info-label{
+    color:var(--muted);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+    margin-bottom:6px;
+}
+
+.info-value{
+    color:var(--text);
+    font-weight:600;
+    line-height:1.45;
+}
+
+.assessment-card{
+    padding:20px;
+    background:#f8faf8;
+    border-radius:10px;
+    margin-bottom:18px;
+}
+
+.assessment-card h3{
+    color:var(--green);
+    margin-bottom:15px;
+    font-size:15px;
+}
+
+.fee-range{
+    font-size:22px;
+    color:var(--green);
+    font-weight:bold;
+    margin-top:6px;
+}
+
+.notes-area{
+    min-height:230px;
+}
+
+.case-message{
+    margin-top:12px;
+}
+
+.back-link{
+    color:var(--green);
+    cursor:pointer;
+    font-weight:bold;
+    margin-bottom:18px;
+    display:inline-block;
+}
+
+.back-link:hover{
+    text-decoration:underline;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .content-grid,
+    .case-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .topbar{
+        padding:0 16px;
+    }
+
+    .topbar-brand small,
+    .user-email{
+        display:none;
+    }
+
+    .main{
+        padding:20px 14px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .login-card{
+        padding:30px 24px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .info-item:nth-child(odd){
+        border-right:none;
+    }
+
+    .case-header{
+        flex-direction:column;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
 
 <!-- =========================
-     LOGIN SCREEN
+     LOGIN
 ========================= -->
 
 <div id="loginScreen">
@@ -492,14 +661,17 @@
         <h2>Professional Portal</h2>
 
         <p>
-            Secure access to planning applications, enquiries and
-            professional project information.
+            Secure access to planning applications,
+            enquiries and professional project information.
         </p>
 
         <form id="loginForm">
 
             <div class="form-group">
-                <label for="loginEmail">Professional Email</label>
+
+                <label for="loginEmail">
+                    Professional Email
+                </label>
 
                 <input
                     type="email"
@@ -507,10 +679,14 @@
                     placeholder="Enter your email"
                     required
                 >
+
             </div>
 
             <div class="form-group">
-                <label for="loginPassword">Password</label>
+
+                <label for="loginPassword">
+                    Password
+                </label>
 
                 <input
                     type="password"
@@ -518,17 +694,22 @@
                     placeholder="Enter your password"
                     required
                 >
+
             </div>
 
             <button
                 type="submit"
                 class="button button-primary"
                 id="loginButton"
+                style="width:100%;"
             >
                 Sign In
             </button>
 
-            <div id="loginMessage" class="message"></div>
+            <div
+                id="loginMessage"
+                class="message"
+            ></div>
 
         </form>
 
@@ -538,7 +719,7 @@
 
 
 <!-- =========================
-     PROFESSIONAL APP
+     APPLICATION
 ========================= -->
 
 <div id="app">
@@ -546,11 +727,13 @@
     <header class="topbar">
 
         <div class="topbar-brand">
+
             <strong>THE ROCK</strong>
 
             <small>
                 PROFESSIONAL PORTAL
             </small>
+
         </div>
 
         <div class="user-area">
@@ -574,8 +757,6 @@
 
     <div class="layout">
 
-        <!-- SIDEBAR -->
-
         <aside class="sidebar">
 
             <div class="sidebar-title">
@@ -584,28 +765,28 @@
 
             <button
                 class="nav-button active"
-                onclick="showSection('dashboard', this)"
+                onclick="showSection('dashboard',this)"
             >
                 Dashboard
             </button>
 
             <button
                 class="nav-button"
-                onclick="showSection('applications', this)"
+                onclick="showSection('applications',this)"
             >
                 Applications
             </button>
 
             <button
                 class="nav-button"
-                onclick="showSection('enquiries', this)"
+                onclick="showSection('enquiries',this)"
             >
                 Enquiries
             </button>
 
             <button
                 class="nav-button"
-                onclick="showSection('pipeline', this)"
+                onclick="showSection('pipeline',this)"
             >
                 Pipeline
             </button>
@@ -613,11 +794,11 @@
         </aside>
 
 
-        <!-- MAIN -->
-
         <main class="main">
 
-            <!-- DASHBOARD -->
+            <!-- =========================
+                 DASHBOARD
+            ========================= -->
 
             <section
                 id="dashboardSection"
@@ -626,7 +807,9 @@
 
                 <div class="page-heading">
 
-                    <h1>Professional Dashboard</h1>
+                    <h1>
+                        Professional Dashboard
+                    </h1>
 
                     <p>
                         Overview of THE ROCK planning practice activity.
@@ -638,6 +821,7 @@
                 <div class="stats">
 
                     <div class="stat-card">
+
                         <div class="label">
                             New Applications
                         </div>
@@ -648,10 +832,12 @@
                         >
                             —
                         </div>
+
                     </div>
 
 
                     <div class="stat-card">
+
                         <div class="label">
                             Total Applications
                         </div>
@@ -662,10 +848,12 @@
                         >
                             —
                         </div>
+
                     </div>
 
 
                     <div class="stat-card">
+
                         <div class="label">
                             Active Projects
                         </div>
@@ -676,10 +864,12 @@
                         >
                             —
                         </div>
+
                     </div>
 
 
                     <div class="stat-card">
+
                         <div class="label">
                             Completed
                         </div>
@@ -690,14 +880,13 @@
                         >
                             —
                         </div>
+
                     </div>
 
                 </div>
 
 
                 <div class="content-grid">
-
-                    <!-- RECENT APPLICATIONS -->
 
                     <div class="panel">
 
@@ -726,14 +915,20 @@
 
                                 </thead>
 
-                                <tbody id="recentApplicationsBody">
+                                <tbody
+                                    id="recentApplicationsBody"
+                                >
 
                                     <tr>
+
                                         <td colspan="6">
+
                                             <div class="loading">
                                                 Loading applications...
                                             </div>
+
                                         </td>
+
                                     </tr>
 
                                 </tbody>
@@ -744,8 +939,6 @@
 
                     </div>
 
-
-                    <!-- PIPELINE -->
 
                     <div class="panel">
 
@@ -771,7 +964,9 @@
             </section>
 
 
-            <!-- APPLICATIONS -->
+            <!-- =========================
+                 APPLICATIONS
+            ========================= -->
 
             <section
                 id="applicationsSection"
@@ -780,7 +975,9 @@
 
                 <div class="page-heading">
 
-                    <h1>Applications</h1>
+                    <h1>
+                        Applications
+                    </h1>
 
                     <p>
                         Planning applications received through THE ROCK.
@@ -810,14 +1007,20 @@
 
                             </thead>
 
-                            <tbody id="applicationsBody">
+                            <tbody
+                                id="applicationsBody"
+                            >
 
                                 <tr>
+
                                     <td colspan="8">
+
                                         <div class="loading">
                                             Loading applications...
                                         </div>
+
                                     </td>
+
                                 </tr>
 
                             </tbody>
@@ -831,7 +1034,9 @@
             </section>
 
 
-            <!-- ENQUIRIES -->
+            <!-- =========================
+                 ENQUIRIES
+            ========================= -->
 
             <section
                 id="enquiriesSection"
@@ -840,7 +1045,9 @@
 
                 <div class="page-heading">
 
-                    <h1>Enquiries</h1>
+                    <h1>
+                        Enquiries
+                    </h1>
 
                     <p>
                         Client enquiries submitted through THE ROCK.
@@ -869,14 +1076,20 @@
 
                             </thead>
 
-                            <tbody id="enquiriesBody">
+                            <tbody
+                                id="enquiriesBody"
+                            >
 
                                 <tr>
+
                                     <td colspan="7">
+
                                         <div class="loading">
                                             Loading enquiries...
                                         </div>
+
                                     </td>
+
                                 </tr>
 
                             </tbody>
@@ -890,7 +1103,9 @@
             </section>
 
 
-            <!-- PIPELINE -->
+            <!-- =========================
+                 PIPELINE
+            ========================= -->
 
             <section
                 id="pipelineSection"
@@ -899,7 +1114,9 @@
 
                 <div class="page-heading">
 
-                    <h1>Pipeline</h1>
+                    <h1>
+                        Pipeline
+                    </h1>
 
                     <p>
                         Track applications through the professional workflow.
@@ -921,6 +1138,36 @@
 
             </section>
 
+
+            <!-- =========================
+                 CASE FILE
+            ========================= -->
+
+            <section
+                id="caseFileSection"
+                class="section"
+            >
+
+                <div
+                    class="back-link"
+                    onclick="showApplications()"
+                >
+                    ← Back to Applications
+                </div>
+
+
+                <div
+                    id="caseFileContent"
+                >
+
+                    <div class="loading">
+                        Loading case file...
+                    </div>
+
+                </div>
+
+            </section>
+
         </main>
 
     </div>
@@ -930,391 +1177,496 @@
 
 <script>
 
-    /* ==========================================
-       SUPABASE
-    ========================================== */
+/* ==========================================
+   SUPABASE
+========================================== */
 
-    const SUPABASE_URL =
-        "https://iuwnsrvlmicgdilmrftl.supabase.co";
+const SUPABASE_URL =
+    "https://iuwnsrvlmicgdilmrftl.supabase.co";
 
-    const SUPABASE_ANON_KEY =
-        "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
+const SUPABASE_ANON_KEY =
+    "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
 
-    const supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
-        );
-
-
-    /* ==========================================
-       INITIAL SESSION CHECK
-    ========================================== */
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        async function () {
-
-            const {
-                data: {
-                    session
-                }
-            } = await supabaseClient.auth.getSession();
-
-            if (session) {
-
-                await startProfessionalPortal(
-                    session
-                );
-
-            }
-
-        }
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
     );
 
-
-    /* ==========================================
-       LOGIN
-    ========================================== */
-
-    document
-        .getElementById("loginForm")
-        .addEventListener(
-            "submit",
-            async function (event) {
-
-                event.preventDefault();
-
-                const email =
-                    document
-                        .getElementById("loginEmail")
-                        .value
-                        .trim();
-
-                const password =
-                    document
-                        .getElementById("loginPassword")
-                        .value;
-
-                const button =
-                    document
-                        .getElementById("loginButton");
-
-                const message =
-                    document
-                        .getElementById("loginMessage");
-
-                button.disabled = true;
-                button.textContent = "Signing in...";
-
-                message.className = "message";
-                message.textContent = "";
-
-                const {
-                    data,
-                    error
-                } = await supabaseClient.auth.signInWithPassword({
-                    email,
-                    password
-                });
-
-                if (error) {
-
-                    message.className =
-                        "message error";
-
-                    message.textContent =
-                        error.message;
-
-                    button.disabled = false;
-                    button.textContent = "Sign In";
-
-                    return;
-                }
-
-                await startProfessionalPortal(
-                    data.session
-                );
-
-                button.disabled = false;
-                button.textContent = "Sign In";
-
-            }
-        );
+let currentSession = null;
 
 
-    /* ==========================================
-       START PORTAL
-    ========================================== */
+/* ==========================================
+   INITIAL SESSION
+========================================== */
 
-    async function startProfessionalPortal(session) {
-
-        if (!session || !session.user) {
-            return;
-        }
+document.addEventListener(
+    "DOMContentLoaded",
+    async function(){
 
         const {
-            data: profile,
+            data:{
+                session
+            }
+        } =
+        await supabaseClient.auth.getSession();
+
+        if(session){
+
+            await startProfessionalPortal(
+                session
+            );
+
+        }
+
+    }
+);
+
+
+/* ==========================================
+   LOGIN
+========================================== */
+
+document
+.getElementById("loginForm")
+.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
+
+        const email =
+            document
+            .getElementById("loginEmail")
+            .value
+            .trim();
+
+        const password =
+            document
+            .getElementById("loginPassword")
+            .value;
+
+        const button =
+            document
+            .getElementById("loginButton");
+
+        const message =
+            document
+            .getElementById("loginMessage");
+
+        button.disabled = true;
+
+        button.textContent =
+            "Signing in...";
+
+        message.className =
+            "message";
+
+        const {
+            data,
             error
-        } = await supabaseClient
-            .from("professional_profiles")
-            .select("*")
-            .eq("id", session.user.id)
-            .eq("active", true)
-            .maybeSingle();
+        } =
+        await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
 
-        if (error || !profile) {
-
-            await supabaseClient.auth.signOut();
-
-            const message =
-                document.getElementById("loginMessage");
+        if(error){
 
             message.className =
                 "message error";
 
             message.textContent =
-                "Your account does not have professional portal access.";
+                error.message;
+
+            button.disabled = false;
+
+            button.textContent =
+                "Sign In";
 
             return;
         }
 
-        document
-            .getElementById("loginScreen")
-            .style.display = "none";
+        await startProfessionalPortal(
+            data.session
+        );
 
-        document
-            .getElementById("app")
-            .style.display = "block";
+        button.disabled = false;
 
-        document
-            .getElementById("userEmail")
-            .textContent =
-            session.user.email;
-
-        await loadDashboard();
+        button.textContent =
+            "Sign In";
 
     }
+);
 
 
-    /* ==========================================
-       LOGOUT
-    ========================================== */
+/* ==========================================
+   START PORTAL
+========================================== */
 
-    async function logout() {
+async function startProfessionalPortal(session){
+
+    if(
+        !session ||
+        !session.user
+    ){
+        return;
+    }
+
+    currentSession =
+        session;
+
+    const {
+        data:profile,
+        error
+    } =
+    await supabaseClient
+    .from("professional_profiles")
+    .select("*")
+    .eq(
+        "id",
+        session.user.id
+    )
+    .eq(
+        "active",
+        true
+    )
+    .maybeSingle();
+
+    if(error || !profile){
 
         await supabaseClient.auth.signOut();
 
-        window.location.reload();
-
-    }
-
-
-    /* ==========================================
-       NAVIGATION
-    ========================================== */
-
-    function showSection(section, button) {
-
-        document
-            .querySelectorAll(".section")
-            .forEach(function (element) {
-
-                element.classList.remove("active");
-
-            });
-
-        document
-            .getElementById(section + "Section")
-            .classList.add("active");
-
-        document
-            .querySelectorAll(".nav-button")
-            .forEach(function (element) {
-
-                element.classList.remove("active");
-
-            });
-
-        button.classList.add("active");
-
-
-        if (section === "applications") {
-            loadApplications();
-        }
-
-        if (section === "enquiries") {
-            loadEnquiries();
-        }
-
-        if (section === "pipeline") {
-            loadFullPipeline();
-        }
-
-    }
-
-
-    /* ==========================================
-       LOAD DASHBOARD
-    ========================================== */
-
-    async function loadDashboard() {
-
-        await Promise.all([
-            loadApplicationStats(),
-            loadRecentApplications(),
-            loadPipelineSummary()
-        ]);
-
-    }
-
-
-    /* ==========================================
-       APPLICATION STATS
-    ========================================== */
-
-    async function loadApplicationStats() {
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("applications")
-            .select(
-                "status",
-                {
-                    count: "exact"
-                }
+        const message =
+            document
+            .getElementById(
+                "loginMessage"
             );
 
-        if (error) {
+        message.className =
+            "message error";
 
-            console.error(error);
+        message.textContent =
+            "Your account does not have professional portal access.";
 
-            return;
-        }
-
-        const applications =
-            data || [];
-
-        const total =
-            applications.length;
-
-        const newApplications =
-            applications.filter(
-                item =>
-                    (item.status || "")
-                        .toLowerCase() === "new"
-            ).length;
-
-        const completed =
-            applications.filter(
-                item =>
-                    (item.status || "")
-                        .toLowerCase() === "completed"
-            ).length;
-
-        const active =
-            applications.filter(
-                item => {
-
-                    const status =
-                        (item.status || "")
-                            .toLowerCase();
-
-                    return (
-                        status !== "new" &&
-                        status !== "completed"
-                    );
-
-                }
-            ).length;
-
-
-        document
-            .getElementById("totalApplications")
-            .textContent = total;
-
-        document
-            .getElementById("newApplications")
-            .textContent = newApplications;
-
-        document
-            .getElementById("activeProjects")
-            .textContent = active;
-
-        document
-            .getElementById("completedProjects")
-            .textContent = completed;
-
+        return;
     }
 
+    document
+    .getElementById("loginScreen")
+    .style.display = "none";
 
-    /* ==========================================
-       RECENT APPLICATIONS
-    ========================================== */
+    document
+    .getElementById("app")
+    .style.display = "block";
 
-    async function loadRecentApplications() {
+    document
+    .getElementById("userEmail")
+    .textContent =
+        session.user.email;
 
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("applications")
-            .select(
-                "application_reference, applicant_name, application_type, municipality, complexity_level, status, created_at"
+    await loadDashboard();
+
+}
+
+
+/* ==========================================
+   LOGOUT
+========================================== */
+
+async function logout(){
+
+    await supabaseClient.auth.signOut();
+
+    window.location.reload();
+
+}
+
+
+/* ==========================================
+   NAVIGATION
+========================================== */
+
+function showSection(
+    section,
+    button
+){
+
+    document
+    .querySelectorAll(".section")
+    .forEach(
+        element =>
+            element.classList.remove(
+                "active"
             )
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            )
-            .limit(8);
+    );
 
-        const body =
-            document
-                .getElementById(
-                    "recentApplicationsBody"
+    document
+    .getElementById(
+        section + "Section"
+    )
+    .classList.add(
+        "active"
+    );
+
+    document
+    .querySelectorAll(".nav-button")
+    .forEach(
+        element =>
+            element.classList.remove(
+                "active"
+            )
+    );
+
+    button.classList.add(
+        "active"
+    );
+
+    if(section === "applications"){
+        loadApplications();
+    }
+
+    if(section === "enquiries"){
+        loadEnquiries();
+    }
+
+    if(section === "pipeline"){
+        loadFullPipeline();
+    }
+
+}
+
+
+/* ==========================================
+   APPLICATIONS VIEW
+========================================== */
+
+function showApplications(){
+
+    document
+    .querySelectorAll(".section")
+    .forEach(
+        element =>
+            element.classList.remove(
+                "active"
+            )
+    );
+
+    document
+    .getElementById(
+        "applicationsSection"
+    )
+    .classList.add(
+        "active"
+    );
+
+    document
+    .querySelectorAll(".nav-button")
+    .forEach(
+        element =>
+            element.classList.remove(
+                "active"
+            )
+    );
+
+    document
+    .querySelector(
+        ".nav-button:nth-of-type(2)"
+    )
+    .classList.add(
+        "active"
+    );
+
+    loadApplications();
+
+}
+
+
+/* ==========================================
+   DASHBOARD
+========================================== */
+
+async function loadDashboard(){
+
+    await Promise.all([
+        loadApplicationStats(),
+        loadRecentApplications(),
+        loadPipelineSummary()
+    ]);
+
+}
+
+
+/* ==========================================
+   APPLICATION STATS
+========================================== */
+
+async function loadApplicationStats(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("applications")
+    .select("status");
+
+    if(error){
+
+        console.error(error);
+
+        return;
+    }
+
+    const applications =
+        data || [];
+
+    const total =
+        applications.length;
+
+    const newApplications =
+        applications.filter(
+            item =>
+                (
+                    item.status || ""
+                ).toLowerCase()
+                === "new"
+        ).length;
+
+    const completed =
+        applications.filter(
+            item =>
+                (
+                    item.status || ""
+                ).toLowerCase()
+                === "completed"
+        ).length;
+
+    const active =
+        applications.filter(
+            item => {
+
+                const status =
+                    (
+                        item.status || ""
+                    ).toLowerCase();
+
+                return(
+                    status !== "new" &&
+                    status !== "completed"
                 );
 
-        if (error) {
+            }
+        ).length;
 
-            console.error(error);
+    document
+    .getElementById(
+        "totalApplications"
+    )
+    .textContent =
+        total;
 
-            body.innerHTML = `
-                <tr>
-                    <td colspan="6">
-                        Unable to load applications.
-                    </td>
-                </tr>
-            `;
+    document
+    .getElementById(
+        "newApplications"
+    )
+    .textContent =
+        newApplications;
 
-            return;
+    document
+    .getElementById(
+        "activeProjects"
+    )
+    .textContent =
+        active;
+
+    document
+    .getElementById(
+        "completedProjects"
+    )
+    .textContent =
+        completed;
+
+}
+
+
+/* ==========================================
+   RECENT APPLICATIONS
+========================================== */
+
+async function loadRecentApplications(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("applications")
+    .select(`
+        application_reference,
+        applicant_name,
+        application_type,
+        municipality,
+        complexity_level,
+        status,
+        created_at
+    `)
+    .order(
+        "created_at",
+        {
+            ascending:false
         }
+    )
+    .limit(8);
 
-        if (!data || data.length === 0) {
+    const body =
+        document
+        .getElementById(
+            "recentApplicationsBody"
+        );
 
-            body.innerHTML = `
+    if(error){
+
+        console.error(error);
+
+        body.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    Unable to load applications.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    if(!data || data.length === 0){
+
+        body.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    <div class="empty-state">
+                        No applications received yet.
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    body.innerHTML =
+        data.map(
+            application => `
+
                 <tr>
-                    <td colspan="6">
-                        <div class="empty-state">
-                            No applications received yet.
-                        </div>
-                    </td>
-                </tr>
-            `;
 
-            return;
-        }
-
-        body.innerHTML =
-            data.map(
-                application => `
-
-                <tr>
-
-                    <td class="reference">
+                    <td
+                        class="reference"
+                        onclick="openCaseFileByReference(
+                            '${escapeJs(application.application_reference || "")}'
+                        )"
+                    >
                         ${escapeHtml(
                             application.application_reference || "—"
                         )}
@@ -1353,583 +1705,1447 @@
                 </tr>
 
             `
-            ).join("");
+        )
+        .join("");
 
-    }
+}
 
 
-    /* ==========================================
-       APPLICATIONS
-    ========================================== */
+/* ==========================================
+   APPLICATION LIST
+========================================== */
 
-    async function loadApplications() {
+async function loadApplications(){
 
-        const body =
-            document
-                .getElementById(
-                    "applicationsBody"
-                );
+    const body =
+        document
+        .getElementById(
+            "applicationsBody"
+        );
+
+    body.innerHTML = `
+        <tr>
+            <td colspan="8">
+                <div class="loading">
+                    Loading applications...
+                </div>
+            </td>
+        </tr>
+    `;
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("applications")
+    .select(`
+        application_reference,
+        applicant_name,
+        application_type,
+        municipality,
+        complexity_level,
+        indicative_total_min,
+        indicative_total_max,
+        status,
+        created_at
+    `)
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+    if(error){
+
+        console.error(error);
 
         body.innerHTML = `
             <tr>
                 <td colspan="8">
-                    <div class="loading">
-                        Loading applications...
-                    </div>
+                    Unable to load applications.
                 </td>
             </tr>
         `;
 
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("applications")
-            .select(
-                "application_reference, applicant_name, application_type, municipality, complexity_level, indicative_total_min, indicative_total_max, status, created_at"
-            )
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
-
-        if (error) {
-
-            console.error(error);
-
-            body.innerHTML = `
-                <tr>
-                    <td colspan="8">
-                        Unable to load applications.
-                    </td>
-                </tr>
-            `;
-
-            return;
-        }
-
-        if (!data || data.length === 0) {
-
-            body.innerHTML = `
-                <tr>
-                    <td colspan="8">
-                        <div class="empty-state">
-                            No applications available.
-                        </div>
-                    </td>
-                </tr>
-            `;
-
-            return;
-        }
-
-        body.innerHTML =
-            data.map(
-                application => {
-
-                    const feeMin =
-                        Number(
-                            application.indicative_total_min
-                        ) || 0;
-
-                    const feeMax =
-                        Number(
-                            application.indicative_total_max
-                        ) || 0;
-
-                    const fee =
-                        `R${formatMoney(feeMin)} – R${formatMoney(feeMax)}`;
-
-                    const date =
-                        formatDate(
-                            application.created_at
-                        );
-
-                    return `
-
-                        <tr>
-
-                            <td class="reference">
-                                ${escapeHtml(
-                                    application.application_reference || "—"
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    application.applicant_name || "—"
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    application.application_type || "—"
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHtml(
-                                    application.municipality || "—"
-                                )}
-                            </td>
-
-                            <td>
-                                ${complexityBadge(
-                                    application.complexity_level
-                                )}
-                            </td>
-
-                            <td>
-                                ${fee}
-                            </td>
-
-                            <td>
-                                ${statusBadge(
-                                    application.status
-                                )}
-                            </td>
-
-                            <td>
-                                ${date}
-                            </td>
-
-                        </tr>
-
-                    `;
-
-                }
-            ).join("");
-
+        return;
     }
 
-
-    /* ==========================================
-       ENQUIRIES
-    ========================================== */
-
-    async function loadEnquiries() {
-
-        const body =
-            document
-                .getElementById(
-                    "enquiriesBody"
-                );
+    if(!data || data.length === 0){
 
         body.innerHTML = `
             <tr>
-                <td colspan="7">
-                    <div class="loading">
-                        Loading enquiries...
+                <td colspan="8">
+                    <div class="empty-state">
+                        No applications available.
                     </div>
                 </td>
             </tr>
         `;
 
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("enquiries")
-            .select(
-                "full_name, email, phone, application_type, municipality, status, created_at"
-            )
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
+        return;
+    }
 
-        if (error) {
+    body.innerHTML =
+        data.map(
+            application => {
 
-            console.error(error);
+                const feeMin =
+                    Number(
+                        application
+                        .indicative_total_min
+                    ) || 0;
 
-            body.innerHTML = `
-                <tr>
-                    <td colspan="7">
-                        Unable to load enquiries.
-                    </td>
-                </tr>
-            `;
+                const feeMax =
+                    Number(
+                        application
+                        .indicative_total_max
+                    ) || 0;
 
-            return;
-        }
+                const fee =
+                    `R${formatMoney(feeMin)} – R${formatMoney(feeMax)}`;
 
-        if (!data || data.length === 0) {
-
-            body.innerHTML = `
-                <tr>
-                    <td colspan="7">
-                        <div class="empty-state">
-                            No enquiries available.
-                        </div>
-                    </td>
-                </tr>
-            `;
-
-            return;
-        }
-
-        body.innerHTML =
-            data.map(
-                enquiry => `
+                return `
 
                     <tr>
 
-                        <td>
+                        <td
+                            class="reference"
+                            onclick="openCaseFileByReference(
+                                '${escapeJs(application.application_reference || "")}'
+                            )"
+                        >
                             ${escapeHtml(
-                                enquiry.full_name || "—"
+                                application.application_reference || "—"
                             )}
                         </td>
 
                         <td>
                             ${escapeHtml(
-                                enquiry.email || "—"
+                                application.applicant_name || "—"
                             )}
                         </td>
 
                         <td>
                             ${escapeHtml(
-                                enquiry.phone || "—"
+                                application.application_type || "—"
                             )}
                         </td>
 
                         <td>
                             ${escapeHtml(
-                                enquiry.application_type || "—"
+                                application.municipality || "—"
                             )}
                         </td>
 
                         <td>
-                            ${escapeHtml(
-                                enquiry.municipality || "—"
+                            ${complexityBadge(
+                                application.complexity_level
                             )}
+                        </td>
+
+                        <td>
+                            ${fee}
                         </td>
 
                         <td>
                             ${statusBadge(
-                                enquiry.status
+                                application.status
                             )}
                         </td>
 
                         <td>
                             ${formatDate(
-                                enquiry.created_at
+                                application.created_at
                             )}
                         </td>
 
                     </tr>
 
-                `
-            ).join("");
-
-    }
-
-
-    /* ==========================================
-       PIPELINE
-    ========================================== */
-
-    async function getApplicationsForPipeline() {
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("applications")
-            .select("status");
-
-        if (error) {
-
-            console.error(error);
-
-            return [];
-
-        }
-
-        return data || [];
-
-    }
-
-
-    async function loadPipelineSummary() {
-
-        const applications =
-            await getApplicationsForPipeline();
-
-        const pipeline =
-            buildPipeline(applications);
-
-        renderPipeline(
-            pipeline,
-            document.getElementById(
-                "pipelineSummary"
-            )
-        );
-
-    }
-
-
-    async function loadFullPipeline() {
-
-        const applications =
-            await getApplicationsForPipeline();
-
-        const pipeline =
-            buildPipeline(applications);
-
-        renderPipeline(
-            pipeline,
-            document.getElementById(
-                "fullPipeline"
-            )
-        );
-
-    }
-
-
-    function buildPipeline(applications) {
-
-        const statuses = [
-            "new",
-            "initial assessment",
-            "information required",
-            "fee assessment",
-            "quotation",
-            "mandate",
-            "in progress",
-            "submitted",
-            "completed"
-        ];
-
-        return statuses.map(
-            status => {
-
-                const count =
-                    applications.filter(
-                        application =>
-                            (application.status || "")
-                                .toLowerCase() === status
-                    ).length;
-
-                return {
-                    status,
-                    count
-                };
+                `;
 
             }
+        )
+        .join("");
+
+}
+
+
+/* ==========================================
+   OPEN CASE FILE
+========================================== */
+
+async function openCaseFileByReference(
+    reference
+){
+
+    document
+    .querySelectorAll(".section")
+    .forEach(
+        element =>
+            element.classList.remove(
+                "active"
+            )
+    );
+
+    document
+    .getElementById(
+        "caseFileSection"
+    )
+    .classList.add(
+        "active"
+    );
+
+    const container =
+        document
+        .getElementById(
+            "caseFileContent"
         );
 
+    container.innerHTML = `
+        <div class="loading">
+            Loading case file...
+        </div>
+    `;
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("applications")
+    .select("*")
+    .eq(
+        "application_reference",
+        reference
+    )
+    .maybeSingle();
+
+    if(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="panel">
+                <div class="panel-body">
+                    Unable to load this application.
+                </div>
+            </div>
+        `;
+
+        return;
     }
 
+    if(!data){
 
-    function renderPipeline(
-        pipeline,
-        container
-    ) {
-
-        const total =
-            pipeline.reduce(
-                (sum, item) =>
-                    sum + item.count,
-                0
-            );
-
-        if (total === 0) {
-
-            container.innerHTML = `
-                <div class="empty-state">
-                    No application pipeline data yet.
+        container.innerHTML = `
+            <div class="panel">
+                <div class="panel-body">
+                    Application not found.
                 </div>
-            `;
+            </div>
+        `;
 
-            return;
-        }
+        return;
+    }
 
-        container.innerHTML =
-            pipeline.map(
-                item => {
+    renderCaseFile(data);
 
-                    const percentage =
-                        total > 0
-                            ? Math.max(
-                                4,
-                                Math.round(
-                                    (item.count / total) * 100
-                                )
-                            )
-                            : 0;
+}
 
-                    return `
 
-                        <div class="pipeline-item">
+/* ==========================================
+   RENDER CASE FILE
+========================================== */
 
-                            <div class="pipeline-top">
+function renderCaseFile(application){
 
-                                <span>
-                                    ${capitalizeWords(
-                                        item.status
-                                    )}
-                                </span>
+    const container =
+        document
+        .getElementById(
+            "caseFileContent"
+        );
 
-                                <strong>
-                                    ${item.count}
-                                </strong>
+    const feeMin =
+        Number(
+            application.indicative_total_min
+        ) || 0;
 
-                            </div>
+    const feeMax =
+        Number(
+            application.indicative_total_max
+        ) || 0;
 
-                            <div class="pipeline-bar">
+    const units =
+        application.number_of_units ??
+        "Not specified";
 
-                                <div
-                                    class="pipeline-fill"
-                                    style="width:${percentage}%"
-                                ></div>
+    container.innerHTML = `
 
-                            </div>
+        <div class="case-header">
+
+            <div class="case-title">
+
+                <div class="case-reference">
+                    ${escapeHtml(
+                        application.application_reference || ""
+                    )}
+                </div>
+
+                <h1>
+                    ${escapeHtml(
+                        application.application_type ||
+                        "Planning Application"
+                    )}
+                </h1>
+
+                <p>
+                    Professional application case file
+                </p>
+
+            </div>
+
+            <div class="case-actions">
+
+                <button
+                    class="button button-secondary"
+                    onclick="showApplications()"
+                >
+                    ← Applications
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="case-grid">
+
+            <div>
+
+                <!-- APPLICANT -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Applicant
+                        </h2>
+
+                    </div>
+
+                    <div class="info-grid">
+
+                        ${infoItem(
+                            "Applicant Name",
+                            application.applicant_name
+                        )}
+
+                        ${infoItem(
+                            "Email",
+                            application.applicant_email
+                        )}
+
+                        ${infoItem(
+                            "Phone",
+                            application.applicant_phone
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <br>
+
+
+                <!-- PROPERTY -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Property
+                        </h2>
+
+                    </div>
+
+                    <div class="info-grid">
+
+                        ${infoItem(
+                            "Erf Number",
+                            application.erf_number
+                        )}
+
+                        ${infoItem(
+                            "Property Description",
+                            application.property_description
+                        )}
+
+                        ${infoItem(
+                            "Suburb",
+                            application.suburb
+                        )}
+
+                        ${infoItem(
+                            "Municipality",
+                            application.municipality
+                        )}
+
+                        ${infoItem(
+                            "Province",
+                            application.province
+                        )}
+
+                        ${infoItem(
+                            "Current Use",
+                            application.current_use
+                        )}
+
+                        ${infoItem(
+                            "Current Zoning",
+                            application.current_zoning
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <br>
+
+
+                <!-- DEVELOPMENT -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Proposed Development
+                        </h2>
+
+                    </div>
+
+                    <div class="info-grid">
+
+                        ${infoItem(
+                            "Proposed Development",
+                            application.proposed_development
+                        )}
+
+                        ${infoItem(
+                            "Number of Units",
+                            units
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <br>
+
+
+                <!-- PROFESSIONAL NOTES -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Professional Notes
+                        </h2>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="form-group">
+
+                            <label>
+                                Internal planning notes
+                            </label>
+
+                            <textarea
+                                id="professionalNotes"
+                                class="notes-area"
+                                placeholder="Enter professional assessment notes, outstanding information, planning considerations, correspondence notes, etc."
+                            >${escapeHtml(
+                                application.professional_notes || ""
+                            )}</textarea>
 
                         </div>
 
-                    `;
+                        <button
+                            class="button button-primary"
+                            onclick="saveCaseFile(
+                                '${escapeJs(application.id)}'
+                            )"
+                        >
+                            Save Case File
+                        </button>
 
-                }
-            ).join("");
+                        <div
+                            id="caseSaveMessage"
+                            class="case-message message"
+                        ></div>
 
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDE -->
+
+            <div>
+
+                <!-- ASSESSMENT -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Planning Assessment
+                        </h2>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="assessment-card">
+
+                            <h3>
+                                Complexity
+                            </h3>
+
+                            ${complexityBadge(
+                                application.complexity_level
+                            )}
+
+                        </div>
+
+
+                        <div class="assessment-card">
+
+                            <h3>
+                                Complexity Score
+                            </h3>
+
+                            <strong>
+                                ${escapeHtml(
+                                    application.complexity_score ??
+                                    "—"
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="assessment-card">
+
+                            <h3>
+                                Professional Category
+                            </h3>
+
+                            <strong>
+                                ${escapeHtml(
+                                    application.professional_category ??
+                                    "—"
+                                )}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="assessment-card">
+
+                            <h3>
+                                Indicative Professional Fee
+                            </h3>
+
+                            <div class="fee-range">
+
+                                R${formatMoney(feeMin)}
+                                –
+                                R${formatMoney(feeMax)}
+
+                            </div>
+
+                            <p
+                                style="
+                                margin-top:8px;
+                                color:var(--muted);
+                                font-size:12px;
+                                "
+                            >
+                                Including VAT. Indicative only.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <br>
+
+
+                <!-- STATUS -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Case Management
+                        </h2>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="form-group">
+
+                            <label>
+                                Application Status
+                            </label>
+
+                            <select
+                                id="applicationStatus"
+                            >
+
+                                ${statusOptions(
+                                    application.status
+                                )}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Assigned Planner
+                            </label>
+
+                            <input
+                                type="text"
+                                value="${
+                                    currentSession &&
+                                    currentSession.user
+                                    ? currentSession.user.email
+                                    : ""
+                                }"
+                                disabled
+                            >
+
+                        </div>
+
+
+                        <button
+                            class="button button-primary"
+                            style="width:100%;"
+                            onclick="saveCaseFile(
+                                '${escapeJs(application.id)}'
+                            )"
+                        >
+                            Save Case Changes
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <br>
+
+
+                <!-- TIMESTAMPS -->
+
+                <div class="panel">
+
+                    <div class="panel-body">
+
+                        <div class="info-label">
+                            Application Received
+                        </div>
+
+                        <div class="info-value">
+
+                            ${formatDateTime(
+                                application.created_at
+                            )}
+
+                        </div>
+
+                        <br>
+
+                        <div class="info-label">
+                            Last Updated
+                        </div>
+
+                        <div class="info-value">
+
+                            ${formatDateTime(
+                                application.updated_at
+                            )}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ==========================================
+   SAVE CASE FILE
+========================================== */
+
+async function saveCaseFile(
+    applicationId
+){
+
+    const notes =
+        document
+        .getElementById(
+            "professionalNotes"
+        )
+        .value;
+
+    const status =
+        document
+        .getElementById(
+            "applicationStatus"
+        )
+        .value;
+
+    const message =
+        document
+        .getElementById(
+            "caseSaveMessage"
+        );
+
+    const {
+        error
+    } =
+    await supabaseClient
+    .from("applications")
+    .update({
+        professional_notes:notes,
+        status:status,
+        assigned_planner:
+            currentSession &&
+            currentSession.user
+            ? currentSession.user.id
+            : null
+    })
+    .eq(
+        "id",
+        applicationId
+    );
+
+    if(error){
+
+        console.error(error);
+
+        message.className =
+            "message error";
+
+        message.textContent =
+            "Unable to save case changes.";
+
+        return;
     }
 
+    message.className =
+        "message success";
 
-    /* ==========================================
-       HELPERS
-    ========================================== */
+    message.textContent =
+        "Case file saved successfully.";
 
-    function complexityBadge(level) {
+    await loadDashboard();
 
-        const value =
-            level || "Pending";
-
-        const normalized =
-            value.toLowerCase();
-
-        let className =
-            "badge-status";
-
-        if (normalized === "simple") {
-            className = "badge-simple";
-        }
-
-        if (normalized === "standard") {
-            className = "badge-standard";
-        }
-
-        if (normalized === "complex") {
-            className = "badge-complex";
-        }
-
-        return `
-            <span class="badge ${className}">
-                ${escapeHtml(value)}
-            </span>
-        `;
-
-    }
+}
 
 
-    function statusBadge(status) {
+/* ==========================================
+   STATUS OPTIONS
+========================================== */
 
-        const value =
-            status || "New";
+function statusOptions(
+    current
+){
 
-        return `
-            <span class="badge badge-status">
+    const statuses = [
+
+        "new",
+
+        "initial assessment",
+
+        "information required",
+
+        "fee assessment",
+
+        "quotation",
+
+        "mandate",
+
+        "in progress",
+
+        "submitted",
+
+        "completed"
+
+    ];
+
+    return statuses
+        .map(
+            status => `
+
+                <option
+                    value="${status}"
+                    ${
+                        (
+                            current || ""
+                        ).toLowerCase()
+                        === status
+                        ? "selected"
+                        : ""
+                    }
+                >
+                    ${capitalizeWords(status)}
+                </option>
+
+            `
+        )
+        .join("");
+
+}
+
+
+/* ==========================================
+   INFO ITEM
+========================================== */
+
+function infoItem(
+    label,
+    value
+){
+
+    return `
+
+        <div class="info-item">
+
+            <div class="info-label">
+                ${escapeHtml(label)}
+            </div>
+
+            <div class="info-value">
                 ${escapeHtml(
-                    capitalizeWords(value)
+                    value ||
+                    "Not provided"
                 )}
-            </span>
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ==========================================
+   ENQUIRIES
+========================================== */
+
+async function loadEnquiries(){
+
+    const body =
+        document
+        .getElementById(
+            "enquiriesBody"
+        );
+
+    body.innerHTML = `
+        <tr>
+            <td colspan="7">
+                <div class="loading">
+                    Loading enquiries...
+                </div>
+            </td>
+        </tr>
+    `;
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("enquiries")
+    .select(`
+        full_name,
+        email,
+        phone,
+        application_type,
+        municipality,
+        status,
+        created_at
+    `)
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+    if(error){
+
+        console.error(error);
+
+        body.innerHTML = `
+            <tr>
+                <td colspan="7">
+                    Unable to load enquiries.
+                </td>
+            </tr>
         `;
 
+        return;
     }
 
+    if(!data || data.length === 0){
 
-    function formatMoney(value) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="7">
+                    <div class="empty-state">
+                        No enquiries available.
+                    </div>
+                </td>
+            </tr>
+        `;
 
-        return Number(value || 0)
-            .toLocaleString(
-                "en-ZA",
-                {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }
-            );
+        return;
+    }
+
+    body.innerHTML =
+        data.map(
+            enquiry => `
+
+                <tr>
+
+                    <td>
+                        ${escapeHtml(
+                            enquiry.full_name || "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            enquiry.email || "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            enquiry.phone || "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            enquiry.application_type || "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            enquiry.municipality || "—"
+                        )}
+                    </td>
+
+                    <td>
+                        ${statusBadge(
+                            enquiry.status
+                        )}
+                    </td>
+
+                    <td>
+                        ${formatDate(
+                            enquiry.created_at
+                        )}
+                    </td>
+
+                </tr>
+
+            `
+        )
+        .join("");
+
+}
+
+
+/* ==========================================
+   PIPELINE
+========================================== */
+
+async function getApplicationsForPipeline(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("applications")
+    .select("status");
+
+    if(error){
+
+        console.error(error);
+
+        return [];
 
     }
 
+    return data || [];
 
-    function formatDate(value) {
-
-        if (!value) {
-            return "—";
-        }
-
-        return new Date(value)
-            .toLocaleDateString(
-                "en-ZA",
-                {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric"
-                }
-            );
-
-    }
+}
 
 
-    function capitalizeWords(value) {
+async function loadPipelineSummary(){
 
-        return String(value)
-            .replace(
-                /\w\S*/g,
-                word =>
-                    word.charAt(0).toUpperCase() +
-                    word.substring(1).toLowerCase()
-            );
+    const applications =
+        await getApplicationsForPipeline();
 
-    }
+    const pipeline =
+        buildPipeline(
+            applications
+        );
 
+    renderPipeline(
+        pipeline,
+        document
+        .getElementById(
+            "pipelineSummary"
+        )
+    );
 
-    function escapeHtml(value) {
-
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
+}
 
 
-    /* ==========================================
-       AUTH STATE
-    ========================================== */
+async function loadFullPipeline(){
 
-    supabaseClient.auth.onAuthStateChange(
-        async function (event, session) {
+    const applications =
+        await getApplicationsForPipeline();
 
-            if (event === "SIGNED_OUT") {
+    const pipeline =
+        buildPipeline(
+            applications
+        );
 
-                document
-                    .getElementById("app")
-                    .style.display = "none";
+    renderPipeline(
+        pipeline,
+        document
+        .getElementById(
+            "fullPipeline"
+        )
+    );
 
-                document
-                    .getElementById("loginScreen")
-                    .style.display = "flex";
+}
 
-            }
+
+function buildPipeline(
+    applications
+){
+
+    const statuses = [
+
+        "new",
+
+        "initial assessment",
+
+        "information required",
+
+        "fee assessment",
+
+        "quotation",
+
+        "mandate",
+
+        "in progress",
+
+        "submitted",
+
+        "completed"
+
+    ];
+
+    return statuses.map(
+        status => {
+
+            const count =
+                applications.filter(
+                    application =>
+                        (
+                            application.status ||
+                            ""
+                        ).toLowerCase()
+                        === status
+                ).length;
+
+            return {
+                status,
+                count
+            };
 
         }
     );
+
+}
+
+
+function renderPipeline(
+    pipeline,
+    container
+){
+
+    const total =
+        pipeline.reduce(
+            (
+                sum,
+                item
+            ) =>
+                sum +
+                item.count,
+            0
+        );
+
+    if(total === 0){
+
+        container.innerHTML = `
+            <div class="empty-state">
+                No application pipeline data yet.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        pipeline.map(
+            item => {
+
+                const percentage =
+                    total > 0
+                    ? Math.max(
+                        4,
+                        Math.round(
+                            (
+                                item.count /
+                                total
+                            ) *
+                            100
+                        )
+                    )
+                    : 0;
+
+                return `
+
+                    <div class="pipeline-item">
+
+                        <div class="pipeline-top">
+
+                            <span>
+                                ${capitalizeWords(
+                                    item.status
+                                )}
+                            </span>
+
+                            <strong>
+                                ${item.count}
+                            </strong>
+
+                        </div>
+
+                        <div class="pipeline-bar">
+
+                            <div
+                                class="pipeline-fill"
+                                style="
+                                    width:${percentage}%
+                                "
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* ==========================================
+   HELPERS
+========================================== */
+
+function complexityBadge(
+    level
+){
+
+    const value =
+        level ||
+        "Pending";
+
+    const normalized =
+        value.toLowerCase();
+
+    let className =
+        "badge-status";
+
+    if(
+        normalized === "simple"
+    ){
+        className =
+            "badge-simple";
+    }
+
+    if(
+        normalized === "standard"
+    ){
+        className =
+            "badge-standard";
+    }
+
+    if(
+        normalized === "complex"
+    ){
+        className =
+            "badge-complex";
+    }
+
+    return `
+
+        <span
+            class="badge ${className}"
+        >
+            ${escapeHtml(value)}
+        </span>
+
+    `;
+
+}
+
+
+function statusBadge(
+    status
+){
+
+    const value =
+        status ||
+        "New";
+
+    return `
+
+        <span
+            class="badge badge-status"
+        >
+            ${escapeHtml(
+                capitalizeWords(value)
+            )}
+        </span>
+
+    `;
+
+}
+
+
+function formatMoney(
+    value
+){
+
+    return Number(
+        value || 0
+    ).toLocaleString(
+        "en-ZA",
+        {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }
+    );
+
+}
+
+
+function formatDate(
+    value
+){
+
+    if(!value){
+        return "—";
+    }
+
+    return new Date(
+        value
+    ).toLocaleDateString(
+        "en-ZA",
+        {
+            year:"numeric",
+            month:"short",
+            day:"numeric"
+        }
+    );
+
+}
+
+
+function formatDateTime(
+    value
+){
+
+    if(!value){
+        return "—";
+    }
+
+    return new Date(
+        value
+    ).toLocaleString(
+        "en-ZA",
+        {
+            year:"numeric",
+            month:"short",
+            day:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+
+}
+
+
+function capitalizeWords(
+    value
+){
+
+    return String(
+        value
+    ).replace(
+        /\w\S*/g,
+        word =>
+            word.charAt(0).toUpperCase() +
+            word.substring(1).toLowerCase()
+    );
+
+}
+
+
+function escapeHtml(
+    value
+){
+
+    return String(
+        value
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+function escapeJs(
+    value
+){
+
+    return String(
+        value
+    )
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
+    .replace(
+        /'/g,
+        "\\'"
+    )
+    .replace(
+        /\n/g,
+        "\\n"
+    )
+    .replace(
+        /\r/g,
+        "\\r"
+    );
+
+}
+
+
+/* ==========================================
+   AUTH STATE
+========================================== */
+
+supabaseClient.auth.onAuthStateChange(
+    async function(
+        event,
+        session
+    ){
+
+        if(
+            event === "SIGNED_OUT"
+        ){
+
+            document
+            .getElementById("app")
+            .style.display =
+                "none";
+
+            document
+            .getElementById("loginScreen")
+            .style.display =
+                "flex";
+
+        }
+
+    }
+);
 
 </script>
 
