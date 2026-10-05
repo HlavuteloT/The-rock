@@ -1857,6 +1857,29 @@
 </footer>
 <script>
 
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+    "https://iuwnsrvlmicgdilmrftl.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================================
+   APPLICATION WIZARD
+========================================= */
+
 function openApplicationWizard() {
 
     document
@@ -1875,6 +1898,10 @@ function closeApplicationWizard() {
 }
 
 
+/* =========================================
+   APPLICATION STEPS
+========================================= */
+
 function nextApplicationStep(step) {
 
     document
@@ -1885,9 +1912,18 @@ function nextApplicationStep(step) {
 
         });
 
-    document
-        .getElementById("applicationStep" + step)
-        .classList.add("active");
+
+    const selectedStep =
+        document.getElementById(
+            "applicationStep" + step
+        );
+
+
+    if (selectedStep) {
+
+        selectedStep.classList.add("active");
+
+    }
 
 
     document
@@ -1905,14 +1941,19 @@ function nextApplicationStep(step) {
         });
 
 
+    /* APPLICATION SUMMARY */
+
     if (step === 4) {
 
         document.getElementById("summaryType").textContent =
-            document.getElementById("appType").value;
+            document.getElementById("appType").value ||
+            "Not provided";
+
 
         document.getElementById("summaryProperty").textContent =
             document.getElementById("appErf").value ||
             "Not provided";
+
 
         document.getElementById("summaryMunicipality").textContent =
             document.getElementById("appMunicipality").value ||
@@ -1923,498 +1964,275 @@ function nextApplicationStep(step) {
 }
 
 
-document
-    .getElementById("applicationForm")
-    .addEventListener("submit", async function(event) {
+/* =========================================
+   APPLICATION SUBMISSION
+========================================= */
 
-        event.preventDefault();
-
-        const message =
-            document.getElementById("applicationMessage");
-
-        message.textContent =
-            "Submitting your application...";
+const applicationForm =
+    document.getElementById("applicationForm");
 
 
-        const applicationData = {
+if (applicationForm) {
 
-            applicant_name:
-                document.getElementById("applicantName").value.trim(),
+    applicationForm.addEventListener(
+        "submit",
+        async function(event) {
 
-            applicant_email:
-                document.getElementById("applicantEmail").value.trim(),
-
-            applicant_phone:
-                document.getElementById("applicantPhone").value.trim(),
-
-            application_type:
-                document.getElementById("appType").value,
-
-            erf_number:
-                document.getElementById("appErf").value.trim(),
-
-            property_description:
-                document.getElementById("appDescription").value.trim(),
-
-            suburb:
-                document.getElementById("appSuburb").value.trim(),
-
-            municipality:
-                document.getElementById("appMunicipality").value.trim(),
-
-            province:
-                document.getElementById("appProvince").value,
-
-            current_use:
-                document.getElementById("appCurrentUse").value.trim(),
-
-            current_zoning:
-                document.getElementById("appZoning").value.trim(),
-
-            proposed_development:
-                document.getElementById("appProposal").value.trim(),
-
-            number_of_units:
-                document.getElementById("appUnits").value
-                    ? parseInt(document.getElementById("appUnits").value)
-                    : null
-
-        };
+            event.preventDefault();
 
 
-        const { error } = await supabaseClient
-            .from("applications")
-            .insert([applicationData]);
+            const message =
+                document.getElementById(
+                    "applicationMessage"
+                );
 
-
-        if (error) {
-
-            console.error(error);
 
             message.textContent =
-                "Sorry, your application could not be submitted. Please try again.";
+                "Submitting your application...";
 
-            return;
+
+            const applicationData = {
+
+                applicant_name:
+                    document
+                        .getElementById("applicantName")
+                        .value
+                        .trim(),
+
+                applicant_email:
+                    document
+                        .getElementById("applicantEmail")
+                        .value
+                        .trim(),
+
+                applicant_phone:
+                    document
+                        .getElementById("applicantPhone")
+                        .value
+                        .trim(),
+
+                application_type:
+                    document
+                        .getElementById("appType")
+                        .value,
+
+                erf_number:
+                    document
+                        .getElementById("appErf")
+                        .value
+                        .trim(),
+
+                property_description:
+                    document
+                        .getElementById("appDescription")
+                        .value
+                        .trim(),
+
+                suburb:
+                    document
+                        .getElementById("appSuburb")
+                        .value
+                        .trim(),
+
+                municipality:
+                    document
+                        .getElementById("appMunicipality")
+                        .value
+                        .trim(),
+
+                province:
+                    document
+                        .getElementById("appProvince")
+                        .value,
+
+                current_use:
+                    document
+                        .getElementById("appCurrentUse")
+                        .value
+                        .trim(),
+
+                current_zoning:
+                    document
+                        .getElementById("appZoning")
+                        .value
+                        .trim(),
+
+                proposed_development:
+                    document
+                        .getElementById("appProposal")
+                        .value
+                        .trim(),
+
+                number_of_units:
+                    document
+                        .getElementById("appUnits")
+                        .value
+                        ? parseInt(
+                            document
+                                .getElementById("appUnits")
+                                .value
+                          )
+                        : null
+
+            };
+
+
+            const { data, error } =
+                await supabaseClient
+                    .from("applications")
+                    .insert([applicationData])
+                    .select();
+
+
+            if (error) {
+
+                console.error(
+                    "Application submission error:",
+                    error
+                );
+
+
+                message.textContent =
+                    "Database error: " +
+                    error.message;
+
+                return;
+
+            }
+
+
+            console.log(
+                "Application submitted:",
+                data
+            );
+
+
+            message.textContent =
+                "Your application has been submitted successfully.";
+
+
+            applicationForm.reset();
+
+
+            setTimeout(function() {
+
+                closeApplicationWizard();
+
+                message.textContent = "";
+
+            }, 2000);
 
         }
-
-
-        message.textContent =
-            "Your application has been submitted successfully.";
-
-        document
-            .getElementById("applicationForm")
-            .reset();
-
-    });
-
-</script>
-<!-- APPLICATION WIZARD -->
-
-<div id="applicationWizard" class="wizard-overlay">
-
-    <div class="wizard-box">
-
-        <button
-            type="button"
-            class="wizard-close"
-            onclick="closeApplicationWizard()"
-        >
-            ×
-        </button>
-
-        <div class="section-label">
-            PLANNING APPLICATION
-        </div>
-
-        <h2>Start Your Application</h2>
-
-        <p class="wizard-intro">
-            Tell us about your proposed development.
-            You do not need to know the planning terminology.
-        </p>
-
-
-        <!-- PROGRESS -->
-
-        <div class="wizard-progress">
-
-            <div class="progress-step active">
-                <span>1</span>
-                Project
-            </div>
-
-            <div class="progress-step">
-                <span>2</span>
-                Property
-            </div>
-
-            <div class="progress-step">
-                <span>3</span>
-                Proposal
-            </div>
-
-            <div class="progress-step">
-                <span>4</span>
-                Review
-            </div>
-
-        </div>
-
-
-        <form id="applicationForm">
-
-
-            <!-- STEP 1 -->
-
-            <div class="wizard-step active" id="applicationStep1">
-
-                <h3>What are you planning to do?</h3>
-
-                <p>
-                    Select the option that best describes
-                    your project.
-                </p>
-
-                <label>Application / Development Type</label>
-
-                <select id="appType" required>
-
-                    <option value="">
-                        Select an option
-                    </option>
-
-                    <option value="Rezoning">
-                        Change the zoning / Rezoning
-                    </option>
-
-                    <option value="Consent Use">
-                        Consent Use
-                    </option>
-
-                    <option value="Subdivision">
-                        Subdivision
-                    </option>
-
-                    <option value="Consolidation">
-                        Consolidation
-                    </option>
-
-                    <option value="Township Establishment">
-                        Township Establishment
-                    </option>
-
-                    <option value="Development Application">
-                        New Development
-                    </option>
-
-                    <option value="Additional Units">
-                        Additional Dwelling Units
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-                <label>Briefly describe what you want to do</label>
-
-                <textarea
-                    id="appDescription"
-                    placeholder="For example: I want to develop rental units on my property..."
-                    required
-                ></textarea>
-
-                <button
-                    type="button"
-                    class="button button-primary"
-                    onclick="nextApplicationStep(2)"
-                >
-                    Continue
-                </button>
-
-            </div>
-
-
-            <!-- STEP 2 -->
-
-            <div class="wizard-step" id="applicationStep2">
-
-                <h3>Tell us about the property</h3>
-
-                <p>
-                    Provide as much information as you know.
-                    You can leave fields blank if you don't know.
-                </p>
-
-                <label>Erf / Farm Number</label>
-
-                <input
-                    type="text"
-                    id="appErf"
-                    placeholder="e.g. Erf 123"
-                >
-
-                <label>Suburb / Area</label>
-
-                <input
-                    type="text"
-                    id="appSuburb"
-                    placeholder="Suburb or area"
-                >
-
-                <label>Municipality</label>
-
-                <input
-                    type="text"
-                    id="appMunicipality"
-                    placeholder="Municipality"
-                >
-
-                <label>Province</label>
-
-                <select id="appProvince">
-
-                    <option value="">
-                        Select province
-                    </option>
-
-                    <option>Eastern Cape</option>
-                    <option>Free State</option>
-                    <option>Gauteng</option>
-                    <option>KwaZulu-Natal</option>
-                    <option>Limpopo</option>
-                    <option>Mpumalanga</option>
-                    <option>Northern Cape</option>
-                    <option>North West</option>
-                    <option>Western Cape</option>
-
-                </select>
-
-                <label>Current Zoning</label>
-
-                <input
-                    type="text"
-                    id="appZoning"
-                    placeholder="e.g. Residential 1, Business 1, Agricultural"
-                >
-
-                <p class="wizard-note">
-                    Don't know the current zoning?
-                    That's okay — your planner can assist.
-                </p>
-
-                <div class="wizard-buttons">
-
-                    <button
-                        type="button"
-                        class="button"
-                        onclick="nextApplicationStep(1)"
-                    >
-                        Back
-                    </button>
-
-                    <button
-                        type="button"
-                        class="button button-primary"
-                        onclick="nextApplicationStep(3)"
-                    >
-                        Continue
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- STEP 3 -->
-
-            <div class="wizard-step" id="applicationStep3">
-
-                <h3>Tell us about your proposal</h3>
-
-                <label>Current Use of Property</label>
-
-                <textarea
-                    id="appCurrentUse"
-                    placeholder="What is currently happening on the property?"
-                ></textarea>
-
-                <label>Proposed Development</label>
-
-                <textarea
-                    id="appProposal"
-                    placeholder="Describe the proposed development..."
-                    required
-                ></textarea>
-
-                <label>Number of Units</label>
-
-                <input
-                    type="number"
-                    id="appUnits"
-                    min="0"
-                    placeholder="e.g. 10"
-                >
-
-                <div class="wizard-buttons">
-
-                    <button
-                        type="button"
-                        class="button"
-                        onclick="nextApplicationStep(2)"
-                    >
-                        Back
-                    </button>
-
-                    <button
-                        type="button"
-                        class="button button-primary"
-                        onclick="nextApplicationStep(4)"
-                    >
-                        Review Application
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- STEP 4 -->
-
-            <div class="wizard-step" id="applicationStep4">
-
-                <h3>Applicant details</h3>
-
-                <p>
-                    We need your contact details so that a
-                    planning professional can review your enquiry.
-                </p>
-
-                <label>Full Name</label>
-
-                <input
-                    type="text"
-                    id="applicantName"
-                    required
-                >
-
-                <label>Email Address</label>
-
-                <input
-                    type="email"
-                    id="applicantEmail"
-                    required
-                >
-
-                <label>Phone Number</label>
-
-                <input
-                    type="tel"
-                    id="applicantPhone"
-                >
-
-                <div class="application-summary">
-
-                    <h4>Application Summary</h4>
-
-                    <p>
-                        <strong>Application:</strong>
-                        <span id="summaryType"></span>
-                    </p>
-
-                    <p>
-                        <strong>Property:</strong>
-                        <span id="summaryProperty"></span>
-                    </p>
-
-                    <p>
-                        <strong>Municipality:</strong>
-                        <span id="summaryMunicipality"></span>
-                    </p>
-
-                </div>
-
-                <div class="wizard-buttons">
-
-                    <button
-                        type="button"
-                        class="button"
-                        onclick="nextApplicationStep(3)"
-                    >
-                        Back
-                    </button>
-
-                    <button
-                        type="submit"
-                        class="button button-primary"
-                    >
-                        Submit Application
-                    </button>
-
-                </div>
-
-                <p id="applicationMessage"></p>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-</body>
-</html>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-    const SUPABASE_URL = "https://iuwnsrvlmicgdilmrftl.supabase.co";
-
-    const SUPABASE_KEY = "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
-
-    const supabaseClient = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
     );
 
-    const enquiryForm = document.getElementById("enquiryForm");
-    const formMessage = document.getElementById("formMessage");
+}
 
-    enquiryForm.addEventListener("submit", async function(event) {
 
-        event.preventDefault();
+/* =========================================
+   ENQUIRY FORM
+========================================= */
 
-        applicationMessage.textContent = "Submitting your enquiry...";
+const enquiryForm =
+    document.getElementById("enquiryForm");
 
-        const enquiry = {
-            full_name: document.getElementById("name").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            phone: document.getElementById("phone").value.trim(),
-            application_type: document.getElementById("application").value,
-            property_reference: document.getElementById("property").value.trim(),
-            municipality: document.getElementById("municipality").value.trim(),
-            message: document.getElementById("message").value.trim()
-        };
+const formMessage =
+    document.getElementById("formMessage");
 
-        const { error } = await supabaseClient
-            .from("enquiries")
-            .insert([enquiry]);
 
-        if (error) {
+if (enquiryForm) {
 
-            console.error(error);
+    enquiryForm.addEventListener(
+        "submit",
+        async function(event) {
 
-            applicationMessage.textContent =
-                "Sorry, your enquiry could not be submitted. Please try again.";
+            event.preventDefault();
 
-            return;
+
+            formMessage.textContent =
+                "Submitting your enquiry...";
+
+
+            const enquiry = {
+
+                full_name:
+                    document
+                        .getElementById("name")
+                        .value
+                        .trim(),
+
+                email:
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim(),
+
+                phone:
+                    document
+                        .getElementById("phone")
+                        .value
+                        .trim(),
+
+                application_type:
+                    document
+                        .getElementById("application")
+                        .value,
+
+                property_reference:
+                    document
+                        .getElementById("property")
+                        .value
+                        .trim(),
+
+                municipality:
+                    document
+                        .getElementById("municipality")
+                        .value
+                        .trim(),
+
+                message:
+                    document
+                        .getElementById("message")
+                        .value
+                        .trim()
+
+            };
+
+
+            const { error } =
+                await supabaseClient
+                    .from("enquiries")
+                    .insert([enquiry]);
+
+
+            if (error) {
+
+                console.error(
+                    "Enquiry submission error:",
+                    error
+                );
+
+
+                formMessage.textContent =
+                    "Sorry, your enquiry could not be submitted: " +
+                    error.message;
+
+                return;
+
+            }
+
+
+            formMessage.textContent =
+                "Thank you. Your enquiry has been submitted successfully.";
+
+
+            enquiryForm.reset();
+
         }
+    );
 
-        applicationMessage.textContent =
-            "Thank you. Your enquiry has been submitted successfully.";
+}
 
-        enquiryForm.reset();
-
-    });
 </script>
+
+</body>
+</html>
