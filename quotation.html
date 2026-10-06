@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quotation | THE ROCK</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --green: #123c2c;
+            --green-dark: #0b2a1f;
+            --gold: #c9a227;
+            --gold-light: #e2c65c;
+            --cream: #f7f4ec;
+            --white: #ffffff;
+            --text: #26332d;
+            --muted: #68756e;
+            --border: #dfe4df;
+            --danger: #a83b3b;
+            --success: #23734a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1f3f1;
+            color: var(--text);
+        }
+
+        .topbar {
+            background: var(--green-dark);
+            color: white;
+            padding: 20px 30px;
+        }
+
+        .brand {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-name {
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .brand-subtitle {
+            color: var(--gold-light);
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            margin-top: 4px;
+        }
+
+        .page {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 18px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--muted);
+        }
+
+        .error {
+            background: #fff0f0;
+            border: 1px solid #e6baba;
+            color: var(--danger);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .quotation {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 8px 35px rgba(0,0,0,.08);
+            overflow: hidden;
+        }
+
+        .quotation-header {
+            background: var(--green);
+            color: white;
+            padding: 35px;
+        }
+
+        .quotation-header-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 30px;
+            align-items: end;
+        }
+
+        .quotation-title {
+            font-size: 31px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .quotation-reference {
+            color: var(--gold-light);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .quotation-date {
+            text-align: right;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 7px 13px;
+            border-radius: 30px;
+            background: rgba(255,255,255,.12);
+            color: white;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+        }
+
+        .section {
+            padding: 28px 35px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            color: var(--green);
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px 35px;
+        }
+
+        .detail-label {
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .description {
+            white-space: pre-line;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .amount-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .amount-table td {
+            padding: 13px 0;
+            border-bottom: 1px solid #edf0ed;
+            font-size: 14px;
+        }
+
+        .amount-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .amount-table .subtotal td {
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .amount-table .total td {
+            border-top: 2px solid var(--green);
+            border-bottom: none;
+            padding-top: 18px;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--green);
+        }
+
+        .scope-box {
+            background: #f8faf8;
+            border-left: 4px solid var(--gold);
+            padding: 18px;
+            border-radius: 5px;
+            white-space: pre-line;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .validity {
+            background: #fffaf0;
+            border: 1px solid #eadba8;
+            padding: 15px 18px;
+            border-radius: 7px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .response-section {
+            background: var(--cream);
+            padding: 35px;
+        }
+
+        .response-intro {
+            margin: 0 0 20px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 110px;
+            resize: vertical;
+            border: 1px solid #ccd5cf;
+            border-radius: 7px;
+            padding: 13px;
+            font: inherit;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,162,39,.12);
+        }
+
+        .response-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        button {
+            border: none;
+            border-radius: 7px;
+            padding: 13px 22px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .accept-btn {
+            background: var(--green);
+            color: white;
+        }
+
+        .accept-btn:hover {
+            background: var(--green-dark);
+        }
+
+        .decline-btn {
+            background: white;
+            color: var(--danger);
+            border: 1px solid #d7aaaa;
+        }
+
+        .decline-btn:hover {
+            background: #fff5f5;
+        }
+
+        button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        .confirmation {
+            display: none;
+            text-align: center;
+            padding: 55px 30px;
+        }
+
+        .confirmation-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .confirmation.accepted .confirmation-icon {
+            background: #e4f4ea;
+            color: var(--success);
+        }
+
+        .confirmation.declined .confirmation-icon {
+            background: #fae9e9;
+            color: var(--danger);
+        }
+
+        .confirmation h2 {
+            color: var(--green);
+            margin-bottom: 10px;
+        }
+
+        .confirmation p {
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            color: #78827d;
+            font-size: 11px;
+            padding: 25px;
+        }
+
+        @media (max-width: 700px) {
+            .topbar {
+                padding: 17px 18px;
+            }
+
+            .brand-name {
+                font-size: 22px;
+            }
+
+            .page {
+                margin-top: 18px;
+                padding: 0 10px;
+            }
+
+            .quotation-header,
+            .section,
+            .response-section {
+                padding: 23px 20px;
+            }
+
+            .quotation-header-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .quotation-date {
+                text-align: left;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .quotation-title {
+                font-size: 25px;
+            }
+
+            .response-actions {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <div class="brand">
+        <div>
+            <div class="brand-name">THE ROCK</div>
+            <div class="brand-subtitle">PLANNING &amp; LAND USE MANAGEMENT</div>
+        </div>
+    </div>
+</div>
+
+<div class="page">
+
+    <div id="loading" class="loading">
+        Loading quotation...
+    </div>
+
+    <div id="error" class="error" style="display:none;"></div>
+
+    <div id="quotationContainer" class="quotation" style="display:none;">
+
+        <div class="quotation-header">
+            <div class="quotation-header-grid">
+                <div>
+                    <div class="quotation-title">Professional Quotation</div>
+                    <div id="quotationReference" class="quotation-reference"></div>
+                    <div id="quotationStatus" class="status"></div>
+                </div>
+
+                <div class="quotation-date">
+                    <div><strong>Quotation Date</strong></div>
+                    <div id="quotationDate"></div>
+                    <div style="margin-top:8px;">
+                        <strong>Valid Until</strong>
+                    </div>
+                    <div id="expiryDate"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Client &amp; Project</div>
+
+            <div class="details-grid">
+
+                <div>
+                    <div class="detail-label">Client</div>
+                    <div id="clientName" class="detail-value"></div>
+                </div>
+
+                <div>
+                    <div class="detail-label">Application Type</div>
+                    <div id="applicationType" class="detail-value"></div>
+                </div>
+
+                <div>
+                    <div class="detail-label">Email</div>
+                    <div id="clientEmail" class="detail-value"></div>
+                </div>
+
+                <div>
+                    <div class="detail-label">Telephone</div>
+                    <div id="clientPhone" class="detail-value"></div>
+                </div>
+
+                <div>
+                    <div class="detail-label">Project</div>
+                    <div id="projectName" class="detail-value"></div>
+                </div>
+
+                <div>
+                    <div class="detail-label">Erf / Stand</div>
+                    <div id="erfNumber" class="detail-value"></div>
+                </div>
+
+                <div>
+                    <div class="detail-label">Municipality</div>
+                    <div id="municipality" class="detail-value"></div>
+                </div>
+
+                <div>
+                    <div class="detail-label">Province</div>
+                    <div id="province" class="detail-value"></div>
+                </div>
+
+                <div class="full">
+                    <div class="detail-label">Property Description</div>
+                    <div id="propertyDescription" class="detail-value"></div>
+                </div>
+
+                <div class="full">
+                    <div class="detail-label">Project Description</div>
+                    <div id="projectDescription" class="description"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Professional Services</div>
+
+            <div class="details-grid">
+
+                <div>
+                    <div class="detail-label">Complexity</div>
+                    <div id="complexity" class="detail-value"></div>
+                </div>
+
+                <div>
+                    <div class="detail-label">Professional Category</div>
+                    <div id="professionalCategory" class="detail-value"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Professional Fees</div>
+
+            <table class="amount-table">
+                <tr>
+                    <td>Professional Fee</td>
+                    <td id="professionalFee"></td>
+                </tr>
+
+                <tr>
+                    <td>Disbursements</td>
+                    <td id="disbursements"></td>
+                </tr>
+
+                <tr class="subtotal">
+                    <td>Subtotal Excl. VAT</td>
+                    <td id="subtotal"></td>
+                </tr>
+
+                <tr>
+                    <td>VAT</td>
+                    <td id="vat"></td>
+                </tr>
+
+                <tr class="total">
+                    <td>TOTAL INCL. VAT</td>
+                    <td id="total"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Scope of Work</div>
+
+            <div id="scopeOfWork" class="scope-box"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Assumptions &amp; Exclusions</div>
+
+            <div id="assumptions" class="scope-box"></div>
+        </div>
+
+        <div class="section">
+            <div class="validity">
+                <strong>Quotation validity:</strong>
+                This quotation is valid for
+                <span id="validityDays"></span>
+                days from the quotation date.
+                Additional work outside the agreed scope may be separately
+                authorised and charged at the applicable professional rate.
+            </div>
+        </div>
+
+        <div id="responseSection" class="response-section">
+
+            <div class="section-title">Client Response</div>
+
+            <p class="response-intro">
+                Please review the quotation and scope of work carefully.
+                You may accept or decline this quotation below.
+            </p>
+
+            <label for="responseNotes" class="detail-label">
+                Optional comments
+            </label>
+
+            <textarea
+                id="responseNotes"
+                placeholder="Enter any comments or instructions you would like us to note..."
+            ></textarea>
+
+            <div class="response-actions">
+
+                <button
+                    id="acceptButton"
+                    class="accept-btn"
+                    onclick="respondToQuotation('accepted')"
+                >
+                    Accept Quotation
+                </button>
+
+                <button
+                    id="declineButton"
+                    class="decline-btn"
+                    onclick="respondToQuotation('declined')"
+                >
+                    Decline Quotation
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="confirmation" class="confirmation">
+
+            <div id="confirmationIcon" class="confirmation-icon"></div>
+
+            <h2 id="confirmationTitle"></h2>
+
+            <p id="confirmationMessage"></p>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        THE ROCK · PLANNING &amp; LAND USE MANAGEMENT
+    </div>
+
+</div>
+
+<script>
+
+    const SUPABASE_URL =
+        "https://iuwnsrvlmicgdilmrftl.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+        "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+    let quotation = null;
+
+
+    function escapeHtml(value) {
+
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    function money(value) {
+
+        const amount = Number(value || 0);
+
+        return new Intl.NumberFormat("en-ZA", {
+            style: "currency",
+            currency: "ZAR",
+            minimumFractionDigits: 2
+        }).format(amount);
+    }
+
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "—";
+        }
+
+        const date = new Date(value + "T00:00:00");
+
+        if (Number.isNaN(date.getTime())) {
+            return value;
+        }
+
+        return date.toLocaleDateString("en-ZA", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
+    }
+
+
+    function text(value) {
+
+        return escapeHtml(
+            value === null ||
+            value === undefined ||
+            value === ""
+                ? "—"
+                : value
+        );
+    }
+
+
+    function getToken() {
+
+        const params =
+            new URLSearchParams(window.location.search);
+
+        return params.get("token");
+    }
+
+
+    async function loadQuotation() {
+
+        const token = getToken();
+
+        if (!token) {
+
+            showError(
+                "This quotation link is invalid or incomplete."
+            );
+
+            return;
+        }
+
+
+        try {
+
+            const { data, error } =
+                await supabaseClient.rpc(
+                    "get_public_quotation",
+                    {
+                        p_token: token
+                    }
+                );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            if (!data) {
+                throw new Error(
+                    "Quotation could not be found."
+                );
+            }
+
+
+            quotation = data;
+
+            renderQuotation();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showError(
+                error.message ||
+                "Unable to load this quotation."
+            );
+        }
+    }
+
+
+    function renderQuotation() {
+
+        document.getElementById("loading").style.display =
+            "none";
+
+        document.getElementById("quotationContainer").style.display =
+            "block";
+
+
+        document.getElementById("quotationReference").textContent =
+            quotation.quotation_reference || "—";
+
+
+        document.getElementById("quotationDate").textContent =
+            formatDate(quotation.quotation_date);
+
+
+        document.getElementById("expiryDate").textContent =
+            formatDate(quotation.expiry_date);
+
+
+        document.getElementById("quotationStatus").textContent =
+            quotation.status || "sent";
+
+
+        document.getElementById("clientName").innerHTML =
+            text(quotation.client_name);
+
+
+        document.getElementById("clientEmail").innerHTML =
+            text(quotation.client_email);
+
+
+        document.getElementById("clientPhone").innerHTML =
+            text(quotation.client_phone);
+
+
+        document.getElementById("projectName").innerHTML =
+            text(quotation.project_name);
+
+
+        document.getElementById("projectDescription").innerHTML =
+            text(quotation.project_description);
+
+
+        document.getElementById("erfNumber").innerHTML =
+            text(quotation.erf_number);
+
+
+        document.getElementById("propertyDescription").innerHTML =
+            text(quotation.property_description);
+
+
+        document.getElementById("municipality").innerHTML =
+            text(quotation.municipality);
+
+
+        document.getElementById("province").innerHTML =
+            text(quotation.province);
+
+
+        document.getElementById("applicationType").innerHTML =
+            text(quotation.application_type);
+
+
+        document.getElementById("complexity").innerHTML =
+            text(quotation.complexity_level);
+
+
+        document.getElementById("professionalCategory").innerHTML =
+            text(quotation.professional_category);
+
+
+        document.getElementById("professionalFee").textContent =
+            money(quotation.professional_fee);
+
+
+        document.getElementById("disbursements").textContent =
+            money(quotation.disbursements);
+
+
+        document.getElementById("subtotal").textContent =
+            money(quotation.subtotal_excl_vat);
+
+
+        document.getElementById("vat").textContent =
+            money(quotation.vat_amount);
+
+
+        document.getElementById("total").textContent =
+            money(quotation.total_amount);
+
+
+        document.getElementById("scopeOfWork").textContent =
+            quotation.scope_of_work || "No scope specified.";
+
+
+        document.getElementById("assumptions").textContent =
+            quotation.assumptions_exclusions ||
+            "No additional assumptions or exclusions specified.";
+
+
+        document.getElementById("validityDays").textContent =
+            quotation.validity_days || 14;
+
+
+        handleExistingResponse();
+    }
+
+
+    function handleExistingResponse() {
+
+        const status =
+            String(quotation.status || "").toLowerCase();
+
+
+        if (
+            status === "accepted" ||
+            status === "declined"
+        ) {
+
+            document.getElementById("responseSection").style.display =
+                "none";
+
+
+            showConfirmation(
+                status,
+                quotation.client_response_at
+            );
+        }
+    }
+
+
+    async function respondToQuotation(response) {
+
+        const token = getToken();
+
+        if (!token) {
+            showError(
+                "This quotation link is invalid."
+            );
+            return;
+        }
+
+
+        const notes =
+            document.getElementById("responseNotes").value
+                .trim();
+
+
+        const acceptButton =
+            document.getElementById("acceptButton");
+
+        const declineButton =
+            document.getElementById("declineButton");
+
+
+        acceptButton.disabled = true;
+        declineButton.disabled = true;
+
+
+        const originalAcceptText =
+            acceptButton.textContent;
+
+        const originalDeclineText =
+            declineButton.textContent;
+
+
+        if (response === "accepted") {
+            acceptButton.textContent =
+                "Processing...";
+        } else {
+            declineButton.textContent =
+                "Processing...";
+        }
+
+
+        try {
+
+            const { data, error } =
+                await supabaseClient.rpc(
+                    "respond_to_quotation",
+                    {
+                        p_token: token,
+                        p_response: response,
+                        p_notes: notes || null
+                    }
+                );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            if (!data || data.success !== true) {
+                throw new Error(
+                    "The quotation response could not be recorded."
+                );
+            }
+
+
+            document.getElementById("responseSection").style.display =
+                "none";
+
+
+            showConfirmation(
+                response,
+                data.responded_at
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                error.message ||
+                "Unable to record your response."
+            );
+
+
+            acceptButton.disabled = false;
+            declineButton.disabled = false;
+
+            acceptButton.textContent =
+                originalAcceptText;
+
+            declineButton.textContent =
+                originalDeclineText;
+        }
+    }
+
+
+    function showConfirmation(response, respondedAt) {
+
+        const confirmation =
+            document.getElementById("confirmation");
+
+        const icon =
+            document.getElementById("confirmationIcon");
+
+        const title =
+            document.getElementById("confirmationTitle");
+
+        const message =
+            document.getElementById("confirmationMessage");
+
+
+        confirmation.style.display = "block";
+
+
+        if (response === "accepted") {
+
+            confirmation.className =
+                "confirmation accepted";
+
+            icon.textContent = "✓";
+
+            title.textContent =
+                "Quotation Accepted";
+
+            message.textContent =
+                "Thank you. Your acceptance of quotation " +
+                (quotation?.quotation_reference || "") +
+                " has been recorded successfully. " +
+                "THE ROCK will proceed with the next stage of the professional engagement.";
+
+        } else {
+
+            confirmation.className =
+                "confirmation declined";
+
+            icon.textContent = "×";
+
+            title.textContent =
+                "Quotation Declined";
+
+            message.textContent =
+                "Your response has been recorded. " +
+                "Thank you for considering THE ROCK for your planning and land use management requirements.";
+        }
+    }
+
+
+    function showError(message) {
+
+        document.getElementById("loading").style.display =
+            "none";
+
+        const error =
+            document.getElementById("error");
+
+        error.textContent = message;
+
+        error.style.display = "block";
+    }
+
+
+    loadQuotation();
+
+</script>
+
+</body>
+</html>
