@@ -97,6 +97,14 @@ window.location.href=`mailto:${encodeURIComponent(email)}?subject=${subject}&bod
 }
 
 async function createMandateFromQuotation(){
+try{
+  const {data:debug,error:debugError}=await supabaseClient.rpc("debug_professional_session");
+  if(debugError){ console.error("Professional session diagnostic:",debugError); alert("Session diagnostic failed: "+debugError.message); return; }
+  console.log("THE ROCK professional session diagnostic:",debug);
+  alert("Session diagnostic\n\nAuth UID: "+(debug?.auth_uid||"NULL")+"\nProfile exists: "+debug?.profile_exists+"\nProfile active: "+debug?.profile_active);
+  if(!debug?.auth_uid || !debug?.profile_active) return;
+}catch(e){ console.error(e); alert("Session diagnostic error: "+e.message); return; }
+
 if(!currentQuotation||String(currentQuotation.status||"").toLowerCase()!=="accepted")return alert("A mandate can only be created after the quotation has been accepted by the client.");
 const {data:existing,error:lookupError}=await supabaseClient.from("mandates").select("*").eq("quotation_id",currentQuotation.id).limit(1);
 if(lookupError)return alert("Unable to check for an existing mandate: "+lookupError.message);
