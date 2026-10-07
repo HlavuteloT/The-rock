@@ -97,24 +97,14 @@ window.location.href=`mailto:${encodeURIComponent(email)}?subject=${subject}&bod
 }
 
 async function createMandateFromQuotation(){
-try{
-  const {data:debug,error:debugError}=await supabaseClient.rpc("debug_professional_session");
-  if(debugError){ console.error("Professional session diagnostic:",debugError); alert("Session diagnostic failed: "+debugError.message); return; }
-  console.log("THE ROCK professional session diagnostic:",debug);
-  alert("Session diagnostic\n\nAuth UID: "+(debug?.auth_uid||"NULL")+"\nProfile exists: "+debug?.profile_exists+"\nProfile active: "+debug?.profile_active);
-  if(!debug?.auth_uid || !debug?.profile_active) return;
-}catch(e){ console.error(e); alert("Session diagnostic error: "+e.message); return; }
-
 if(!currentQuotation||String(currentQuotation.status||"").toLowerCase()!=="accepted")return alert("A mandate can only be created after the quotation has been accepted by the client.");
-const {data:existing,error:lookupError}=await supabaseClient.from("mandates").select("*").eq("quotation_id",currentQuotation.id).limit(1);
-if(lookupError)return alert("Unable to check for an existing mandate: "+lookupError.message);
-if(existing?.length){alert("A mandate already exists for this quotation: "+(existing[0].mandate_reference||""));return;}
-const {data,error}=await supabaseClient.from("mandates").insert({quotation_id:currentQuotation.id,application_id:currentApplication.id,client_name:currentQuotation.client_name,client_email:currentQuotation.client_email,client_phone:currentQuotation.client_phone,project_name:currentQuotation.project_name,property_description:currentQuotation.property_description||currentApplication.property_description,erf_number:currentQuotation.erf_number||currentApplication.erf_number,suburb:currentQuotation.suburb||currentApplication.suburb,municipality:currentQuotation.municipality||currentApplication.municipality,province:currentQuotation.province||currentApplication.province,application_type:currentQuotation.application_type,complexity_level:currentQuotation.complexity_level,professional_category:currentQuotation.professional_category,professional_fee:currentQuotation.professional_fee,disbursements:currentQuotation.disbursements,subtotal_excl_vat:currentQuotation.subtotal_excl_vat,vat_amount:currentQuotation.vat_amount||currentQuotation.vat,total_amount:currentQuotation.total_amount||currentQuotation.total_inclu_vat,scope_of_work:currentQuotation.scope_of_work,assumptions_exclusions:currentQuotation.assumptions_exclusions,status:"draft",created_by:currentUser.id,assigned_planner:currentUser.id}).select("*").single();
+if(!currentApplication?.id)return alert("Unable to create mandate: the current application could not be identified.");
+const {data,error}=await supabaseClient.rpc("create_mandate_from_quotation",{p_quotation_id:currentQuotation.id,p_application_id:currentApplication.id});
 if(error){console.error(error);return alert("Unable to create mandate: "+error.message);}
-await supabaseClient.from("applications").update({status:"mandate",assigned_planner:currentUser.id}).eq("id",currentApplication.id);
+if(!data?.success)return alert("Unable to create mandate: The mandate could not be created.");
 currentApplication.status="mandate";
 renderQuotation(currentQuotation);
-alert("Mandate created successfully: "+(data.mandate_reference||""));
+alert(data.existing?"A mandate already exists for this quotation: "+(data.mandate_reference||""):"Mandate created successfully: "+(data.mandate_reference||""));
 }
 
 function calculateQuotationPreview(){const f=roundMoney(Number(document.getElementById("quotationProfessionalFee")?.value)||0),d=roundMoney(Number(document.getElementById("quotationDisbursements")?.value)||0),s=roundMoney(f+d),rate=Number(currentQuotation?.vat_rate??15)||15,v=roundMoney(s*rate/100),t=roundMoney(s+v);document.getElementById("quotationSubtotalPreview").textContent=formatMoney(s);document.getElementById("quotationVatPreview").textContent=formatMoney(v);document.getElementById("quotationTotalPreview").textContent=formatMoney(t)}
