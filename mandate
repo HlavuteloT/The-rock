@@ -1,0 +1,782 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE ROCK | Professional Mandate</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --green: #183c2c;
+  --gold: #b58a45;
+  --background: #f5f7f6;
+  --border: #e1e6e3;
+  --text: #26352d;
+  --muted: #69756e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+header {
+  background: var(--green);
+  color: white;
+  border-bottom: 4px solid var(--gold);
+  padding: 25px 20px;
+}
+
+.header-inner {
+  max-width: 1050px;
+  margin: auto;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #d6e3da;
+}
+
+.container {
+  max-width: 1050px;
+  margin: 30px auto;
+  padding: 0 18px 50px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  background: #fafcfb;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--green);
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--green);
+}
+
+.reference {
+  color: var(--gold);
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: #e9f0eb;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.field-label {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: .5px;
+}
+
+.field-value {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.text-box {
+  background: #fafcfb;
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+.money-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.money-row.total {
+  font-size: 21px;
+  color: var(--green);
+  font-weight: bold;
+  border-bottom: none;
+}
+
+.notice {
+  background: #edf5ef;
+  border-left: 4px solid var(--green);
+  padding: 16px;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+.warning {
+  background: #fff8e9;
+  border-left: 4px solid var(--gold);
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 22px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cdd7d0;
+  border-radius: 7px;
+  font: inherit;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.checkbox-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+
+.checkbox-row input {
+  margin-top: 5px;
+}
+
+.button {
+  background: var(--green);
+  color: white;
+  border: none;
+  padding: 14px 22px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.button:hover {
+  background: #285640;
+}
+
+.button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.error {
+  padding: 18px;
+  background: #fff0ef;
+  color: #a32020;
+  border-radius: 7px;
+}
+
+.success {
+  padding: 25px;
+  text-align: center;
+  background: #edf7ef;
+  border-radius: 8px;
+}
+
+.success h2 {
+  color: var(--green);
+}
+
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: var(--muted);
+}
+
+.small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 25px;
+  font-size: 12px;
+}
+
+@media(max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+  .full { grid-column: auto; }
+  .hero { display: block; }
+  .hero .badge { margin-top: 15px; }
+  .card-body { padding: 18px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">THE ROCK</div>
+    <div class="subtitle">
+      PLANNING & LAND USE MANAGEMENT
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div id="mandatePage" class="loading">
+    Loading professional mandate...
+  </div>
+</main>
+
+<footer>
+  THE ROCK — Planning & Land Use Management
+</footer>
+
+<script>
+const SUPABASE_URL =
+  "https://iuwnsrvlmicgdilmrftl.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const mandateToken = new URLSearchParams(
+  window.location.search
+).get("token");
+
+let currentMandate = null;
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(
+    /[&<>"']/g,
+    character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]
+  );
+}
+
+function money(value) {
+  return "R " + Number(value || 0).toLocaleString(
+    "en-ZA",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }
+  );
+}
+
+function formatDate(value) {
+  if (!value) return "Not specified";
+
+  const d = new Date(
+    String(value).length === 10
+      ? value + "T00:00:00"
+      : value
+  );
+
+  return isNaN(d.getTime())
+    ? String(value)
+    : d.toLocaleDateString("en-ZA", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+}
+
+function field(label, value) {
+  return `
+    <div>
+      <div class="field-label">
+        ${escapeHtml(label)}
+      </div>
+      <div class="field-value">
+        ${escapeHtml(value ?? "Not provided")}
+      </div>
+    </div>
+  `;
+}
+
+function textSection(title, content) {
+  if (!content) return "";
+
+  return `
+    <section class="card">
+      <div class="card-header">
+        <h2>${escapeHtml(title)}</h2>
+      </div>
+      <div class="card-body">
+        <div class="text-box">
+          ${escapeHtml(content)}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderMandate(m) {
+  const container = document.getElementById(
+    "mandatePage"
+  );
+
+  container.className = "";
+
+  const status = String(
+    m.status || ""
+  ).toLowerCase();
+
+  const accepted =
+    m.client_response_status === "accepted" ||
+    status === "signed" ||
+    status === "active" ||
+    status === "completed";
+
+  const canAccept =
+    status === "issued" && !accepted;
+
+  container.innerHTML = `
+    <section class="card">
+      <div class="card-body">
+        <div class="hero">
+          <div>
+            <h1>Professional Mandate</h1>
+            <div class="reference">
+              ${escapeHtml(m.mandate_reference)}
+            </div>
+          </div>
+          <span class="badge">
+            ${escapeHtml(m.status)}
+          </span>
+        </div>
+
+        <div class="notice">
+          This mandate records the appointment of
+          THE ROCK — Planning & Land Use Management
+          for the professional services described
+          below. It must be read together with the
+          accepted professional quotation.
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>Appointment Details</h2>
+      </div>
+      <div class="card-body">
+        <div class="grid">
+          ${field("Mandate Reference", m.mandate_reference)}
+          ${field("Mandate Date", formatDate(m.mandate_date))}
+          ${field("Client Name", m.client_name)}
+          ${field("Client Email", m.client_email)}
+          ${field("Application Type", m.application_type)}
+          ${field("Complexity", m.complexity_level)}
+          ${field("Professional Category", m.professional_category)}
+          ${field("Project", m.project_name)}
+          ${field("Commencement Date", formatDate(m.commencement_date))}
+          ${field("Completion Date", formatDate(m.completion_date))}
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>Property Information</h2>
+      </div>
+      <div class="card-body">
+        <div class="grid">
+          ${field("Erf / Property Reference", m.erf_number)}
+          ${field("Suburb", m.suburb)}
+          ${field("Municipality", m.municipality)}
+          ${field("Province", m.province)}
+
+          <div class="full">
+            <div class="field-label">
+              Property Description
+            </div>
+            <div class="text-box">
+              ${escapeHtml(m.property_description || "Not provided")}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    ${textSection(
+      "Scope of Professional Services",
+      m.scope_of_work
+    )}
+
+    ${textSection(
+      "Assumptions and Exclusions",
+      m.assumptions_exclusions
+    )}
+
+    <section class="card">
+      <div class="card-header">
+        <h2>Professional Fees</h2>
+      </div>
+      <div class="card-body">
+
+        <div class="money-row">
+          <span>Professional Fee</span>
+          <strong>${money(m.professional_fee)}</strong>
+        </div>
+
+        <div class="money-row">
+          <span>Disbursements</span>
+          <strong>${money(m.disbursements)}</strong>
+        </div>
+
+        <div class="money-row">
+          <span>Subtotal Excluding VAT</span>
+          <strong>${money(m.subtotal_excl_vat)}</strong>
+        </div>
+
+        <div class="money-row">
+          <span>VAT</span>
+          <strong>${money(m.vat_amount)}</strong>
+        </div>
+
+        <div class="money-row total">
+          <span>Total Professional Fees</span>
+          <strong>${money(m.total_amount)}</strong>
+        </div>
+
+        <p class="small">
+          Payment arrangements, exclusions and
+          additional services remain subject to
+          the accepted quotation and any agreed
+          written variations.
+        </p>
+      </div>
+    </section>
+
+    ${
+      accepted
+      ? `
+        <section class="card">
+          <div class="card-body">
+            <div class="success">
+              <h2>Mandate Signed</h2>
+
+              <p>
+                This mandate has been electronically
+                accepted and recorded.
+              </p>
+
+              <p>
+                <strong>Signed By:</strong>
+                ${escapeHtml(m.client_signed_name || "Client")}
+              </p>
+
+              <p>
+                <strong>Date:</strong>
+                ${escapeHtml(formatDate(m.client_signed_at))}
+              </p>
+            </div>
+          </div>
+        </section>
+      `
+      : canAccept
+      ? `
+        <section class="card">
+          <div class="card-header">
+            <h2>Client Acceptance & Electronic Signature</h2>
+          </div>
+
+          <div class="card-body">
+
+            <div class="warning">
+              By accepting this mandate, you confirm
+              that you have reviewed the appointment,
+              professional scope, financial terms and
+              assumptions or exclusions, together
+              with the accepted quotation.
+            </div>
+
+            <div class="form-group">
+              <label for="signedName">
+                Client Full Name
+              </label>
+
+              <input
+                type="text"
+                id="signedName"
+                autocomplete="name"
+                placeholder="Enter your full name"
+                value="${escapeHtml(m.client_name || "")}"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="clientNotes">
+                Client Comments (Optional)
+              </label>
+
+              <textarea
+                id="clientNotes"
+                placeholder="Enter any comments"
+              ></textarea>
+            </div>
+
+            <div class="checkbox-row">
+              <input
+                type="checkbox"
+                id="agreementCheckbox"
+              >
+
+              <label for="agreementCheckbox">
+                I confirm that I have read and
+                understood the mandate and accepted
+                quotation, and I agree to appoint
+                THE ROCK to undertake the stated
+                professional services.
+              </label>
+            </div>
+
+            <button
+              class="button"
+              id="acceptButton"
+              onclick="acceptMandate()"
+            >
+              Accept & Sign Mandate
+            </button>
+
+            <div
+              id="acceptanceMessage"
+              style="margin-top:18px"
+            ></div>
+          </div>
+        </section>
+      `
+      : `
+        <section class="card">
+          <div class="card-body">
+            <div class="warning">
+              This mandate is currently
+              <strong>${escapeHtml(m.status)}</strong>
+              and is not available for client acceptance.
+            </div>
+          </div>
+        </section>
+      `
+    }
+  `;
+}
+
+async function loadMandate() {
+  const container = document.getElementById(
+    "mandatePage"
+  );
+
+  if (!mandateToken) {
+    container.className = "";
+    container.innerHTML = `
+      <div class="error">
+        Invalid mandate link. No acceptance token
+        was provided.
+      </div>
+    `;
+    return;
+  }
+
+  try {
+    const { data, error } = await supabaseClient.rpc(
+      "get_public_mandate",
+      {
+        p_token: mandateToken
+      }
+    );
+
+    if (error) throw error;
+
+    if (!data || !data.mandate_reference) {
+      throw new Error(
+        "The requested mandate could not be found."
+      );
+    }
+
+    currentMandate = data;
+    renderMandate(data);
+
+  } catch (error) {
+    console.error("Mandate loading error:", error);
+
+    container.className = "";
+    container.innerHTML = `
+      <div class="error">
+        Unable to load mandate.
+        ${escapeHtml(error.message || "")}
+      </div>
+    `;
+  }
+}
+
+async function acceptMandate() {
+  if (!currentMandate) return;
+
+  const signedName = document.getElementById(
+    "signedName"
+  ).value.trim();
+
+  const notes = document.getElementById(
+    "clientNotes"
+  ).value.trim();
+
+  const agreed = document.getElementById(
+    "agreementCheckbox"
+  ).checked;
+
+  const button = document.getElementById(
+    "acceptButton"
+  );
+
+  const message = document.getElementById(
+    "acceptanceMessage"
+  );
+
+  if (!signedName) {
+    message.innerHTML = `
+      <div class="error">
+        Please enter your full name.
+      </div>
+    `;
+    return;
+  }
+
+  if (!agreed) {
+    message.innerHTML = `
+      <div class="error">
+        Please confirm your agreement
+        before signing.
+      </div>
+    `;
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Recording Acceptance...";
+
+  try {
+    const { data, error } = await supabaseClient.rpc(
+      "respond_to_mandate",
+      {
+        p_token: mandateToken,
+        p_response: "accepted",
+        p_signed_name: signedName,
+        p_notes: notes || null
+      }
+    );
+
+    if (error) throw error;
+
+    if (!data || !data.success) {
+      throw new Error(
+        "The mandate could not be signed."
+      );
+    }
+
+    // Reload the authoritative signed record
+    // from Supabase rather than assuming success
+    // from the browser's local state.
+    await loadMandate();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  } catch (error) {
+    console.error("Mandate acceptance error:", error);
+
+    message.innerHTML = `
+      <div class="error">
+        Unable to record mandate acceptance.
+        ${escapeHtml(error.message || "")}
+      </div>
+    `;
+
+    button.disabled = false;
+    button.textContent = "Accept & Sign Mandate";
+  }
+}
+
+loadMandate();
+</script>
+
+</body>
+</html>
