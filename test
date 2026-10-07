@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,130 +15,2700 @@ button,input,select,textarea{font-family:inherit}.login-screen{visibility:hidden
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:25px}.stat-card,.content-card,.pipeline-card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 3px 12px rgba(0,0,0,.03)}.stat-card{padding:22px}.stat-card .label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase}.stat-card .value{font-size:31px;color:var(--green);font-weight:800;margin-top:8px}.content-card{padding:22px;margin-bottom:22px}.content-card h3{margin:0 0 18px;color:var(--green-dark);font-size:18px}.table-wrapper{width:100%;overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:750px}th{text-align:left;padding:12px;background:#f7f8f8;color:#59636e;font-size:11px;text-transform:uppercase;border-bottom:1px solid var(--border)}td{padding:14px 12px;border-bottom:1px solid #edf0f1;font-size:13px;vertical-align:top}tr:hover td{background:#fafcfb}.reference-link{color:var(--green);font-weight:800;text-decoration:none}.reference-link:hover{text-decoration:underline}
 .badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}.badge-green{background:#e7f5ec;color:#176b3a}.badge-gold{background:#fbf3d5;color:#806000}.badge-blue{background:#e8f1fb;color:#245d91}.badge-red{background:#fcebea;color:#a32017}.badge-gray{background:#eef0f2;color:#59636e}.pipeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.pipeline-card{padding:18px}.pipeline-card h4{margin:0;font-size:13px;color:var(--muted)}.pipeline-number{font-size:27px;font-weight:800;color:var(--green);margin-top:8px}
 .case-header{background:var(--green-dark);color:#fff;padding:22px;border-radius:12px 12px 0 0}.case-header h3{margin:0 0 6px;font-size:22px}.case-header p{margin:0;color:#d6e3dc;font-size:13px}.case-body{background:#fff;border:1px solid var(--border);border-top:0;padding:25px;border-radius:0 0 12px 12px}.case-section{margin-bottom:30px}.case-section-title{font-size:15px;color:var(--green-dark);font-weight:800;border-bottom:1px solid var(--border);padding-bottom:9px;margin-bottom:18px}.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.info-item{background:#f8faf9;border:1px solid #edf0ee;border-radius:8px;padding:13px}.info-label{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:6px}.info-value{font-size:13px;font-weight:600;line-height:1.45;word-break:break-word}.case-actions{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:25px;padding-top:20px;border-top:1px solid var(--border)}.save-area{display:flex;flex-direction:column;align-items:flex-end}#caseSaveMessage,#quotationSaveMessage{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;background:#eaf7ef;color:#176b3a;font-size:13px;font-weight:600}.notes-textarea{min-height:150px;resize:vertical;line-height:1.5}
-.quotation-card{border:1px solid var(--border);border-radius:12px;background:#fff;overflow:hidden}.quotation-header{background:#f8f6ef;border-bottom:1px solid var(--border);padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:15px}.quotation-header h4{margin:0;color:var(--green-dark);font-size:17px}.quotation-reference{font-size:13px;font-weight:800;color:var(--green);margin-top:5px}.quotation-body{padding:20px}.quotation-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.quotation-financials{margin-top:20px;border:1px solid var(--border);border-radius:10px;overflow:hidden}.financial-row{display:flex;justify-content:space-between;padding:13px 16px;border-bottom:1px solid #edf0f1;font-size:14px}.financial-row.total{background:var(--green-dark);color:#fff;font-size:18px;font-weight:800;border:0}.financial-label,.financial-value{font-weight:700}.quotation-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}.quotation-client-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.quotation-link-box{display:flex;gap:8px;margin-top:12px}.quotation-link-box input{flex:1}.quotation-response{margin-top:15px;padding:13px;border:1px solid var(--border);border-radius:8px;background:#fafbfb;font-size:13px}.mandate-card{margin-top:18px;padding:16px;border:1px solid var(--border);border-radius:10px;background:#f8faf9}.quotation-note{background:#f8faf9;border:1px solid #edf0ee;border-radius:8px;padding:13px;font-size:12px;color:var(--muted);line-height:1.5;margin-top:15px}.quotation-empty{padding:25px;background:#fafbfb;border:1px dashed var(--border);border-radius:10px;text-align:center}.quotation-empty h4{margin:0 0 8px;color:var(--green-dark)}.quotation-empty p{margin:0 0 18px;color:var(--muted);font-size:13px}.money-input{font-weight:700}.loading,.empty{text-align:center;color:var(--muted);padding:30px}.empty{background:#fafbfb;border-radius:8px}.error-box{padding:14px;background:#fcebea;color:var(--danger);border-radius:8px;font-size:13px;margin-bottom:15px}
+.quotation-card{border:1px solid var(--border);border-radius:12px;background:#fff;overflow:hidden}.quotation-header{background:#f8f6ef;border-bottom:1px solid var(--border);padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:15px}.quotation-header h4{margin:0;color:var(--green-dark);font-size:17px}.quotation-reference{font-size:13px;font-weight:800;color:var(--green);margin-top:5px}.quotation-body{padding:20px}.quotation-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.quotation-financials{margin-top:20px;border:1px solid var(--border);border-radius:10px;overflow:hidden}.financial-row{display:flex;justify-content:space-between;padding:13px 16px;border-bottom:1px solid #edf0f1;font-size:14px}.financial-row.total{background:var(--green-dark);color:#fff;font-size:18px;font-weight:800;border:0}.financial-label,.financial-value{font-weight:700}.quotation-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}.quotation-note{background:#f8faf9;border:1px solid #edf0ee;border-radius:8px;padding:13px;font-size:12px;color:var(--muted);line-height:1.5;margin-top:15px}.quotation-empty{padding:25px;background:#fafbfb;border:1px dashed var(--border);border-radius:10px;text-align:center}.quotation-empty h4{margin:0 0 8px;color:var(--green-dark)}.quotation-empty p{margin:0 0 18px;color:var(--muted);font-size:13px}.money-input{font-weight:700}.loading,.empty{text-align:center;color:var(--muted);padding:30px}.empty{background:#fafbfb;border-radius:8px}.error-box{padding:14px;background:#fcebea;color:var(--danger);border-radius:8px;font-size:13px;margin-bottom:15px}
 @media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}.pipeline-grid{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:800px){.sidebar{width:190px}.main{margin-left:190px;width:calc(100% - 190px);padding:20px}.user-email{display:none}.quotation-grid{grid-template-columns:1fr}}@media(max-width:650px){.topbar{padding:0 15px}.brand span{display:none}.sidebar{position:static;width:100%;height:auto;border:0;border-bottom:1px solid var(--border)}.layout{display:block}.main{margin-left:0;width:100%}.stats-grid,.pipeline-grid,.info-grid{grid-template-columns:1fr}.page-header{display:block}.case-actions,.quotation-actions{display:block}.save-area{align-items:stretch;margin-top:15px}.quotation-actions button{width:100%;margin-bottom:8px}.quotation-header{display:block}}
-body.auth-ready #loginScreen{visibility:visible}</style>
+body.auth-ready #loginScreen{visibility:visible}
+</style>
 </head>
+
 <body>
-<div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
+
+<div id="loginScreen" class="login-screen">
+<div class="login-card">
+<div class="login-logo">
+<h1>THE ROCK</h1>
+<p>PROFESSIONAL PLANNING PORTAL</p>
+</div>
+
+<form id="loginForm">
+<div class="form-group">
+<label>Professional Email</label>
+<input type="email" id="loginEmail" class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="loginPassword" class="form-control" required>
+</div>
+
+<button id="loginButton" class="button button-primary" style="width:100%">Sign In</button>
+<div id="loginMessage" class="login-message"></div>
+</form>
+</div>
+</div>
+
 <div id="app" class="app">
-<header class="topbar"><div class="brand"><h1>THE ROCK</h1><span>PLANNING & LAND USE MANAGEMENT</span></div><div class="user-area"><span id="userEmail" class="user-email"></span><button class="logout-button" onclick="logout()">Sign Out</button></div></header>
-<div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
+
+<header class="topbar">
+<div class="brand">
+<h1>THE ROCK</h1>
+<span>PLANNING & LAND USE MANAGEMENT</span>
+</div>
+
+<div class="user-area">
+<span id="userEmail" class="user-email"></span>
+<button class="logout-button" onclick="logout()">Sign Out</button>
+</div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<div class="nav-label">Workspace</div>
+
+<button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">
+Dashboard
+</button>
+
+<button id="navApplications" class="nav-button" onclick="showSection('applications',this)">
+Applications
+</button>
+
+<button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">
+Enquiries
+</button>
+
+<button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">
+Pipeline
+</button>
+
+<div class="nav-label" style="margin-top:20px">Case Management</div>
+
+<button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">
+Current Case
+</button>
+
+</aside>
+
 <main class="main">
-<section id="dashboard" class="section active"><div class="page-header"><div><h2>Professional Dashboard</h2><p>Manage planning applications, enquiries and active projects.</p></div></div><div class="stats-grid"><div class="stat-card"><div class="label">New Applications</div><div id="statNew" class="value">0</div></div><div class="stat-card"><div class="label">Total Applications</div><div id="statTotal" class="value">0</div></div><div class="stat-card"><div class="label">Active Projects</div><div id="statActive" class="value">0</div></div><div class="stat-card"><div class="label">Completed</div><div id="statCompleted" class="value">0</div></div></div><div class="content-card"><h3>Recent Applications</h3><div id="recentApplications" class="table-wrapper"><div class="loading">Loading applications...</div></div></div><div class="content-card"><h3>Pipeline Overview</h3><div id="dashboardPipeline" class="pipeline-grid"><div class="loading">Loading pipeline...</div></div></div></section>
-<section id="applications" class="section"><div class="page-header"><div><h2>Applications</h2><p>Review and manage planning applications.</p></div></div><div class="content-card"><div id="applicationsTable" class="table-wrapper"><div class="loading">Loading applications...</div></div></div></section>
-<section id="enquiries" class="section"><div class="page-header"><div><h2>Client Enquiries</h2><p>Review incoming planning enquiries.</p></div></div><div class="content-card"><div id="enquiriesTable" class="table-wrapper"><div class="loading">Loading enquiries...</div></div></div></section>
-<section id="pipeline" class="section"><div class="page-header"><div><h2>Project Pipeline</h2><p>Track applications through the planning process.</p></div></div><div id="pipelineSummary" class="pipeline-grid" style="margin-bottom:25px"><div class="loading">Loading pipeline...</div></div><div class="content-card"><div id="fullPipeline" class="table-wrapper"><div class="loading">Loading pipeline applications...</div></div></div></section>
-<section id="caseFile" class="section"><div id="caseFileContainer"><div class="content-card"><div class="empty">Select an application to open its case file.</div></div></div></section>
-</main></div></div>
+
+<section id="dashboard" class="section active">
+
+<div class="page-header">
+<div>
+<h2>Professional Dashboard</h2>
+<p>Manage planning applications, enquiries and active projects.</p>
+</div>
+</div>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+<div class="label">New Applications</div>
+<div id="statNew" class="value">0</div>
+</div>
+
+<div class="stat-card">
+<div class="label">Total Applications</div>
+<div id="statTotal" class="value">0</div>
+</div>
+
+<div class="stat-card">
+<div class="label">Active Projects</div>
+<div id="statActive" class="value">0</div>
+</div>
+
+<div class="stat-card">
+<div class="label">Completed</div>
+<div id="statCompleted" class="value">0</div>
+</div>
+
+</div>
+
+<div class="content-card">
+<h3>Recent Applications</h3>
+<div id="recentApplications" class="table-wrapper">
+<div class="loading">Loading applications...</div>
+</div>
+</div>
+
+<div class="content-card">
+<h3>Pipeline Overview</h3>
+<div id="dashboardPipeline" class="pipeline-grid">
+<div class="loading">Loading pipeline...</div>
+</div>
+</div>
+
+</section>
+
+<section id="applications" class="section">
+
+<div class="page-header">
+<div>
+<h2>Applications</h2>
+<p>Review and manage planning applications.</p>
+</div>
+</div>
+
+<div class="content-card">
+<div id="applicationsTable" class="table-wrapper">
+<div class="loading">Loading applications...</div>
+</div>
+</div>
+
+</section>
+
+<section id="enquiries" class="section">
+
+<div class="page-header">
+<div>
+<h2>Client Enquiries</h2>
+<p>Review incoming planning enquiries.</p>
+</div>
+</div>
+
+<div class="content-card">
+<div id="enquiriesTable" class="table-wrapper">
+<div class="loading">Loading enquiries...</div>
+</div>
+</div>
+
+</section>
+
+<section id="pipeline" class="section">
+
+<div class="page-header">
+<div>
+<h2>Project Pipeline</h2>
+<p>Track applications through the planning process.</p>
+</div>
+</div>
+
+<div id="pipelineSummary" class="pipeline-grid" style="margin-bottom:25px">
+<div class="loading">Loading pipeline...</div>
+</div>
+
+<div class="content-card">
+<div id="fullPipeline" class="table-wrapper">
+<div class="loading">Loading pipeline applications...</div>
+</div>
+</div>
+
+</section>
+
+<section id="caseFile" class="section">
+
+<div id="caseFileContainer">
+<div class="content-card">
+<div class="empty">Select an application to open its case file.</div>
+</div>
+</div>
+
+</section>
+
+</main>
+</div>
+</div>
+
 <script>
+
 const SUPABASE_URL="https://iuwnsrvlmicgdilmrftl.supabase.co";
 const SUPABASE_KEY="sb_publishable_CvVdn1WTABUr-i_tGPoJHA_kYsfkCaD";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let currentUser=null,currentProfile=null,currentApplication=null,currentQuotation=null;
 
-function showLoginScreen(message=""){document.body.classList.add("auth-ready");document.getElementById("app").style.display="none";document.getElementById("loginScreen").style.display="flex";if(message)showLoginError(message)}
-function showProfessionalApp(){document.body.classList.add("auth-ready");document.getElementById("loginScreen").style.display="none";document.getElementById("app").style.display="block"}
-async function startProfessionalPortal(){try{const {data:{session},error}=await supabaseClient.auth.getSession();if(error)throw error;if(session){await verifyProfessional(session.user)}else{showLoginScreen()}}catch(error){console.error("Session initialization error:",error);showLoginScreen("Unable to restore your session. Please sign in again.")}}
-async function verifyProfessional(user){currentUser=user;const {data:profile,error}=await supabaseClient.from("professional_profiles").select("*").eq("id",user.id).eq("active",true).maybeSingle();if(error){await supabaseClient.auth.signOut();showLoginScreen("Unable to verify professional access.");return}if(!profile){await supabaseClient.auth.signOut();showLoginScreen("Professional access has not been activated for this account.");return}currentProfile=profile;showProfessionalApp();document.getElementById("userEmail").textContent=user.email||"";await loadDashboard()}
-document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value,button=document.getElementById("loginButton");button.disabled=true;button.textContent="Signing in...";clearLoginMessage();const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){showLoginError(error.message);button.disabled=false;button.textContent="Sign In";return}await verifyProfessional(data.user);button.disabled=false;button.textContent="Sign In"});
-async function logout(){await supabaseClient.auth.signOut();currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen()}
-supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen();return}if(event==="SIGNED_IN"&&session){if(!currentUser||currentUser.id!==session.user.id)await verifyProfessional(session.user)}});
-function showLoginError(message){const b=document.getElementById("loginMessage");b.textContent=message;b.className="login-message error"}function clearLoginMessage(){const b=document.getElementById("loginMessage");b.textContent="";b.className="login-message"}
-function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}}
-async function loadDashboard(){await loadApplicationStats();await loadRecentApplications();await loadPipelineSummary("dashboardPipeline")}
-async function loadApplicationStats(){const {data,error}=await supabaseClient.from("applications").select("status");if(error)return console.error(error);const a=data||[],newA=a.filter(x=>(x.status||"").toLowerCase()==="new").length,completed=a.filter(x=>(x.status||"").toLowerCase()==="completed").length,active=a.filter(x=>{const s=(x.status||"").toLowerCase();return s!=="new"&&s!=="completed"&&s!==""}).length;document.getElementById("statNew").textContent=newA;document.getElementById("statTotal").textContent=a.length;document.getElementById("statActive").textContent=active;document.getElementById("statCompleted").textContent=completed}
-async function loadRecentApplications(){const c=document.getElementById("recentApplications"),{data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false}).limit(8);if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}c.innerHTML=data&&data.length?buildApplicationsTable(data):'<div class="empty">No applications have been received yet.</div>'}
-async function loadApplications(){const c=document.getElementById("applicationsTable");c.innerHTML='<div class="loading">Loading applications...</div>';const {data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false});if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}c.innerHTML=data&&data.length?buildApplicationsTable(data):'<div class="empty">No applications found.</div>'}
-function buildApplicationsTable(apps){return `<table><thead><tr><th>Reference</th><th>Applicant</th><th>Application</th><th>Municipality</th><th>Complexity</th><th>Fee Range</th><th>Status</th><th>Date</th></tr></thead><tbody>${apps.map(a=>`<tr><td><a href="javascript:void(0)" class="reference-link" onclick="openCaseFileByReference('${escapeJs(a.application_reference||"")}')">${escapeHtml(a.application_reference||"Pending")}</a></td><td><strong>${escapeHtml(a.applicant_name||"")}</strong><br><span style="color:#6b7280">${escapeHtml(a.applicant_email||"")}</span></td><td>${escapeHtml(a.application_type||"")}</td><td>${escapeHtml(a.municipality||"")}</td><td>${complexityBadge(a.complexity_level)}</td><td>${formatMoney(a.indicative_total_min)} - ${formatMoney(a.indicative_total_max)}</td><td>${statusBadge(a.status)}</td><td>${formatDate(a.created_at)}</td></tr>`).join("")}</tbody></table>`}
+const supabaseClient=window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
-async function openCaseFileByReference(reference){if(!reference)return;const {data,error}=await supabaseClient.from("applications").select("*").eq("application_reference",reference).maybeSingle();if(error||!data){alert(error?"Unable to open this case file.":"Application could not be found.");return}currentApplication=data;currentQuotation=null;document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById("caseFile").classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));document.getElementById("navCaseFile").classList.add("active");await renderCaseFile(data)}
-async function renderCaseFile(app){document.getElementById("caseFileContainer").innerHTML=`<div class="case-header"><h3>Case File: ${escapeHtml(app.application_reference||"Pending")}</h3><p>${escapeHtml(app.application_type||"Planning Application")}</p></div><div class="case-body"><div class="case-section"><div class="case-section-title">Applicant Information</div><div class="info-grid">${infoItem("Applicant Name",app.applicant_name)}${infoItem("Email",app.applicant_email)}${infoItem("Phone",app.applicant_phone)}</div></div><div class="case-section"><div class="case-section-title">Property Information</div><div class="info-grid">${infoItem("Erf / Property Reference",app.erf_number)}${infoItem("Suburb",app.suburb)}${infoItem("Municipality",app.municipality)}${infoItem("Province",app.province)}${infoItem("Current Use",app.current_use)}${infoItem("Current Zoning",app.current_zoning)}</div></div><div class="case-section"><div class="case-section-title">Proposed Development</div><div class="info-grid">${infoItem("Application Type",app.application_type)}${infoItem("Number of Units",app.number_of_units||"Not specified")}${infoItem("Complexity",app.complexity_level)}${infoItem("Complexity Score",app.complexity_score)}${infoItem("Professional Category",app.professional_category)}${infoItem("Indicative Professional Fee",formatFeeRange(app))}</div><div class="info-item" style="margin-top:15px"><div class="info-label">Property / Project Description</div><div class="info-value">${escapeHtml(app.property_description||"No description provided.")}</div></div><div class="info-item" style="margin-top:15px"><div class="info-label">Proposed Development</div><div class="info-value">${escapeHtml(app.proposed_development||"No proposal provided.")}</div></div></div><div class="case-section"><div class="case-section-title">Case Management</div><div class="info-grid"><div class="form-group"><label>Application Status</label><select id="applicationStatus" class="form-control">${statusOptions(app.status)}</select></div>${infoItem("Assigned Planner",currentUser?currentUser.email:"Current professional")}${infoItem("Created",formatDateTime(app.created_at))}${infoItem("Last Updated",formatDateTime(app.updated_at))}</div></div><div class="case-section"><div class="case-section-title">Professional Notes</div><textarea id="professionalNotes" class="form-control notes-textarea" placeholder="Enter professional assessment notes, actions required, client information, planning observations or other case management notes...">${escapeHtml(app.professional_notes||"")}</textarea></div><div class="case-section"><div class="case-section-title">Quotation</div><div id="quotationContainer"><div class="loading">Loading quotation...</div></div></div><div class="case-actions"><button class="button button-secondary" onclick="showApplications()">← Back to Applications</button><div class="save-area"><button id="saveCaseButton" class="button button-primary" onclick="saveCaseFile()">Save Case Changes</button><div id="caseSaveMessage">Case changes saved successfully.</div></div></div></div>`;await loadQuotationForApplication(app.id)}
-async function saveCaseFile(){if(!currentApplication)return alert("No case file is currently open.");const b=document.getElementById("saveCaseButton"),m=document.getElementById("caseSaveMessage");b.disabled=true;b.textContent="✓ Saving...";const status=document.getElementById("applicationStatus").value,notes=document.getElementById("professionalNotes").value;const {error}=await supabaseClient.from("applications").update({status,professional_notes:notes,assigned_planner:currentUser.id}).eq("id",currentApplication.id);if(error){console.error(error);b.textContent="✕ Save Failed";b.disabled=false;return}currentApplication.status=status;currentApplication.professional_notes=notes;currentApplication.assigned_planner=currentUser.id;b.textContent="✓ Changes Saved";b.style.background="#198754";m.style.display="block";await loadApplicationStats();setTimeout(()=>{b.textContent="Save Case Changes";b.style.background="";b.disabled=false;m.style.display="none"},2000)}
+let currentUser=null,
+currentProfile=null,
+currentApplication=null,
+currentQuotation=null;
 
-async function loadQuotationForApplication(id){const c=document.getElementById("quotationContainer");if(!c)return;c.innerHTML='<div class="loading">Loading quotation...</div>';const {data,error}=await supabaseClient.from("quotations").select("*").eq("application_id",id).order("created_at",{ascending:false}).limit(1);if(error){c.innerHTML=`<div class="error-box">Unable to load quotation information.<br><br>${escapeHtml(error.message||"")}</div>`;return}if(!data||!data.length){currentQuotation=null;renderQuotationEmpty();return}currentQuotation=data[0];renderQuotation(currentQuotation)}
-function renderQuotationEmpty(){const c=document.getElementById("quotationContainer");if(c)c.innerHTML='<div class="quotation-empty"><h4>No quotation has been created</h4><p>Create a professional quotation from the application indicative fee assessment.</p><button class="button button-primary" onclick="createQuotation()">Create Quotation</button></div>'}
-async function createQuotation(){if(!currentApplication)return alert("No application is currently open.");const min=Number(currentApplication.indicative_fee_min)||0,max=Number(currentApplication.indicative_fee_max)||0,fee=roundMoney(min||max?(min+max)/2:0),today=new Date().toISOString().slice(0,10),validityDays=14,expiry=addDays(today,validityDays),projectDescription=currentApplication.proposed_development||currentApplication.property_description||"";try{const {data,error}=await supabaseClient.from("quotations").insert({application_id:currentApplication.id,client_name:currentApplication.applicant_name||"Client",client_email:currentApplication.applicant_email||null,client_phone:currentApplication.applicant_phone||null,project_name:currentApplication.property_description||currentApplication.erf_number||"Planning Application",erf_number:currentApplication.erf_number||null,property_description:currentApplication.property_description||null,suburb:currentApplication.suburb||null,municipality:currentApplication.municipality||null,province:currentApplication.province||null,project_description:projectDescription,application_type:currentApplication.application_type,complexity_level:currentApplication.complexity_level,professional_category:currentApplication.professional_category||categoryForType(currentApplication.application_type),professional_fee:fee,disbursements:0,subtotal_excl_vat:fee,vat_rate:15,vat_amount:roundMoney(fee*.15),total_amount:roundMoney(fee*1.15),vat:roundMoney(fee*.15),total_inclu_vat:roundMoney(fee*1.15),quotation_date:today,validity_days:validityDays,expiry_date:expiry,status:"draft",scope_of_work:defaultScopeOfWork(currentApplication),assumptions_exclusions:defaultAssumptions(),created_by:currentUser.id,assigned_planner:currentUser.id}).select("*").single();if(error)throw error;currentQuotation=data;await updateApplicationToQuotation();renderQuotation(data)}catch(e){console.error(e);alert("Unable to create quotation.\n\n"+(e.message||"Please try again."))}}
-function getQuotationClientLink(q){
-if(!q?.client_acceptance_token)return"";
-return new URL("quotation.html?token="+encodeURIComponent(q.client_acceptance_token),window.location.href).href;
+
+/* =========================
+   AUTHENTICATION
+========================= */
+
+function showLoginScreen(message=""){
+document.body.classList.add("auth-ready");
+document.getElementById("app").style.display="none";
+document.getElementById("loginScreen").style.display="flex";
+
+if(message){
+showLoginError(message);
 }
+}
+
+
+function showProfessionalApp(){
+document.body.classList.add("auth-ready");
+document.getElementById("loginScreen").style.display="none";
+document.getElementById("app").style.display="block";
+}
+
+
+async function startProfessionalPortal(){
+
+try{
+
+const {
+data:{session},
+error
+}=await supabaseClient.auth.getSession();
+
+if(error) throw error;
+
+if(session){
+
+await verifyProfessional(session.user);
+
+}else{
+
+showLoginScreen();
+
+}
+
+}catch(error){
+
+console.error("Session initialization error:",error);
+
+showLoginScreen(
+"Unable to restore your session. Please sign in again."
+);
+
+}
+
+}
+
+
+async function verifyProfessional(user){
+
+currentUser=user;
+
+const {
+data:profile,
+error
+}=await supabaseClient
+.from("professional_profiles")
+.select("*")
+.eq("id",user.id)
+.eq("active",true)
+.maybeSingle();
+
+if(error){
+
+await supabaseClient.auth.signOut();
+
+showLoginScreen(
+"Unable to verify professional access."
+);
+
+return;
+}
+
+
+if(!profile){
+
+await supabaseClient.auth.signOut();
+
+showLoginScreen(
+"Professional access has not been activated for this account."
+);
+
+return;
+}
+
+
+currentProfile=profile;
+
+showProfessionalApp();
+
+document.getElementById("userEmail").textContent=
+user.email||"";
+
+await loadDashboard();
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+document.getElementById("loginForm")
+.addEventListener("submit",async e=>{
+
+e.preventDefault();
+
+const email=
+document.getElementById("loginEmail")
+.value
+.trim();
+
+const password=
+document.getElementById("loginPassword")
+.value;
+
+const button=
+document.getElementById("loginButton");
+
+button.disabled=true;
+button.textContent="Signing in...";
+
+clearLoginMessage();
+
+
+const {
+data,
+error
+}=await supabaseClient.auth.signInWithPassword({
+email,
+password
+});
+
+
+if(error){
+
+showLoginError(error.message);
+
+button.disabled=false;
+button.textContent="Sign In";
+
+return;
+}
+
+
+/*
+   IMPORTANT:
+   Do not call verifyProfessional() here.
+
+   The SIGNED_IN auth listener below handles
+   professional verification once Supabase
+   establishes the authenticated session.
+*/
+
+await supabaseClient.auth.getSession();
+
+button.disabled=false;
+button.textContent="Sign In";
+
+});
+
+
+async function logout(){
+
+await supabaseClient.auth.signOut();
+
+currentUser=
+currentProfile=
+currentApplication=
+currentQuotation=
+null;
+
+showLoginScreen();
+
+}
+
+
+supabaseClient.auth.onAuthStateChange(
+async(event,session)=>{
+
+if(event==="SIGNED_OUT"){
+
+currentUser=
+currentProfile=
+currentApplication=
+currentQuotation=
+null;
+
+showLoginScreen();
+
+return;
+}
+
+
+if(event==="SIGNED_IN"&&session){
+
+if(
+!currentUser||
+currentUser.id!==session.user.id
+){
+
+await verifyProfessional(session.user);
+
+}
+
+}
+
+});
+
+
+function showLoginError(message){
+
+const b=
+document.getElementById("loginMessage");
+
+b.textContent=message;
+
+b.className="login-message error";
+
+}
+
+
+function clearLoginMessage(){
+
+const b=
+document.getElementById("loginMessage");
+
+b.textContent="";
+
+b.className="login-message";
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showSection(id,button){
+
+document
+.querySelectorAll(".section")
+.forEach(s=>s.classList.remove("active"));
+
+const section=document.getElementById(id);
+
+if(section)
+section.classList.add("active");
+
+document
+.querySelectorAll(".nav-button")
+.forEach(n=>n.classList.remove("active"));
+
+if(button)
+button.classList.add("active");
+
+if(id==="dashboard")
+loadDashboard();
+
+if(id==="applications")
+loadApplications();
+
+if(id==="enquiries")
+loadEnquiries();
+
+if(id==="pipeline"){
+
+loadPipelineSummary();
+loadFullPipeline();
+
+}
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+async function loadDashboard(){
+
+await loadApplicationStats();
+
+await loadRecentApplications();
+
+await loadPipelineSummary("dashboardPipeline");
+
+}
+
+
+async function loadApplicationStats(){
+
+const {
+data,
+error
+}=await supabaseClient
+.from("applications")
+.select("status");
+
+if(error){
+
+console.error(error);
+
+return;
+}
+
+const a=data||[];
+
+const newA=
+a.filter(
+x=>(x.status||"").toLowerCase()==="new"
+).length;
+
+const completed=
+a.filter(
+x=>(x.status||"").toLowerCase()==="completed"
+).length;
+
+const active=
+a.filter(x=>{
+
+const s=(x.status||"").toLowerCase();
+
+return(
+s!=="new"&&
+s!=="completed"&&
+s!==""
+);
+
+}).length;
+
+
+document.getElementById("statNew").textContent=newA;
+
+document.getElementById("statTotal").textContent=
+a.length;
+
+document.getElementById("statActive").textContent=
+active;
+
+document.getElementById("statCompleted").textContent=
+completed;
+
+}
+
+
+async function loadRecentApplications(){
+
+const c=
+document.getElementById("recentApplications");
+
+const {
+data,
+error
+}=await supabaseClient
+.from("applications")
+.select("*")
+.order("created_at",{ascending:false})
+.limit(8);
+
+if(error){
+
+c.innerHTML=
+'<div class="error-box">Unable to load applications.</div>';
+
+return;
+}
+
+c.innerHTML=
+data&&data.length
+?buildApplicationsTable(data)
+:'<div class="empty">No applications have been received yet.</div>';
+
+}
+
+
+/* =========================
+   APPLICATIONS
+========================= */
+
+async function loadApplications(){
+
+const c=
+document.getElementById("applicationsTable");
+
+c.innerHTML=
+'<div class="loading">Loading applications...</div>';
+
+const {
+data,
+error
+}=await supabaseClient
+.from("applications")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(error){
+
+c.innerHTML=
+'<div class="error-box">Unable to load applications.</div>';
+
+return;
+}
+
+c.innerHTML=
+data&&data.length
+?buildApplicationsTable(data)
+:'<div class="empty">No applications found.</div>';
+
+}
+
+
+function buildApplicationsTable(apps){
+
+return `
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Applicant</th>
+<th>Application</th>
+<th>Municipality</th>
+<th>Complexity</th>
+<th>Fee Range</th>
+<th>Status</th>
+<th>Date</th>
+</tr>
+</thead>
+
+<tbody>
+
+${apps.map(a=>`
+
+<tr>
+
+<td>
+<a
+href="javascript:void(0)"
+class="reference-link"
+onclick="openCaseFileByReference('${escapeJs(a.application_reference||"")}')"
+>
+${escapeHtml(a.application_reference||"Pending")}
+</a>
+</td>
+
+<td>
+<strong>${escapeHtml(a.applicant_name||"")}</strong>
+<br>
+<span style="color:#6b7280">
+${escapeHtml(a.applicant_email||"")}
+</span>
+</td>
+
+<td>${escapeHtml(a.application_type||"")}</td>
+
+<td>${escapeHtml(a.municipality||"")}</td>
+
+<td>${complexityBadge(a.complexity_level)}</td>
+
+<td>
+${formatMoney(a.indicative_total_min)}
+-
+${formatMoney(a.indicative_total_max)}
+</td>
+
+<td>${statusBadge(a.status)}</td>
+
+<td>${formatDate(a.created_at)}</td>
+
+</tr>
+
+`).join("")}
+
+</tbody>
+</table>
+`;
+
+}
+
+
+/* =========================
+   CASE FILE
+========================= */
+
+async function openCaseFileByReference(reference){
+
+if(!reference)
+return;
+
+const {
+data,
+error
+}=await supabaseClient
+.from("applications")
+.select("*")
+.eq("application_reference",reference)
+.maybeSingle();
+
+if(error||!data){
+
+alert(
+error
+?"Unable to open this case file."
+:"Application could not be found."
+);
+
+return;
+}
+
+currentApplication=data;
+
+currentQuotation=null;
+
+document
+.querySelectorAll(".section")
+.forEach(s=>s.classList.remove("active"));
+
+document
+.getElementById("caseFile")
+.classList.add("active");
+
+document
+.querySelectorAll(".nav-button")
+.forEach(n=>n.classList.remove("active"));
+
+document
+.getElementById("navCaseFile")
+.classList.add("active");
+
+await renderCaseFile(data);
+
+}
+
+
+async function renderCaseFile(app){
+
+document.getElementById("caseFileContainer").innerHTML=`
+
+<div class="case-header">
+
+<h3>
+Case File:
+${escapeHtml(app.application_reference||"Pending")}
+</h3>
+
+<p>
+${escapeHtml(app.application_type||"Planning Application")}
+</p>
+
+</div>
+
+<div class="case-body">
+
+<div class="case-section">
+
+<div class="case-section-title">
+Applicant Information
+</div>
+
+<div class="info-grid">
+
+${infoItem("Applicant Name",app.applicant_name)}
+
+${infoItem("Email",app.applicant_email)}
+
+${infoItem("Phone",app.applicant_phone)}
+
+</div>
+
+</div>
+
+
+<div class="case-section">
+
+<div class="case-section-title">
+Property Information
+</div>
+
+<div class="info-grid">
+
+${infoItem("Erf Number",app.erf_number)}
+
+${infoItem("Property Description",app.property_description)}
+
+${infoItem("Suburb",app.suburb)}
+
+${infoItem("Municipality",app.municipality)}
+
+${infoItem("Province",app.province)}
+
+${infoItem("Current Use",app.current_use)}
+
+${infoItem("Current Zoning",app.current_zoning)}
+
+</div>
+
+</div>
+
+
+<div class="case-section">
+
+<div class="case-section-title">
+Proposed Development
+</div>
+
+<div class="info-grid">
+
+${infoItem("Application Type",app.application_type)}
+
+${infoItem("Complexity",app.complexity_level)}
+
+${infoItem("Professional Category",app.professional_category)}
+
+${infoItem("Number of Units",app.number_of_units)}
+
+</div>
+
+<div style="margin-top:15px">
+
+${infoItem(
+"Proposed Development",
+app.proposed_development
+)}
+
+</div>
+
+</div>
+
+
+<div class="case-section">
+
+<div class="case-section-title">
+Case Management
+</div>
+
+<div class="quotation-grid">
+
+<div class="form-group">
+
+<label>Application Status</label>
+
+<select
+id="applicationStatus"
+class="form-control"
+>
+${statusOptions(app.status)}
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Professional Notes</label>
+
+<textarea
+id="professionalNotes"
+class="form-control notes-textarea"
+>${escapeHtml(app.professional_notes||"")}</textarea>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="case-actions">
+
+<div>
+<strong>Application Fee Assessment</strong>
+<br>
+<span style="color:#6b7280;font-size:13px">
+${formatFeeRange(app)}
+</span>
+</div>
+
+<div class="save-area">
+
+<button
+id="saveCaseButton"
+class="button button-primary"
+onclick="saveCaseFile()"
+>
+Save Case Changes
+</button>
+
+<div id="caseSaveMessage">
+Case changes saved successfully.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="case-section" style="margin-top:30px">
+
+<div class="case-section-title">
+Professional Quotation
+</div>
+
+<div id="quotationContainer">
+<div class="loading">Loading quotation...</div>
+</div>
+
+</div>
+
+</div>
+`;
+
+await loadQuotationForApplication(app.id);
+
+}
+
+
+/* =========================
+   SAVE CASE
+========================= */
+
+async function saveCaseFile(){
+
+if(!currentApplication)
+return alert("No case file is currently open.");
+
+const b=
+document.getElementById("saveCaseButton");
+
+const m=
+document.getElementById("caseSaveMessage");
+
+b.disabled=true;
+b.textContent="✓ Saving...";
+
+const status=
+document.getElementById("applicationStatus").value;
+
+const notes=
+document.getElementById("professionalNotes").value;
+
+const {
+error
+}=await supabaseClient
+.from("applications")
+.update({
+status,
+professional_notes:notes,
+assigned_planner:currentUser.id
+})
+.eq("id",currentApplication.id);
+
+if(error){
+
+console.error(error);
+
+b.textContent="✕ Save Failed";
+
+b.disabled=false;
+
+return;
+}
+
+currentApplication.status=status;
+
+currentApplication.professional_notes=notes;
+
+currentApplication.assigned_planner=
+currentUser.id;
+
+b.textContent="✓ Changes Saved";
+
+b.style.background="#198754";
+
+m.style.display="block";
+
+await loadApplicationStats();
+
+setTimeout(()=>{
+
+b.textContent="Save Case Changes";
+
+b.style.background="";
+
+b.disabled=false;
+
+m.style.display="none";
+
+},2000);
+
+}
+
+
+/* =========================
+   QUOTATIONS
+========================= */
+
+async function loadQuotationForApplication(id){
+
+const c=
+document.getElementById("quotationContainer");
+
+if(!c)
+return;
+
+c.innerHTML=
+'<div class="loading">Loading quotation...</div>';
+
+const {
+data,
+error
+}=await supabaseClient
+.from("quotations")
+.select("*")
+.eq("application_id",id)
+.order("created_at",{ascending:false})
+.limit(1);
+
+if(error){
+
+c.innerHTML=`
+<div class="error-box">
+Unable to load quotation information.
+<br><br>
+${escapeHtml(error.message||"")}
+</div>
+`;
+
+return;
+}
+
+if(!data||!data.length){
+
+currentQuotation=null;
+
+renderQuotationEmpty();
+
+return;
+}
+
+currentQuotation=data[0];
+
+renderQuotation(currentQuotation);
+
+}
+
+
+function renderQuotationEmpty(){
+
+const c=
+document.getElementById("quotationContainer");
+
+if(c){
+
+c.innerHTML=`
+<div class="quotation-empty">
+
+<h4>No quotation has been created</h4>
+
+<p>
+Create a professional quotation from the application indicative fee assessment.
+</p>
+
+<button
+class="button button-primary"
+onclick="createQuotation()"
+>
+Create Quotation
+</button>
+
+</div>
+`;
+
+}
+
+}
+
+
+async function createQuotation(){
+
+if(!currentApplication)
+return alert("No application is currently open.");
+
+const min=
+Number(currentApplication.indicative_fee_min)||0;
+
+const max=
+Number(currentApplication.indicative_fee_max)||0;
+
+const fee=
+roundMoney(
+min||max
+?(min+max)/2
+:0
+);
+
+const today=
+new Date()
+.toISOString()
+.slice(0,10);
+
+const validityDays=14;
+
+const expiry=
+addDays(today,validityDays);
+
+const projectDescription=
+currentApplication.proposed_development||
+currentApplication.property_description||
+"";
+
+try{
+
+const {
+data,
+error
+}=await supabaseClient
+.from("quotations")
+.insert({
+
+application_id:currentApplication.id,
+
+client_name:
+currentApplication.applicant_name||
+"Client",
+
+client_email:
+currentApplication.applicant_email||
+null,
+
+client_phone:
+currentApplication.applicant_phone||
+null,
+
+project_name:
+currentApplication.property_description||
+currentApplication.erf_number||
+"Planning Application",
+
+erf_number:
+currentApplication.erf_number||
+null,
+
+property_description:
+currentApplication.property_description||
+null,
+
+suburb:
+currentApplication.suburb||
+null,
+
+municipality:
+currentApplication.municipality||
+null,
+
+province:
+currentApplication.province||
+null,
+
+project_description:
+projectDescription,
+
+application_type:
+currentApplication.application_type,
+
+complexity_level:
+currentApplication.complexity_level,
+
+professional_category:
+currentApplication.professional_category||
+categoryForType(
+currentApplication.application_type
+),
+
+professional_fee:fee,
+
+disbursements:0,
+
+subtotal_excl_vat:fee,
+
+vat_rate:15,
+
+vat_amount:
+roundMoney(fee*.15),
+
+total_amount:
+roundMoney(fee*1.15),
+
+vat:
+roundMoney(fee*.15),
+
+total_inclu_vat:
+roundMoney(fee*1.15),
+
+quotation_date:today,
+
+validity_days:validityDays,
+
+expiry_date:expiry,
+
+status:"draft",
+
+scope_of_work:
+defaultScopeOfWork(currentApplication),
+
+assumptions_exclusions:
+defaultAssumptions(),
+
+created_by:
+currentUser.id,
+
+assigned_planner:
+currentUser.id
+
+})
+.select("*")
+.single();
+
+if(error)
+throw error;
+
+currentQuotation=data;
+
+await updateApplicationToQuotation();
+
+renderQuotation(data);
+
+}catch(e){
+
+console.error(e);
+
+alert(
+"Unable to create quotation.\n\n"+
+(e.message||"Please try again.")
+);
+
+}
+
+}
+
 
 function renderQuotation(q){
-const c=document.getElementById("quotationContainer");
-if(!c)return;
-const fee=Number(q.professional_fee)||0,dis=Number(q.disbursements)||0,sub=Number(q.subtotal_excl_vat)||roundMoney(fee+dis),vatRate=Number(q.vat_rate ?? 15)||15,vat=Number(q.vat_amount ?? q.vat)||roundMoney(sub*vatRate/100),total=Number(q.total_amount ?? q.total_inclu_vat)||roundMoney(sub+vat),date=q.quotation_date||new Date().toISOString().slice(0,10),days=Number(q.validity_days)||14,expiry=q.expiry_date||addDays(date,days),status=String(q.status||"draft").toLowerCase(),link=getQuotationClientLink(q);
-const response=q.client_response_status?`${capitalizeWords(q.client_response_status)}${q.client_response_at?" on "+formatDateTime(q.client_response_at):""}`:"No client response yet";
-const deliveryDisabled=!q.client_acceptance_token||status==="accepted"||status==="declined";
-const mandateButton=status==="accepted"?`<button class="button button-primary" onclick="createMandateFromQuotation()">Create Mandate</button>`:"";
-const deliverySection=`<div class="case-section-title" style="margin-top:25px">Client Delivery & Response</div><div class="quotation-response"><strong>Secure Client Link</strong><div class="quotation-link-box"><input id="quotationClientLink" class="form-control" readonly value="${escapeHtml(link||"Token will be generated automatically")}"><button class="button button-secondary" onclick="copyQuotationClientLink()" ${link?"":"disabled"}>Copy Link</button></div><div class="quotation-client-actions"><button class="button button-primary" onclick="sendQuotationToClient()" ${deliveryDisabled?"disabled":""}>Send to Client</button>${mandateButton}</div><div style="margin-top:12px;color:#59636e"><strong>Client response:</strong> ${escapeHtml(response)}</div>${q.client_response_notes?`<div style="margin-top:8px;color:#59636e"><strong>Client notes:</strong> ${escapeHtml(q.client_response_notes)}</div>`:""}${q.client_response_status==="accepted"?`<div class="mandate-card"><strong>Quotation accepted.</strong><p style="margin:7px 0 12px;color:#59636e">The next professional workflow step is to create the mandate and move the application into mandate management.</p><button class="button button-primary" onclick="createMandateFromQuotation()">Create Mandate</button></div>`:""}</div>`;
-c.innerHTML=`<div class="quotation-card"><div class="quotation-header"><div><h4>Professional Quotation</h4><div class="quotation-reference">${escapeHtml(q.quotation_reference||"Pending")}</div></div>${quotationStatusBadge(q.status)}</div><div class="quotation-body"><div class="quotation-grid"><div><div class="form-group"><label>Client Name</label><input id="quotationClientName" class="form-control" value="${escapeHtml(q.client_name||"")}"></div><div class="form-group"><label>Client Email</label><input id="quotationClientEmail" type="email" class="form-control" value="${escapeHtml(q.client_email||"")}"></div><div class="form-group"><label>Client Phone</label><input id="quotationClientPhone" class="form-control" value="${escapeHtml(q.client_phone||"")}"></div></div><div><div class="form-group"><label>Application</label><input class="form-control" readonly value="${escapeHtml(q.application_type||"")}"></div><div class="form-group"><label>Complexity</label><input class="form-control" readonly value="${escapeHtml(q.complexity_level||"")}"></div><div class="form-group"><label>Professional Category</label><input class="form-control" readonly value="${escapeHtml(q.professional_category||categoryForType(q.application_type))}"></div></div></div><div class="quotation-grid"><div class="form-group"><label>Erf / Property Reference</label><input class="form-control" readonly value="${escapeHtml(q.erf_number||currentApplication?.erf_number||"")}"></div><div class="form-group"><label>Municipality</label><input class="form-control" readonly value="${escapeHtml(q.municipality||currentApplication?.municipality||"")}"></div></div><div class="quotation-grid"><div class="form-group"><label>Project / Property</label><input id="quotationProjectName" class="form-control" value="${escapeHtml(q.project_name||"")}"></div><div class="form-group"><label>Project Description</label><input id="quotationProjectDescription" class="form-control" value="${escapeHtml(q.project_description||"")}"></div></div><div class="case-section-title" style="margin-top:20px">Quotation Financials</div><div class="quotation-grid"><div class="form-group"><label>Professional Fee (Excl. VAT)</label><input id="quotationProfessionalFee" type="number" min="0" step=".01" class="form-control money-input" value="${fee.toFixed(2)}" oninput="calculateQuotationPreview()"></div><div class="form-group"><label>Disbursements (Excl. VAT)</label><input id="quotationDisbursements" type="number" min="0" step=".01" class="form-control money-input" value="${dis.toFixed(2)}" oninput="calculateQuotationPreview()"></div></div><div class="quotation-financials"><div class="financial-row"><span>Subtotal Excl. VAT</span><span id="quotationSubtotalPreview">${formatMoney(sub)}</span></div><div class="financial-row"><span>VAT ${vatRate}%</span><span id="quotationVatPreview">${formatMoney(vat)}</span></div><div class="financial-row total"><span>TOTAL INCL. VAT</span><span id="quotationTotalPreview">${formatMoney(total)}</span></div></div><div class="case-section-title" style="margin-top:25px">Quotation Validity</div><div class="quotation-grid"><div class="form-group"><label>Quotation Date</label><input id="quotationDate" type="date" class="form-control" value="${escapeHtml(date)}" onchange="refreshQuotationExpiry()"></div><div class="form-group"><label>Validity Period (Days)</label><input id="quotationValidityDays" type="number" min="1" class="form-control" value="${days}" oninput="refreshQuotationExpiry()"></div></div><div class="quotation-grid"><div class="form-group"><label>Quotation Status</label><select id="quotationStatus" class="form-control">${quotationStatusOptions(q.status)}</select></div><div class="info-item"><div class="info-label">Expiry Date</div><div class="info-value" id="quotationExpiry">${formatDate(expiry)}</div></div></div><div class="case-section-title" style="margin-top:20px">Scope of Work</div><textarea id="quotationScope" class="form-control notes-textarea">${escapeHtml(q.scope_of_work||"")}</textarea><div class="case-section-title" style="margin-top:20px">Assumptions & Exclusions</div><textarea id="quotationAssumptions" class="form-control notes-textarea">${escapeHtml(q.assumptions_exclusions||"")}</textarea><div class="quotation-note">This quotation covers only the professional services and disbursements defined in the agreed scope. Additional work arising from objections, hearings, appeals, additional meetings, specialist requirements, material changes in instructions or other unforeseen work should be separately authorised and charged at the applicable professional rate.</div>${deliverySection}<div class="quotation-actions"><button class="button button-secondary" onclick="reloadCurrentQuotation()">Refresh</button><button id="saveQuotationButton" class="button button-primary" onclick="saveQuotation()">Save Quotation</button></div><div id="quotationSaveMessage">Quotation saved successfully.</div></div></div>`;
+
+const c=
+document.getElementById("quotationContainer");
+
+if(!c)
+return;
+
+const fee=
+Number(q.professional_fee)||0;
+
+const dis=
+Number(q.disbursements)||0;
+
+const sub=
+Number(q.subtotal_excl_vat)||
+roundMoney(fee+dis);
+
+const vatRate=
+Number(q.vat_rate ?? 15)||15;
+
+const vat=
+Number(q.vat_amount ?? q.vat)||
+roundMoney(sub*vatRate/100);
+
+const total=
+Number(q.total_amount ?? q.total_inclu_vat)||
+roundMoney(sub+vat);
+
+const date=
+q.quotation_date||
+new Date().toISOString().slice(0,10);
+
+const days=
+Number(q.validity_days)||14;
+
+const expiry=
+q.expiry_date||
+addDays(date,days);
+
+c.innerHTML=`
+
+<div class="quotation-card">
+
+<div class="quotation-header">
+
+<div>
+
+<h4>Professional Quotation</h4>
+
+<div class="quotation-reference">
+${escapeHtml(q.quotation_reference||"Pending")}
+</div>
+
+</div>
+
+${quotationStatusBadge(q.status)}
+
+</div>
+
+
+<div class="quotation-body">
+
+
+<div class="quotation-grid">
+
+<div>
+
+<div class="form-group">
+
+<label>Client Name</label>
+
+<input
+id="quotationClientName"
+class="form-control"
+value="${escapeHtml(q.client_name||"")}"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Client Email</label>
+
+<input
+id="quotationClientEmail"
+type="email"
+class="form-control"
+value="${escapeHtml(q.client_email||"")}"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Client Phone</label>
+
+<input
+id="quotationClientPhone"
+class="form-control"
+value="${escapeHtml(q.client_phone||"")}"
+>
+
+</div>
+
+</div>
+
+
+<div>
+
+<div class="form-group">
+
+<label>Application</label>
+
+<input
+class="form-control"
+readonly
+value="${escapeHtml(q.application_type||"")}"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Complexity</label>
+
+<input
+class="form-control"
+readonly
+value="${escapeHtml(q.complexity_level||"")}"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Professional Category</label>
+
+<input
+class="form-control"
+readonly
+value="${escapeHtml(
+q.professional_category||
+categoryForType(q.application_type)
+)}"
+>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="quotation-grid">
+
+<div class="form-group">
+
+<label>Erf / Property Reference</label>
+
+<input
+class="form-control"
+readonly
+value="${escapeHtml(
+q.erf_number||
+currentApplication?.erf_number||
+""
+)}"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Municipality</label>
+
+<input
+class="form-control"
+readonly
+value="${escapeHtml(
+q.municipality||
+currentApplication?.municipality||
+""
+)}"
+>
+
+</div>
+
+</div>
+
+
+<div class="quotation-grid">
+
+<div class="form-group">
+
+<label>Project / Property</label>
+
+<input
+id="quotationProjectName"
+class="form-control"
+value="${escapeHtml(q.project_name||"")}"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Project Description</label>
+
+<input
+id="quotationProjectDescription"
+class="form-control"
+value="${escapeHtml(q.project_description||"")}"
+>
+
+</div>
+
+</div>
+
+
+<div
+class="case-section-title"
+style="margin-top:20px"
+>
+Quotation Financials
+</div>
+
+
+<div class="quotation-grid">
+
+<div class="form-group">
+
+<label>Professional Fee (Excl. VAT)</label>
+
+<input
+id="quotationProfessionalFee"
+type="number"
+min="0"
+step=".01"
+class="form-control money-input"
+value="${fee.toFixed(2)}"
+oninput="calculateQuotationPreview()"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Disbursements (Excl. VAT)</label>
+
+<input
+id="quotationDisbursements"
+type="number"
+min="0"
+step=".01"
+class="form-control money-input"
+value="${dis.toFixed(2)}"
+oninput="calculateQuotationPreview()"
+>
+
+</div>
+
+</div>
+
+
+<div class="quotation-financials">
+
+<div class="financial-row">
+
+<span>Subtotal Excl. VAT</span>
+
+<span id="quotationSubtotalPreview">
+${formatMoney(sub)}
+</span>
+
+</div>
+
+
+<div class="financial-row">
+
+<span>VAT ${vatRate}%</span>
+
+<span id="quotationVatPreview">
+${formatMoney(vat)}
+</span>
+
+</div>
+
+
+<div class="financial-row total">
+
+<span>TOTAL INCL. VAT</span>
+
+<span id="quotationTotalPreview">
+${formatMoney(total)}
+</span>
+
+</div>
+
+</div>
+
+
+<div
+class="case-section-title"
+style="margin-top:25px"
+>
+Quotation Validity
+</div>
+
+
+<div class="quotation-grid">
+
+<div class="form-group">
+
+<label>Quotation Date</label>
+
+<input
+id="quotationDate"
+type="date"
+class="form-control"
+value="${escapeHtml(date)}"
+onchange="refreshQuotationExpiry()"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Validity Period (Days)</label>
+
+<input
+id="quotationValidityDays"
+type="number"
+min="1"
+class="form-control"
+value="${days}"
+oninput="refreshQuotationExpiry()"
+>
+
+</div>
+
+</div>
+
+
+<div class="quotation-grid">
+
+<div class="form-group">
+
+<label>Quotation Status</label>
+
+<select
+id="quotationStatus"
+class="form-control"
+>
+${quotationStatusOptions(q.status)}
+</select>
+
+</div>
+
+
+<div class="info-item">
+
+<div class="info-label">
+Expiry Date
+</div>
+
+<div
+class="info-value"
+id="quotationExpiry"
+>
+${formatDate(expiry)}
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="case-section-title"
+style="margin-top:20px"
+>
+Scope of Work
+</div>
+
+<textarea
+id="quotationScope"
+class="form-control notes-textarea"
+>${escapeHtml(q.scope_of_work||"")}</textarea>
+
+
+<div
+class="case-section-title"
+style="margin-top:20px"
+>
+Assumptions & Exclusions
+</div>
+
+<textarea
+id="quotationAssumptions"
+class="form-control notes-textarea"
+>${escapeHtml(q.assumptions_exclusions||"")}</textarea>
+
+
+<div class="quotation-note">
+
+This quotation covers only the professional services and disbursements defined in the agreed scope. Additional work arising from objections, hearings, appeals, additional meetings, specialist requirements, material changes in instructions or other unforeseen work should be separately authorised and charged at the applicable professional rate.
+
+</div>
+
+
+<div class="quotation-actions">
+
+<button
+class="button button-secondary"
+onclick="reloadCurrentQuotation()"
+>
+Refresh
+</button>
+
+<button
+id="saveQuotationButton"
+class="button button-primary"
+onclick="saveQuotation()"
+>
+Save Quotation
+</button>
+
+</div>
+
+
+<div id="quotationSaveMessage">
+Quotation saved successfully.
+</div>
+
+
+</div>
+</div>
+
+`;
+
 }
 
-async function copyQuotationClientLink(){
-const link=getQuotationClientLink(currentQuotation);
-if(!link)return alert("The quotation does not have a client acceptance token yet.");
-try{await navigator.clipboard.writeText(link);alert("Secure client quotation link copied.");}catch(e){const input=document.getElementById("quotationClientLink");input?.select();document.execCommand("copy");alert("Secure client quotation link copied.");}
+
+function calculateQuotationPreview(){
+
+const f=
+roundMoney(
+Number(
+document.getElementById(
+"quotationProfessionalFee"
+)?.value
+)||0
+);
+
+const d=
+roundMoney(
+Number(
+document.getElementById(
+"quotationDisbursements"
+)?.value
+)||0
+);
+
+const s=
+roundMoney(f+d);
+
+const rate=
+Number(currentQuotation?.vat_rate??15)||15;
+
+const v=
+roundMoney(s*rate/100);
+
+const t=
+roundMoney(s+v);
+
+document.getElementById(
+"quotationSubtotalPreview"
+).textContent=formatMoney(s);
+
+document.getElementById(
+"quotationVatPreview"
+).textContent=formatMoney(v);
+
+document.getElementById(
+"quotationTotalPreview"
+).textContent=formatMoney(t);
+
 }
 
-async function sendQuotationToClient(){
-if(!currentQuotation||!currentApplication)return alert("No quotation is currently open.");
-const email=document.getElementById("quotationClientEmail")?.value.trim();
-if(!email)return alert("Please enter the client's email address before sending the quotation.");
-if(!currentQuotation.client_acceptance_token)return alert("This quotation does not have a secure client token. Refresh the quotation and try again.");
-const f=roundMoney(Number(document.getElementById("quotationProfessionalFee")?.value)||0),d=roundMoney(Number(document.getElementById("quotationDisbursements")?.value)||0),s=roundMoney(f+d),rate=Number(currentQuotation.vat_rate??15)||15,v=roundMoney(s*rate/100),t=roundMoney(s+v),date=document.getElementById("quotationDate")?.value||new Date().toISOString().slice(0,10),days=Number(document.getElementById("quotationValidityDays")?.value)||14;
-const {data,error}=await supabaseClient.from("quotations").update({client_name:document.getElementById("quotationClientName")?.value.trim()||currentQuotation.client_name,client_email:email,client_phone:document.getElementById("quotationClientPhone")?.value.trim()||null,project_name:document.getElementById("quotationProjectName")?.value.trim()||currentQuotation.project_name,project_description:document.getElementById("quotationProjectDescription")?.value.trim()||currentQuotation.project_description,professional_fee:f,disbursements:d,subtotal_excl_vat:s,vat_rate:rate,vat_amount:v,total_amount:t,vat:v,total_inclu_vat:t,quotation_date:date,validity_days:days,expiry_date:addDays(date,days),status:"sent",scope_of_work:document.getElementById("quotationScope")?.value||currentQuotation.scope_of_work,assumptions_exclusions:document.getElementById("quotationAssumptions")?.value||currentQuotation.assumptions_exclusions,assigned_planner:currentUser.id,updated_at:new Date().toISOString()}).eq("id",currentQuotation.id).select("*").single();
-if(error){console.error(error);return alert("Unable to send quotation: "+error.message);}
-currentQuotation=data;await updateApplicationToQuotation();renderQuotation(data);
-const link=getQuotationClientLink(data);
-try{await navigator.clipboard.writeText(link)}catch(e){}
-const subject=encodeURIComponent("THE ROCK Planning Quotation "+(data.quotation_reference||""));
-const body=encodeURIComponent(`Dear ${data.client_name||"Client"},\n\nPlease find your THE ROCK professional planning quotation for your consideration.\n\nQuotation reference: ${data.quotation_reference||""}\nTotal incl. VAT: ${formatMoney(data.total_amount)}\n\nYou can review the quotation and accept or decline it securely using the link below:\n\n${link}\n\nKind regards,\nTHE ROCK | Planning & Land Use Management`);
-window.location.href=`mailto:${encodeURIComponent(email)}?subject=${subject}&body=${body}`;
+
+function refreshQuotationExpiry(){
+
+const date=
+document.getElementById(
+"quotationDate"
+)?.value||
+new Date().toISOString().slice(0,10);
+
+const days=
+Number(
+document.getElementById(
+"quotationValidityDays"
+)?.value
+)||14;
+
+const e=
+document.getElementById(
+"quotationExpiry"
+);
+
+if(e)
+e.textContent=
+formatDate(
+addDays(date,days)
+);
+
 }
 
-async function createMandateFromQuotation(){
-if(!currentQuotation||String(currentQuotation.status||"").toLowerCase()!=="accepted")return alert("A mandate can only be created after the quotation has been accepted by the client.");
-const {data:existing,error:lookupError}=await supabaseClient.from("mandates").select("*").eq("quotation_id",currentQuotation.id).limit(1);
-if(lookupError)return alert("Unable to check for an existing mandate: "+lookupError.message);
-if(existing?.length){alert("A mandate already exists for this quotation: "+(existing[0].mandate_reference||""));return;}
-const {data,error}=await supabaseClient.from("mandates").insert({quotation_id:currentQuotation.id,application_id:currentApplication.id,client_name:currentQuotation.client_name,client_email:currentQuotation.client_email,client_phone:currentQuotation.client_phone,project_name:currentQuotation.project_name,property_description:currentQuotation.property_description||currentApplication.property_description,erf_number:currentQuotation.erf_number||currentApplication.erf_number,suburb:currentQuotation.suburb||currentApplication.suburb,municipality:currentQuotation.municipality||currentApplication.municipality,province:currentQuotation.province||currentApplication.province,application_type:currentQuotation.application_type,complexity_level:currentQuotation.complexity_level,professional_category:currentQuotation.professional_category,professional_fee:currentQuotation.professional_fee,disbursements:currentQuotation.disbursements,subtotal_excl_vat:currentQuotation.subtotal_excl_vat,vat_amount:currentQuotation.vat_amount||currentQuotation.vat,total_amount:currentQuotation.total_amount||currentQuotation.total_inclu_vat,scope_of_work:currentQuotation.scope_of_work,assumptions_exclusions:currentQuotation.assumptions_exclusions,status:"draft",created_by:currentUser.id,assigned_planner:currentUser.id}).select("*").single();
-if(error){console.error(error);return alert("Unable to create mandate: "+error.message);}
-await supabaseClient.from("applications").update({status:"mandate",assigned_planner:currentUser.id}).eq("id",currentApplication.id);
-currentApplication.status="mandate";
-renderQuotation(currentQuotation);
-alert("Mandate created successfully: "+(data.mandate_reference||""));
+
+async function saveQuotation(){
+
+if(!currentQuotation)
+return alert("No quotation is currently open.");
+
+const b=
+document.getElementById(
+"saveQuotationButton"
+);
+
+const m=
+document.getElementById(
+"quotationSaveMessage"
+);
+
+const f=
+roundMoney(
+Number(
+document.getElementById(
+"quotationProfessionalFee"
+).value
+)||0
+);
+
+const d=
+roundMoney(
+Number(
+document.getElementById(
+"quotationDisbursements"
+).value
+)||0
+);
+
+const s=
+roundMoney(f+d);
+
+const rate=
+Number(currentQuotation.vat_rate??15)||15;
+
+const v=
+roundMoney(s*rate/100);
+
+const t=
+roundMoney(s+v);
+
+const status=
+document.getElementById(
+"quotationStatus"
+).value;
+
+const date=
+document.getElementById(
+"quotationDate"
+).value||
+new Date().toISOString().slice(0,10);
+
+const days=
+Number(
+document.getElementById(
+"quotationValidityDays"
+).value
+)||14;
+
+const expiry=
+addDays(date,days);
+
+b.disabled=true;
+
+b.textContent="✓ Saving...";
+
+
+const {
+error
+}=await supabaseClient
+.from("quotations")
+.update({
+
+client_name:
+document.getElementById(
+"quotationClientName"
+).value.trim(),
+
+client_email:
+document.getElementById(
+"quotationClientEmail"
+).value.trim()||null,
+
+client_phone:
+document.getElementById(
+"quotationClientPhone"
+).value.trim()||null,
+
+project_name:
+document.getElementById(
+"quotationProjectName"
+)?.value.trim()||
+currentQuotation.project_name||
+null,
+
+project_description:
+document.getElementById(
+"quotationProjectDescription"
+)?.value.trim()||
+currentQuotation.project_description||
+null,
+
+professional_fee:f,
+
+disbursements:d,
+
+subtotal_excl_vat:s,
+
+vat_rate:rate,
+
+vat_amount:v,
+
+total_amount:t,
+
+vat:v,
+
+total_inclu_vat:t,
+
+quotation_date:date,
+
+validity_days:days,
+
+expiry_date:expiry,
+
+status,
+
+scope_of_work:
+document.getElementById(
+"quotationScope"
+).value,
+
+assumptions_exclusions:
+document.getElementById(
+"quotationAssumptions"
+).value,
+
+updated_at:
+new Date().toISOString()
+
+})
+.eq("id",currentQuotation.id);
+
+
+if(error){
+
+console.error(error);
+
+b.textContent="✕ Save Failed";
+
+b.disabled=false;
+
+alert(
+"Unable to save quotation: "+
+error.message
+);
+
+return;
 }
 
-function calculateQuotationPreview(){const f=roundMoney(Number(document.getElementById("quotationProfessionalFee")?.value)||0),d=roundMoney(Number(document.getElementById("quotationDisbursements")?.value)||0),s=roundMoney(f+d),rate=Number(currentQuotation?.vat_rate??15)||15,v=roundMoney(s*rate/100),t=roundMoney(s+v);document.getElementById("quotationSubtotalPreview").textContent=formatMoney(s);document.getElementById("quotationVatPreview").textContent=formatMoney(v);document.getElementById("quotationTotalPreview").textContent=formatMoney(t)}
-function refreshQuotationExpiry(){const date=document.getElementById("quotationDate")?.value||new Date().toISOString().slice(0,10),days=Number(document.getElementById("quotationValidityDays")?.value)||14,e=document.getElementById("quotationExpiry");if(e)e.textContent=formatDate(addDays(date,days))}
-async function saveQuotation(){if(!currentQuotation)return alert("No quotation is currently open.");const b=document.getElementById("saveQuotationButton"),m=document.getElementById("quotationSaveMessage"),f=roundMoney(Number(document.getElementById("quotationProfessionalFee").value)||0),d=roundMoney(Number(document.getElementById("quotationDisbursements").value)||0),s=roundMoney(f+d),rate=Number(currentQuotation.vat_rate??15)||15,v=roundMoney(s*rate/100),t=roundMoney(s+v),status=document.getElementById("quotationStatus").value,date=document.getElementById("quotationDate").value||new Date().toISOString().slice(0,10),days=Number(document.getElementById("quotationValidityDays").value)||14,expiry=addDays(date,days);b.disabled=true;b.textContent="✓ Saving...";const {error}=await supabaseClient.from("quotations").update({client_name:document.getElementById("quotationClientName").value.trim(),client_email:document.getElementById("quotationClientEmail").value.trim()||null,client_phone:document.getElementById("quotationClientPhone").value.trim()||null,project_name:document.getElementById("quotationProjectName")?.value.trim()||currentQuotation.project_name||null,project_description:document.getElementById("quotationProjectDescription")?.value.trim()||currentQuotation.project_description||null,professional_fee:f,disbursements:d,subtotal_excl_vat:s,vat_rate:rate,vat_amount:v,total_amount:t,vat:v,total_inclu_vat:t,quotation_date:date,validity_days:days,expiry_date:expiry,status,scope_of_work:document.getElementById("quotationScope").value,assumptions_exclusions:document.getElementById("quotationAssumptions").value,updated_at:new Date().toISOString()}).eq("id",currentQuotation.id);if(error){console.error(error);b.textContent="✕ Save Failed";b.disabled=false;alert("Unable to save quotation: "+error.message);return}await loadQuotationForApplication(currentApplication.id);if(status==="sent"&&currentApplication.status!=="completed"){await supabaseClient.from("applications").update({status:"quotation",assigned_planner:currentUser.id}).eq("id",currentApplication.id)}m.style.display="block";b.textContent="✓ Quotation Saved";b.style.background="#198754";setTimeout(()=>{b.disabled=false;b.textContent="Save Quotation";b.style.background="";m.style.display="none"},2000)}
-async function reloadCurrentQuotation(){if(currentApplication)await loadQuotationForApplication(currentApplication.id)}
-async function updateApplicationToQuotation(){if(!currentApplication||String(currentApplication.status||"").toLowerCase()==="completed")return;const {error}=await supabaseClient.from("applications").update({status:"quotation",assigned_planner:currentUser.id}).eq("id",currentApplication.id);if(!error)currentApplication.status="quotation"}
-function defaultScopeOfWork(app){return `Professional town planning services relating to the proposed ${app.application_type||"planning application"} for the identified property. Services include professional assessment, preparation and submission of the applicable planning application documentation, liaison with the relevant authority and reasonable follow-up associated with the agreed scope.`}
-function defaultAssumptions(){return "This quotation is based on the information provided by the client at the time of assessment. It assumes that all required information and documentation will be supplied timeously. Statutory application fees, specialist studies, advertising costs, professional fees of other consultants and other third-party costs are excluded unless specifically stated otherwise."}
-function quotationStatusOptions(s){return ["draft","sent","accepted","declined","expired","cancelled"].map(x=>`<option value="${x}" ${String(s||"draft").toLowerCase()===x?"selected":""}>${capitalizeWords(x)}</option>`).join("")}
-function quotationStatusBadge(s){const v=String(s||"draft"),l=v.toLowerCase(),cl=l==="accepted"?"badge-green":l==="sent"?"badge-blue":l==="declined"||l==="cancelled"?"badge-red":l==="expired"?"badge-gold":"badge-gray";return `<span class="badge ${cl}">${escapeHtml(capitalizeWords(v))}</span>`}
-function statusOptions(s){return ["new","initial assessment","information required","fee assessment","quotation","mandate","in progress","submitted","completed"].map(x=>`<option value="${escapeHtml(x)}" ${String(s||"").toLowerCase()===x?"selected":""}>${capitalizeWords(x)}</option>`).join("")}
-async function showApplications(){showSection("applications",document.getElementById("navApplications"))}
-async function loadEnquiries(){const c=document.getElementById("enquiriesTable"),{data,error}=await supabaseClient.from("enquiries").select("*").order("created_at",{ascending:false});if(error){c.innerHTML='<div class="error-box">Unable to load enquiries.</div>';return}if(!data?.length){c.innerHTML='<div class="empty">No enquiries found.</div>';return}c.innerHTML=`<table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Application Type</th><th>Municipality</th><th>Status</th><th>Date</th></tr></thead><tbody>${data.map(e=>`<tr><td><strong>${escapeHtml(e.full_name||"")}</strong></td><td>${escapeHtml(e.email||"")}</td><td>${escapeHtml(e.phone||"")}</td><td>${escapeHtml(e.application_type||"")}</td><td>${escapeHtml(e.municipality||"")}</td><td>${statusBadge(e.status)}</td><td>${formatDate(e.created_at)}</td></tr>`).join("")}</tbody></table>`}
-async function loadPipelineSummary(targetId="pipelineSummary"){const c=document.getElementById(targetId);if(!c)return;const {data,error}=await supabaseClient.from("applications").select("status");if(error){c.innerHTML='<div class="error-box">Unable to load pipeline.</div>';return}const statuses=["new","initial assessment","information required","fee assessment","quotation","mandate","in progress","submitted","completed"];c.innerHTML=statuses.map(s=>`<div class="pipeline-card"><h4>${capitalizeWords(s)}</h4><div class="pipeline-number">${(data||[]).filter(a=>(a.status||"").toLowerCase()===s).length}</div></div>`).join("")}
-async function loadFullPipeline(){const c=document.getElementById("fullPipeline"),{data,error}=await supabaseClient.from("applications").select("*").order("updated_at",{ascending:false});if(error){c.innerHTML='<div class="error-box">Unable to load pipeline applications.</div>';return}c.innerHTML=data?.length?buildPipeline(data):'<div class="empty">No applications in the pipeline.</div>'}
-function buildPipeline(apps){return `<table><thead><tr><th>Reference</th><th>Applicant</th><th>Application</th><th>Complexity</th><th>Fee</th><th>Status</th><th>Updated</th></tr></thead><tbody>${apps.map(a=>`<tr><td><a href="javascript:void(0)" class="reference-link" onclick="openCaseFileByReference('${escapeJs(a.application_reference||"")}')">${escapeHtml(a.application_reference||"Pending")}</a></td><td>${escapeHtml(a.applicant_name||"")}</td><td>${escapeHtml(a.application_type||"")}</td><td>${complexityBadge(a.complexity_level)}</td><td>${formatMoney(a.indicative_total_min)} - ${formatMoney(a.indicative_total_max)}</td><td>${statusBadge(a.status)}</td><td>${formatDateTime(a.updated_at||a.created_at)}</td></tr>`).join("")}</tbody></table>`}
-function complexityBadge(level){const v=String(level||"Pending"),l=v.toLowerCase(),c=l==="simple"?"badge-green":l==="standard"?"badge-gold":l==="complex"?"badge-red":"badge-gray";return `<span class="badge ${c}">${escapeHtml(v)}</span>`}
-function statusBadge(status){const v=String(status||"New"),l=v.toLowerCase(),c=["completed"].includes(l)?"badge-green":["quotation","mandate","in progress","submitted"].includes(l)?"badge-gold":["new","initial assessment"].includes(l)?"badge-blue":l==="information required"?"badge-red":"badge-gray";return `<span class="badge ${c}">${escapeHtml(capitalizeWords(v))}</span>`}
-function infoItem(label,value){return `<div class="info-item"><div class="info-label">${escapeHtml(label)}</div><div class="info-value">${escapeHtml(value===null||value===undefined||value===""?"Not provided":String(value))}</div></div>`}
-function formatFeeRange(a){if(a.indicative_total_min==null||a.indicative_total_max==null)return "Not calculated";return `${formatMoney(a.indicative_total_min)} – ${formatMoney(a.indicative_total_max)} incl. VAT`}
-function formatMoney(v){const n=Number(v);return "R"+(Number.isNaN(n)?0:n).toLocaleString("en-ZA",{minimumFractionDigits:2,maximumFractionDigits:2})}
-function roundMoney(v){return Math.round(Number(v)*100)/100}
-function formatDate(v){if(!v)return"—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":d.toLocaleDateString("en-ZA",{day:"2-digit",month:"short",year:"numeric"})}
-function formatDateTime(v){if(!v)return"—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":d.toLocaleString("en-ZA",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})}
-function addDays(value,days){const d=new Date(value+"T00:00:00");d.setDate(d.getDate()+Number(days||0));return d.toISOString().slice(0,10)}
-function capitalizeWords(v){return v?String(v).replace(/\b\w/g,x=>x.toUpperCase()):""}
-function categoryForType(type){const t=String(type||"").trim().toLowerCase();if(["township","township establishment","township establishment application"].includes(t))return"A";if(["rezoning","rezoning application","subdivision","subdivision application"].includes(t))return"B";return"C"}
-function escapeHtml(v){return v==null?"":String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
-function escapeJs(v){return String(v??"").replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,'\\"').replace(/\n/g,"\\n").replace(/\r/g,"\\r")}
+
+await loadQuotationForApplication(
+currentApplication.id
+);
+
+
+if(
+status==="sent"&&
+currentApplication.status!=="completed"
+){
+
+await supabaseClient
+.from("applications")
+.update({
+status:"quotation",
+assigned_planner:currentUser.id
+})
+.eq("id",currentApplication.id);
+
+}
+
+
+m.style.display="block";
+
+b.textContent="✓ Quotation Saved";
+
+b.style.background="#198754";
+
+
+setTimeout(()=>{
+
+b.disabled=false;
+
+b.textContent="Save Quotation";
+
+b.style.background="";
+
+m.style.display="none";
+
+},2000);
+
+}
+
+
+async function reloadCurrentQuotation(){
+
+if(currentApplication)
+await loadQuotationForApplication(
+currentApplication.id
+);
+
+}
+
+
+async function updateApplicationToQuotation(){
+
+if(
+!currentApplication||
+String(currentApplication.status||"").toLowerCase()==="completed"
+)
+return;
+
+const {
+error
+}=await supabaseClient
+.from("applications")
+.update({
+status:"quotation",
+assigned_planner:currentUser.id
+})
+.eq("id",currentApplication.id);
+
+if(!error)
+currentApplication.status="quotation";
+
+}
+
+
+function defaultScopeOfWork(app){
+
+return `Professional town planning services relating to the proposed ${app.application_type||"planning application"} for the identified property. Services include professional assessment, preparation and submission of the applicable planning application documentation, liaison with the relevant authority and reasonable follow-up associated with the agreed scope.`;
+
+}
+
+
+function defaultAssumptions(){
+
+return "This quotation is based on the information provided by the client at the time of assessment. It assumes that all required information and documentation will be supplied timeously. Statutory application fees, specialist studies, advertising costs, professional fees of other consultants and other third-party costs are excluded unless specifically stated otherwise.";
+
+}
+
+
+function quotationStatusOptions(s){
+
+return [
+"draft",
+"sent",
+"accepted",
+"declined",
+"expired",
+"cancelled"
+]
+.map(x=>`
+
+<option
+value="${x}"
+${
+String(s||"draft").toLowerCase()===x
+?"selected"
+:""
+}
+>
+${capitalizeWords(x)}
+</option>
+
+`)
+.join("");
+
+}
+
+
+function quotationStatusBadge(s){
+
+const v=String(s||"draft");
+
+const l=v.toLowerCase();
+
+const cl=
+l==="accepted"
+?"badge-green":
+l==="sent"
+?"badge-blue":
+l==="declined"||l==="cancelled"
+?"badge-red":
+l==="expired"
+?"badge-gold":
+"badge-gray";
+
+return `
+<span class="badge ${cl}">
+${escapeHtml(capitalizeWords(v))}
+</span>
+`;
+
+}
+
+
+/* =========================
+   APPLICATION STATUS
+========================= */
+
+function statusOptions(s){
+
+return [
+"new",
+"initial assessment",
+"information required",
+"fee assessment",
+"quotation",
+"mandate",
+"in progress",
+"submitted",
+"completed"
+]
+.map(x=>`
+
+<option
+value="${escapeHtml(x)}"
+${
+String(s||"").toLowerCase()===x
+?"selected"
+:""
+}
+>
+${capitalizeWords(x)}
+</option>
+
+`)
+.join("");
+
+}
+
+
+async function showApplications(){
+
+showSection(
+"applications",
+document.getElementById("navApplications")
+);
+
+}
+
+
+/* =========================
+   ENQUIRIES
+========================= */
+
+async function loadEnquiries(){
+
+const c=
+document.getElementById("enquiriesTable");
+
+const {
+data,
+error
+}=await supabaseClient
+.from("enquiries")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(error){
+
+c.innerHTML=
+'<div class="error-box">Unable to load enquiries.</div>';
+
+return;
+}
+
+if(!data?.length){
+
+c.innerHTML=
+'<div class="empty">No enquiries found.</div>';
+
+return;
+}
+
+c.innerHTML=`
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Application Type</th>
+<th>Municipality</th>
+<th>Status</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${data.map(e=>`
+
+<tr>
+
+<td>
+<strong>
+${escapeHtml(e.full_name||"")}
+</strong>
+</td>
+
+<td>
+${escapeHtml(e.email||"")}
+</td>
+
+<td>
+${escapeHtml(e.phone||"")}
+</td>
+
+<td>
+${escapeHtml(e.application_type||"")}
+</td>
+
+<td>
+${escapeHtml(e.municipality||"")}
+</td>
+
+<td>
+${statusBadge(e.status)}
+</td>
+
+<td>
+${formatDate(e.created_at)}
+</td>
+
+</tr>
+
+`).join("")}
+
+</tbody>
+
+</table>
+
+`;
+
+}
+
+
+/* =========================
+   PIPELINE
+========================= */
+
+async function loadPipelineSummary(
+targetId="pipelineSummary"
+){
+
+const c=
+document.getElementById(targetId);
+
+if(!c)
+return;
+
+const {
+data,
+error
+}=await supabaseClient
+.from("applications")
+.select("status");
+
+if(error){
+
+c.innerHTML=
+'<div class="error-box">Unable to load pipeline.</div>';
+
+return;
+}
+
+const statuses=[
+"new",
+"initial assessment",
+"information required",
+"fee assessment",
+"quotation",
+"mandate",
+"in progress",
+"submitted",
+"completed"
+];
+
+c.innerHTML=
+statuses
+.map(s=>`
+
+<div class="pipeline-card">
+
+<h4>
+${capitalizeWords(s)}
+</h4>
+
+<div class="pipeline-number">
+
+${
+(data||[])
+.filter(
+a=>(a.status||"").toLowerCase()===s
+).length
+}
+
+</div>
+
+</div>
+
+`)
+.join("");
+
+}
+
+
+async function loadFullPipeline(){
+
+const c=
+document.getElementById("fullPipeline");
+
+const {
+data,
+error
+}=await supabaseClient
+.from("applications")
+.select("*")
+.order("updated_at",{ascending:false});
+
+if(error){
+
+c.innerHTML=
+'<div class="error-box">Unable to load pipeline applications.</div>';
+
+return;
+}
+
+c.innerHTML=
+data?.length
+?buildPipeline(data)
+:'<div class="empty">No applications in the pipeline.</div>';
+
+}
+
+
+function buildPipeline(apps){
+
+return `
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Reference</th>
+<th>Applicant</th>
+<th>Application</th>
+<th>Complexity</th>
+<th>Fee</th>
+<th>Status</th>
+<th>Updated</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${apps.map(a=>`
+
+<tr>
+
+<td>
+
+<a
+href="javascript:void(0)"
+class="reference-link"
+onclick="openCaseFileByReference('${escapeJs(a.application_reference||"")}')"
+>
+
+${escapeHtml(
+a.application_reference||"Pending"
+)}
+
+</a>
+
+</td>
+
+<td>
+${escapeHtml(a.applicant_name||"")}
+</td>
+
+<td>
+${escapeHtml(a.application_type||"")}
+</td>
+
+<td>
+${complexityBadge(a.complexity_level)}
+</td>
+
+<td>
+${formatMoney(a.indicative_total_min)}
+-
+${formatMoney(a.indicative_total_max)}
+</td>
+
+<td>
+${statusBadge(a.status)}
+</td>
+
+<td>
+${formatDateTime(
+a.updated_at||a.created_at
+)}
+</td>
+
+</tr>
+
+`).join("")}
+
+</tbody>
+
+</table>
+
+`;
+
+}
+
+
+/* =========================
+   BADGES / HELPERS
+========================= */
+
+function complexityBadge(level){
+
+const v=
+String(level||"Pending");
+
+const l=v.toLowerCase();
+
+const c=
+l==="simple"
+?"badge-green":
+l==="standard"
+?"badge-gold":
+l==="complex"
+?"badge-red":
+"badge-gray";
+
+return `
+<span class="badge ${c}">
+${escapeHtml(v)}
+</span>
+`;
+
+}
+
+
+function statusBadge(status){
+
+const v=
+String(status||"New");
+
+const l=
+v.toLowerCase();
+
+const c=
+["completed"].includes(l)
+?"badge-green":
+["quotation","mandate","in progress","submitted"].includes(l)
+?"badge-gold":
+["new","initial assessment"].includes(l)
+?"badge-blue":
+l==="information required"
+?"badge-red":
+"badge-gray";
+
+return `
+<span class="badge ${c}">
+${escapeHtml(capitalizeWords(v))}
+</span>
+`;
+
+}
+
+
+function infoItem(label,value){
+
+return `
+<div class="info-item">
+
+<div class="info-label">
+${escapeHtml(label)}
+</div>
+
+<div class="info-value">
+
+${
+escapeHtml(
+value===null||
+value===undefined||
+value===""
+?"Not provided"
+:String(value)
+)
+}
+
+</div>
+
+</div>
+`;
+
+}
+
+
+function formatFeeRange(a){
+
+if(
+a.indicative_total_min==null||
+a.indicative_total_max==null
+)
+return "Not calculated";
+
+return `
+${formatMoney(a.indicative_total_min)}
+–
+${formatMoney(a.indicative_total_max)}
+incl. VAT
+`;
+
+}
+
+
+function formatMoney(v){
+
+const n=Number(v);
+
+return "R"+
+(
+Number.isNaN(n)?0:n
+)
+.toLocaleString(
+"en-ZA",
+{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}
+);
+
+}
+
+
+function roundMoney(v){
+
+return Math.round(Number(v)*100)/100;
+
+}
+
+
+function formatDate(v){
+
+if(!v)
+return"—";
+
+const d=new Date(v);
+
+return Number.isNaN(d.getTime())
+?"—"
+:d.toLocaleDateString(
+"en-ZA",
+{
+day:"2-digit",
+month:"short",
+year:"numeric"
+}
+);
+
+}
+
+
+function formatDateTime(v){
+
+if(!v)
+return"—";
+
+const d=new Date(v);
+
+return Number.isNaN(d.getTime())
+?"—"
+:d.toLocaleString(
+"en-ZA",
+{
+day:"2-digit",
+month:"short",
+year:"numeric",
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+}
+
+
+function addDays(value,days){
+
+const d=
+new Date(
+value+"T00:00:00"
+);
+
+d.setDate(
+d.getDate()+Number(days||0)
+);
+
+return d
+.toISOString()
+.slice(0,10);
+
+}
+
+
+function capitalizeWords(v){
+
+return v
+?String(v).replace(
+/\b\w/g,
+x=>x.toUpperCase()
+)
+:"";
+
+}
+
+
+function categoryForType(type){
+
+const t=
+String(type||"")
+.trim()
+.toLowerCase();
+
+if([
+"township",
+"township establishment",
+"township establishment application"
+].includes(t))
+return"A";
+
+if([
+"rezoning",
+"rezoning application",
+"subdivision",
+"subdivision application"
+].includes(t))
+return"B";
+
+return"C";
+
+}
+
+
+function escapeHtml(v){
+
+return v==null
+?""
+:String(v)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function escapeJs(v){
+
+return String(v??"")
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'")
+.replace(/"/g,'\\"')
+.replace(/\n/g,"\\n")
+.replace(/\r/g,"\\r");
+
+}
+
+
+/* =========================
+   START PORTAL
+========================= */
+
 startProfessionalPortal();
+
 </script>
+
 </body>
 </html>
+```
