@@ -40,9 +40,9 @@ function showLoginScreen(message=""){document.body.classList.add("auth-ready");d
 function showProfessionalApp(){document.body.classList.add("auth-ready");document.getElementById("loginScreen").style.display="none";document.getElementById("app").style.display="block"}
 async function startProfessionalPortal(){try{const {data:{session},error}=await supabaseClient.auth.getSession();if(error)throw error;if(session){await verifyProfessional(session.user)}else{showLoginScreen()}}catch(error){console.error("Session initialization error:",error);showLoginScreen("Unable to restore your session. Please sign in again.")}}
 async function verifyProfessional(user){currentUser=user;const {data:profile,error}=await supabaseClient.from("professional_profiles").select("*").eq("id",user.id).eq("active",true).maybeSingle();if(error){await supabaseClient.auth.signOut();showLoginScreen("Unable to verify professional access.");return}if(!profile){await supabaseClient.auth.signOut();showLoginScreen("Professional access has not been activated for this account.");return}currentProfile=profile;showProfessionalApp();document.getElementById("userEmail").textContent=user.email||"";await loadDashboard()}
-document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value,button=document.getElementById("loginButton");button.disabled=true;button.textContent="Signing in...";clearLoginMessage();const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){showLoginError(error.message);button.disabled=false;button.textContent="Sign In";return}const {data:{session}}=await supabaseClient.auth.getSession();if(session){await verifyProfessional(session.user)}else{showLoginError("Unable to establish your professional session. Please try again.")}button.disabled=false;button.textContent="Sign In"});
+document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value,button=document.getElementById("loginButton");button.disabled=true;button.textContent="Signing in...";clearLoginMessage();const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){showLoginError(error.message);button.disabled=false;button.textContent="Sign In";return}await verifyProfessional(data.user);button.disabled=false;button.textContent="Sign In"});
 async function logout(){await supabaseClient.auth.signOut();currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen()}
-supabaseClient.auth.onAuthStateChange((event)=>{if(event==="SIGNED_OUT"){currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen();}});
+supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen();return}if(event==="SIGNED_IN"&&session){if(!currentUser||currentUser.id!==session.user.id)await verifyProfessional(session.user)}});
 function showLoginError(message){const b=document.getElementById("loginMessage");b.textContent=message;b.className="login-message error"}function clearLoginMessage(){const b=document.getElementById("loginMessage");b.textContent="";b.className="login-message"}
 function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}}
 async function loadDashboard(){await loadApplicationStats();await loadRecentApplications();await loadPipelineSummary("dashboardPipeline")}
@@ -97,14 +97,33 @@ window.location.href=`mailto:${encodeURIComponent(email)}?subject=${subject}&bod
 }
 
 async function createMandateFromQuotation(){
-if(!currentQuotation||String(currentQuotation.status||"").toLowerCase()!=="accepted")return alert("A mandate can only be created after the quotation has been accepted by the client.");
-if(!currentApplication?.id)return alert("Unable to create mandate: the current application could not be identified.");
-const {data,error}=await supabaseClient.rpc("create_mandate_from_quotation",{p_quotation_id:currentQuotation.id,p_application_id:currentApplication.id});
-if(error){console.error(error);return alert("Unable to create mandate: "+error.message);}
-if(!data?.success)return alert("Unable to create mandate: The mandate could not be created.");
+if(!currentQuotation||String(currentQuotation.status||"").toLowerCase()!=="accepted")
+return alert("A mandate can only be created after the quotation has been accepted by the client.");
+
+if(!currentApplication?.id)
+return alert("Unable to create mandate: the current application could not be identified.");
+
+const {data,error}=await supabaseClient.rpc("create_mandate_from_quotation",{
+    p_quotation_id:currentQuotation.id,
+    p_application_id:currentApplication.id
+});
+
+if(error){
+    console.error(error);
+    return alert("Unable to create mandate: "+error.message);
+}
+
+if(!data?.success)
+return alert("Unable to create mandate: The mandate could not be created.");
+
 currentApplication.status="mandate";
 renderQuotation(currentQuotation);
-alert(data.existing?"A mandate already exists for this quotation: "+(data.mandate_reference||""):"Mandate created successfully: "+(data.mandate_reference||""));
+
+alert(
+    data.existing
+    ? "A mandate already exists for this quotation: "+(data.mandate_reference||"")
+    : "Mandate created successfully: "+(data.mandate_reference||"")
+);
 }
 
 function calculateQuotationPreview(){const f=roundMoney(Number(document.getElementById("quotationProfessionalFee")?.value)||0),d=roundMoney(Number(document.getElementById("quotationDisbursements")?.value)||0),s=roundMoney(f+d),rate=Number(currentQuotation?.vat_rate??15)||15,v=roundMoney(s*rate/100),t=roundMoney(s+v);document.getElementById("quotationSubtotalPreview").textContent=formatMoney(s);document.getElementById("quotationVatPreview").textContent=formatMoney(v);document.getElementById("quotationTotalPreview").textContent=formatMoney(t)}
