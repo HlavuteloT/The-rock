@@ -105,6 +105,10 @@
             color: var(--gold-light);
         }
 
+        .brand-home-link { display: inline-block; cursor: pointer; border-radius: 4px; }
+        .brand-home-link:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 6px; }
+        .brand-home-link:hover .logo span { color: var(--gold-light); }
+
         /* HERO */
 
         .hero {
@@ -820,6 +824,50 @@
                 gap: 3px;
             }
         }
+        /* PUBLIC WEBSITE ENHANCEMENT 01 — visual polish and responsive navigation */
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+        .navbar { gap: 20px; }
+        .nav-links a { font-weight: 600; }
+        .nav-toggle { display: none; background: transparent; color: white; border: 1px solid rgba(255,255,255,.4); border-radius: 6px; padding: 9px 13px; font-size: 22px; line-height: 1; }
+        .hero { position: relative; overflow: hidden; background: radial-gradient(circle at 82% 25%,rgba(200,164,93,.16),transparent 32%), linear-gradient(125deg,#041d15 0%,#0a3d2c 62%,#0d4a35 100%); }
+        .hero::after { content: ''; position: absolute; width: 510px; height: 510px; right: -140px; top: 0; border: 1px solid rgba(224,194,123,.24); border-radius: 50%; pointer-events: none; box-shadow: 0 0 0 70px rgba(224,194,123,.035),0 0 0 150px rgba(224,194,123,.025); }
+        .hero-container { position: relative; z-index: 1; }
+        .hero-label { display: inline-block; padding-bottom: 12px; border-bottom: 1px solid rgba(224,194,123,.45); }
+        .hero h1 { letter-spacing: -2px; }
+        .service-card { border-top: 3px solid var(--gold); }
+        .service-card h3 { font-size: 19px; }
+        .button:focus-visible, .nav-toggle:focus-visible, a:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 3px; }
+        @media (max-width: 850px) {
+            .nav-toggle { display: inline-flex; align-items: center; justify-content: center; margin-left: auto; }
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #082c20; padding: 14px 6% 24px; flex-direction: column; align-items: stretch; gap: 0; box-shadow: 0 12px 22px rgba(0,0,0,.2); }
+            .nav-links.is-open { display: flex; }
+            .nav-links a { display: block; padding: 13px 8px; border-bottom: 1px solid rgba(255,255,255,.12); }
+            .hero::after { right: -360px; opacity: .6; }
+        }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+        /* ENHANCEMENT 02 — credibility and client journey */
+        .about-rock { background: #f7f4ed; }
+        .about-layout { display:grid; grid-template-columns: 1.1fr .9fr; gap: 54px; align-items:center; }
+        .eyebrow { display:block; color:#997338; font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
+        .about-rock h2, .journey h2 { color:var(--green-dark); font-size:clamp(30px,4vw,44px); line-height:1.18; margin-bottom:20px; letter-spacing:-.6px; }
+        .about-rock p { color:#53665c; margin-bottom:18px; }
+        .about-panel { background:var(--green-dark); border-radius:12px; padding:38px; color:white; position:relative; border-top:5px solid var(--gold); }
+        .about-panel h3 { font-size:24px; margin-bottom:20px; color:var(--gold-light); }
+        .about-panel ul { list-style:none; padding:0; }
+        .about-panel li { padding:14px 0; border-bottom:1px solid rgba(255,255,255,.15); }
+        .about-panel li::before { content:'✓'; color:var(--gold-light); margin-right:12px; }
+        .about-panel li:last-child { border-bottom:0; }
+        .journey { background:#fff; }
+        .journey-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:36px; }
+        .journey-card { background:#fafbf9; border:1px solid var(--border); border-radius:10px; padding:26px 22px; }
+        .journey-number { color:#a17d42; font-size:13px; font-weight:800; letter-spacing:2px; margin-bottom:20px; }
+        .journey-card h3 { color:var(--green-dark); font-size:19px; margin-bottom:12px; }
+        .journey-card p { color:var(--muted); font-size:14px; }
+        .journey-action { text-align:center; margin-top:36px; }
+        .service-card .service-action { display:inline-block; margin-top:18px; color:var(--green); font-size:14px; font-weight:700; text-decoration:underline; text-underline-offset:4px; }
+        @media(max-width:950px) { .journey-grid { grid-template-columns:repeat(2,1fr); } }
+        @media(max-width:700px) { .about-layout { grid-template-columns:1fr; gap:26px; } .about-panel { padding:27px; } .journey-grid { grid-template-columns:1fr; } }
     </style>
 </head>
 
@@ -829,7 +877,7 @@
 
 <nav class="navbar">
 
-    <div>
+    <a href="#home" class="brand-home-link" aria-label="THE ROCK — return to homepage">
         <div class="logo">
             THE <span>ROCK</span>
         </div>
@@ -837,10 +885,13 @@
         <div class="nav-subtitle">
             PLANNING & LAND USE MANAGEMENT
         </div>
-    </div>
+    </a>
 
-    <div class="nav-links">
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-controls="primaryNavigation" aria-expanded="false">☰</button>
+    <div class="nav-links" id="primaryNavigation">
         <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#process">Our Process</a>
         <a href="#intelligence">Planning Intelligence</a>
         <a href="#fees">Fee Estimator</a>
         <a href="#contact">Contact</a>
@@ -851,7 +902,7 @@
 
 <!-- HERO -->
 
-<section class="hero">
+<section class="hero" id="home">
 
     <div class="hero-container">
 
@@ -912,7 +963,8 @@
                 organisations.
             </p>
 
-        </div>
+        
+            </div>
 
 
         <div class="service-grid">
@@ -929,6 +981,7 @@
                     land use management applications.
                 </p>
 
+            <a class="service-action" href="#contact">Enquire about this service →</a>
             </div>
 
 
@@ -944,6 +997,7 @@
                     development proposals.
                 </p>
 
+            <a class="service-action" href="#contact">Enquire about this service →</a>
             </div>
 
 
@@ -959,6 +1013,7 @@
                     constraints and regulatory requirements.
                 </p>
 
+            <a class="service-action" href="#contact">Enquire about this service →</a>
             </div>
 
 
@@ -974,6 +1029,7 @@
                     zoning schemes and land use controls.
                 </p>
 
+            <a class="service-action" href="#contact">Enquire about this service →</a>
             </div>
 
 
@@ -989,6 +1045,7 @@
                     supporting planning documentation.
                 </p>
 
+            <a class="service-action" href="#contact">Enquire about this service →</a>
             </div>
 
 
@@ -1004,6 +1061,7 @@
                     through to application submission.
                 </p>
 
+            <a class="service-action" href="#contact">Enquire about this service →</a>
             </div>
 
         </div>
@@ -1012,6 +1070,48 @@
 
 </section>
 
+
+
+<!-- ABOUT THE ROCK — ENHANCEMENT 02 -->
+<section class="section about-rock" id="about" aria-labelledby="aboutTitle">
+  <div class="container about-layout">
+    <div>
+      <span class="eyebrow">About THE ROCK</span>
+      <h2 id="aboutTitle">Planning clarity for better property decisions.</h2>
+      <p>THE ROCK | Planning &amp; Land Use Management provides professional town planning and development-planning support for property owners, developers, businesses and institutions across South Africa.</p>
+      <p>We approach each project by understanding the property, the intended development and the applicable municipal planning framework. Our work is focused on identifying planning requirements, preparing appropriate applications and helping clients navigate the process with confidence.</p>
+      <a class="button button-primary" href="#contact">Discuss Your Project</a>
+    </div>
+    <aside class="about-panel" aria-label="Our approach">
+      <h3>Our professional approach</h3>
+      <ul>
+        <li>Property and land-use due diligence</li>
+        <li>Planning legislation and municipal scheme assessment</li>
+        <li>Clear application scope and professional quotations</li>
+        <li>Structured application preparation and coordination</li>
+        <li>Transparent communication throughout the process</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<!-- CLIENT JOURNEY — ENHANCEMENT 02 -->
+<section class="section journey" id="process" aria-labelledby="processTitle">
+  <div class="container">
+    <div class="section-heading">
+      <small>How We Work</small>
+      <h2 id="processTitle">From first enquiry to planning action.</h2>
+      <p>A clear, professionally managed process helps you understand what happens next and what information we need to move your project forward.</p>
+    </div>
+    <div class="journey-grid">
+      <article class="journey-card"><div class="journey-number">01 / ENQUIRE</div><h3>Tell us about your project</h3><p>Share your property details, proposed use and planning requirements through our enquiry form or application wizard.</p></article>
+      <article class="journey-card"><div class="journey-number">02 / ASSESS</div><h3>Preliminary review</h3><p>We consider the available information and identify likely planning requirements, constraints and any further information needed.</p></article>
+      <article class="journey-card"><div class="journey-number">03 / PROPOSE</div><h3>Scope and quotation</h3><p>We confirm the proposed professional services, deliverables and fees for your consideration before formal appointment.</p></article>
+      <article class="journey-card"><div class="journey-number">04 / DELIVER</div><h3>Planning implementation</h3><p>Following appointment, the agreed planning work is prepared and managed in line with the applicable process and scope.</p></article>
+    </div>
+    <div class="journey-action"><button type="button" class="button button-primary" onclick="openApplicationWizard()">Start Your Planning Application</button></div>
+  </div>
+</section>
 
 <!-- PLANNING INTELLIGENCE -->
 
@@ -3622,6 +3722,23 @@
 
     }
 
+
+    /* Responsive public navigation — independent of Supabase logic */
+    (function () {
+        const toggle = document.getElementById('navToggle');
+        const links = document.getElementById('primaryNavigation');
+        if (!toggle || !links) return;
+        function setMenu(open) {
+            links.classList.toggle('is-open', open);
+            toggle.setAttribute('aria-expanded', String(open));
+            toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+            toggle.textContent = open ? '×' : '☰';
+        }
+        toggle.addEventListener('click', () => setMenu(!links.classList.contains('is-open')));
+        links.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
+        document.addEventListener('keydown', event => { if (event.key === 'Escape') setMenu(false); });
+        window.addEventListener('resize', () => { if (window.innerWidth > 850) setMenu(false); });
+    })();
 
     /* =========================================================
        MODAL CLOSE WHEN CLICKING OUTSIDE
