@@ -45,6 +45,7 @@ button,input,select,textarea{font-family:inherit}.login-screen{visibility:hidden
 .doc-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.doc-toolbar .wide{grid-column:1/-1}.doc-actions{display:flex;flex-wrap:wrap;gap:7px}.doc-actions .button{padding:8px 10px;font-size:12px}.doc-hint{font-size:12px;color:var(--muted);line-height:1.6}.doc-feedback{padding:12px;border-radius:8px;background:#eaf7ef;color:#176b3a;margin:12px 0}.doc-feedback.error{background:#fcebea;color:var(--danger)}@media(max-width:650px){.doc-toolbar{grid-template-columns:1fr}.doc-toolbar .wide{grid-column:auto}}
 body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;background:#e8ece9;border-radius:20px;overflow:hidden;margin:12px 0}.readiness-fill{height:100%;background:var(--green);transition:width .2s}.readiness-row{border:1px solid var(--border);border-radius:9px;padding:14px;margin:10px 0;background:#fafcfb}.readiness-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}.readiness-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.readiness-actions button{font-size:12px}@media(max-width:750px){.readiness-grid{grid-template-columns:1fr}}
 
+.rock-publication-status{margin:12px 0;font-size:12px;color:var(--muted)}
 /* Phase 3: Municipal Submission Register */
 .muni-card{border:1px solid var(--border);border-radius:10px;padding:17px;margin:14px 0;background:#fafcfb}.muni-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.muni-grid .wide{grid-column:1/-1}.muni-actions{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}.muni-actions button{font-size:12px}.muni-history{border-left:3px solid var(--gold);padding:10px 14px;margin:12px 0;background:white;border-radius:0 8px 8px 0}.muni-small{font-size:12px;color:var(--muted);line-height:1.6}.muni-message{margin:10px 0;padding:12px;border-radius:8px;background:#eaf7ef;color:#176b3a}.muni-message.error{background:#fcebea;color:var(--danger)}@media(max-width:750px){.muni-grid{grid-template-columns:1fr}}
 /* Phase 4: Portfolio Operations Dashboard */
@@ -572,7 +573,39 @@ function rockRenderDecisions(){
  <div class="form-group wide"><label>Decision summary</label><textarea id="rockDecisionNewSummary" rows="3" class="form-control"></textarea></div>
  <div class="form-group wide"><label>Professional notes</label><textarea id="rockDecisionNewNotes" rows="2" class="form-control"></textarea></div></div>
  <button class="button button-primary" id="rockDecisionCreateButton" onclick="rockCreateDecision()">Save Decision</button></div>
- ${rockDecisionRows.map(r=>`<div class="muni-card"><strong>${escapeHtml(capitalizeWords(r.decision_type.replaceAll('_',' ')))}</strong> · ${formatDate(r.decision_date)}<p class="muni-small">Reference: ${escapeHtml(r.decision_reference||'Not recorded')} · Municipality: ${escapeHtml(r.municipality||'Not recorded')}</p><div class="info-grid">${infoItem('Notification',formatDate(r.notification_date))}${infoItem('Effective date',formatDate(r.effective_date))}${infoItem('Appeal deadline',formatDate(r.appeal_deadline))}</div><p class="muni-small">${escapeHtml(r.decision_summary||'No summary recorded.')}</p><div class="muni-actions"><button class="button button-secondary" onclick="rockToggleDecisionEdit('${r.id}')">Edit Decision</button></div><div id="rockDecisionEdit_${r.id}" hidden></div></div>`).join('')||'<div class="empty">No municipal decisions recorded for this application.</div>'}`;
+ ${rockDecisionRows.map(r=>`<div class="muni-card"><strong>${escapeHtml(capitalizeWords(r.decision_type.replaceAll('_',' ')))}</strong> · ${formatDate(r.decision_date)}<p class="muni-small">Reference: ${escapeHtml(r.decision_reference||'Not recorded')} · Municipality: ${escapeHtml(r.municipality||'Not recorded')}</p><div class="info-grid">${infoItem('Notification',formatDate(r.notification_date))}${infoItem('Effective date',formatDate(r.effective_date))}${infoItem('Appeal deadline',formatDate(r.appeal_deadline))}</div><p class="muni-small">${escapeHtml(r.decision_summary||'No summary recorded.')}</p><div class="rock-publication-status"><strong>Client publication:</strong> <span class="badge ${r.client_visible===true?'badge-green':'badge-gray'}">${r.client_visible===true?'Published to authorised clients':'Not published'}</span></div><div class="muni-actions"><button class="button button-secondary" onclick="rockToggleDecisionEdit('${r.id}')">Edit Decision</button><button class="button ${r.client_visible===true?'button-secondary':'button-primary'}" id="rockPublishButton_${r.id}" onclick="rockSetDecisionPublication('${r.id}',${r.client_visible===true?'false':'true'})">${r.client_visible===true?'Withdraw from Client View':'Publish to Client'}</button></div><div id="rockDecisionEdit_${r.id}" hidden></div></div>`).join('')||'<div class="empty">No municipal decisions recorded for this application.</div>'}`;
+}
+// Phase 6 Step 30C — client publication is exclusively controlled by the professional RPC.
+// Do not grant direct client_visible table UPDATE privileges to browser roles.
+async function rockSetDecisionPublication(decisionId,makeVisible){
+ const decision=rockDecisionRows.find(r=>r.id===decisionId);
+ if(!decision||!currentApplication||!currentUser)return;
+ const appId=currentApplication.id;
+ if(makeVisible){
+  if(!String(decision.decision_summary||'').trim()){
+   return rockDecisionMessage('Publication blocked: record and save a client-appropriate decision summary first. This test decision currently has no summary.',true);
+  }
+  const warning=decision.decision_document_id?'':'\\n\\nNo decision document is linked. Confirm that the summary is accurate and appropriate for client release.';
+  if(!confirm('Publish municipal decision '+(decision.decision_reference||decisionId)+' to ALL authorised clients linked to this application?\\n\\nReview the decision summary and confirm the municipality has formally issued the decision.'+warning))return;
+ }else{
+  if(!confirm('Withdraw '+(decision.decision_reference||decisionId)+' from the Client Portal? Previously viewed information cannot be recalled.'))return;
+ }
+ const button=document.getElementById('rockPublishButton_'+decisionId);
+ if(button){button.disabled=true;button.textContent='Updating visibility...'}
+ try{
+  const {data,error}=await supabaseClient.rpc('set_municipal_decision_visibility',{p_decision_id:decisionId,p_visible:makeVisible});
+  if(error)throw error;
+  // Refresh from the database and verify the resulting publication state.
+  const {data:verified,error:readError}=await supabaseClient.from('municipal_decisions').select('id,client_visible').eq('id',decisionId).eq('application_id',appId).single();
+  if(readError)throw readError;
+  if(verified.client_visible!==makeVisible)throw Error('Publication state could not be verified. Please refresh and check before trying again.');
+  if(currentApplication?.id!==appId)return;
+  await rockLoadDecisions(appId);
+  rockDecisionMessage(makeVisible?'Decision published to authorised clients. Verify its appearance in the Client Portal.':'Decision withdrawn from client viewing. Verify it no longer appears in the Client Portal.');
+ }catch(e){
+  rockDecisionMessage('Could not change client publication: '+(e.message||String(e)),true);
+  if(button){button.disabled=false;button.textContent=makeVisible?'Publish to Client':'Withdraw from Client View'}
+ }
 }
 async function rockCreateDecision(){
  if(!currentApplication||!currentUser)return;
