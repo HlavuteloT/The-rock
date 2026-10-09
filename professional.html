@@ -1192,12 +1192,46 @@ async function rockReviewInvoice(invoiceId){
         <div class="rock-invoice-preview-line total"><span>Total including VAT</span><strong>${rockInvoiceMoney(i.total_amount)}</strong></div>
       </div>
       <div class="rock-review-note">${isDraft?(checks.length?'<strong>Draft validation observations:</strong> '+checks.map(escapeHtml).join(' '):'No missing fields detected in this preliminary review. Final statutory and professional validation is still required.'):'This record is not a draft. Details are displayed for review only.'}${isInternalTest?'<br><strong>Internal test invoice: official issuance is blocked in this portal.</strong>':''}<br><strong>Reviewing alone does not issue, number, modify or send an invoice.</strong></div>
-      <div class="rock-review-actions">${isDraft?`<button type="button" class="button button-primary" onclick="rockEditDraftInvoice('${i.id}')">Edit Draft</button>`:""}${isDraft&&isAdmin&&!isInternalTest?`<button type="button" class="button button-primary" ${checks.length?'disabled title="Complete required invoice fields before issuing"':''} onclick="rockIssueInvoice('${i.id}')">Issue Invoice</button>`:""}<button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div><div id="rockIssueFeedback" class="rock-invoice-form-feedback" role="status" aria-live="polite"></div>`;
+      <div class="rock-review-actions"><button type="button" class="button button-secondary" onclick="rockPrintInvoice('${i.id}')">Print / Save PDF</button>${isDraft?`<button type="button" class="button button-primary" onclick="rockEditDraftInvoice('${i.id}')">Edit Draft</button>`:""}${isDraft&&isAdmin&&!isInternalTest?`<button type="button" class="button button-primary" ${checks.length?'disabled title="Complete required invoice fields before issuing"':''} onclick="rockIssueInvoice('${i.id}')">Issue Invoice</button>`:""}<button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div><div id="rockIssueFeedback" class="rock-invoice-form-feedback" role="status" aria-live="polite"></div>`;
   }catch(e){
     if(request!==rockInvoiceReviewRequest)return;
     content.innerHTML=`<div class="error-box">Unable to review invoice: ${escapeHtml(e.message||String(e))}</div>`;
   }
  }
+// Phase 7 — printable invoice; browser Print > Save as PDF. No database mutation.
+async function rockPrintInvoice(invoiceId){
+  // Open synchronously to avoid popup blockers after asynchronous fetching.
+  const printWindow=window.open('','_blank');
+  if(!printWindow){alert('Allow pop-ups for THE ROCK to print or save invoices as PDF.');return;}
+  printWindow.document.write('<!doctype html><html><head><title>Preparing invoice</title></head><body><p>Preparing secure invoice preview...</p></body></html>');
+  try{
+    const {data:i,error}=await supabaseClient.from('professional_invoices')
+      .select('id,application_id,draft_reference,invoice_number,invoice_status,invoice_date,due_date,description,subtotal,vat_rate,vat_amount,total_amount,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,payment_terms')
+      .eq('id',invoiceId).maybeSingle();
+    if(error)throw error;
+    if(!i)throw new Error('Invoice not found or access denied.');
+    const {data:a,error:appError}=await supabaseClient.from('applications')
+      .select('application_reference,application_type,municipality').eq('id',i.application_id).maybeSingle();
+    if(appError)throw appError;
+    const safe=v=>escapeHtml(String(v??''));
+    const display=v=>safe(v||'—');
+    const draft=i.invoice_status==='draft';
+    if(!draft && (!i.invoice_number || i.invoice_status!=='issued'))throw new Error('Unsupported invoice status for printable tax invoice.');
+    const reference=i.invoice_number||i.draft_reference||'DRAFT';
+    const heading=draft?'DRAFT INVOICE':'TAX INVOICE';
+    const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${safe(reference)} — THE ROCK</title><style>
+      @page{size:A4;margin:16mm}*{box-sizing:border-box}body{margin:0;font:13px/1.55 Arial,Helvetica,sans-serif;color:#183b2b;background:#fff}main{max-width:780px;margin:auto}.head{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #c4a267;padding-bottom:18px}.brand{font:bold 29px Georgia,serif;letter-spacing:2px;color:#0a3927}.tag{font-size:10px;letter-spacing:2px;color:#9b7c3c}.heading{text-align:right;font:bold 21px Georgia,serif}.ref{font-size:12px;margin-top:6px}.draft{border:2px solid #b7791f;color:#895e14;background:#fff9e9;padding:11px 14px;font-weight:bold;margin:22px 0;text-align:center}.grid{display:grid;grid-template-columns:1fr 1fr;gap:25px;margin:25px 0}.box{border:1px solid #dfe6df;border-radius:8px;padding:16px;overflow-wrap:anywhere;white-space:pre-wrap}.label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#667b70;font-weight:bold;margin-bottom:6px}.name{font-size:15px;font-weight:bold;margin-bottom:6px}table{width:100%;border-collapse:collapse;margin-top:20px}th{text-align:left;background:#0a3927;color:#fff;padding:12px}td{border-bottom:1px solid #e2e9e2;padding:13px;vertical-align:top;overflow-wrap:anywhere}.money{text-align:right;white-space:nowrap}.totals{width:300px;max-width:100%;margin:22px 0 22px auto}.totalrow{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #e0e6e0}.grand{background:#0a3927;color:#fff;font-size:17px;font-weight:bold;padding:14px;margin-top:8px}.foot{border-top:1px solid #dfe6df;margin-top:38px;padding-top:15px;font-size:11px;color:#53695e}.muted{color:#687c71}.meta{margin:18px 0;display:flex;gap:22px;flex-wrap:wrap}.meta div{min-width:140px}button{border:0;background:#0f5132;color:#fff;padding:12px 18px;border-radius:6px;cursor:pointer;margin:16px 0}@media print{button{display:none}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}@media(max-width:560px){.grid{grid-template-columns:1fr}.head{display:block}.heading{text-align:left;margin-top:16px}}
+    </style></head><body><main><button type="button" onclick="window.print()">Print / Save as PDF</button><div class="head"><div><div class="brand">THE ROCK</div><div class="tag">TOWN PLANNING &amp; LAND USE MANAGEMENT</div></div><div><div class="heading">${heading}</div><div class="ref">${safe(reference)}</div></div></div>
+    ${draft?'<div class="draft">DRAFT — NOT A TAX INVOICE · NOT FOR PAYMENT</div>':''}
+    <div class="meta"><div><div class="label">Invoice date</div>${display(i.invoice_date)}</div><div><div class="label">Payment due</div>${display(i.due_date)}</div><div><div class="label">Application reference</div>${display(a?.application_reference)}</div></div>
+    <div class="grid"><div class="box"><div class="label">Supplier</div><div class="name">${display(i.supplier_legal_name)}</div><div class="label">VAT registration number</div>${display(i.supplier_vat_number)}</div><div class="box"><div class="label">Bill to</div><div class="name">${display(i.client_billing_name)}</div><div>${display(i.client_billing_address)}</div><div class="label" style="margin-top:12px">Client VAT number</div>${display(i.client_vat_number)}</div></div>
+    <div class="muted">${display(a?.application_type)}${a?.municipality?' · '+safe(a.municipality):''}</div>
+    <table><thead><tr><th>Professional services</th><th class="money">Amount (ZAR)</th></tr></thead><tbody><tr><td style="white-space:pre-wrap">${display(i.description)}</td><td class="money">${rockInvoiceMoney(i.subtotal)}</td></tr></tbody></table>
+    <div class="totals"><div class="totalrow"><span>Subtotal</span><strong>${rockInvoiceMoney(i.subtotal)}</strong></div><div class="totalrow"><span>VAT (${safe(i.vat_rate)}%)</span><strong>${rockInvoiceMoney(i.vat_amount)}</strong></div><div class="totalrow grand"><span>Total payable</span><span>${rockInvoiceMoney(i.total_amount)}</span></div></div>
+    <div><div class="label">Payment terms</div><div style="white-space:pre-wrap">${display(i.payment_terms)}</div></div><div class="foot">THE ROCK · Professional Planning Services${draft?' · Preview only; no official invoice number has been allocated.':''}<p>Verify all required tax-invoice particulars and payment instructions before sending to a client. This document is generated from the invoice record and does not change its status.</p></div></main></body></html>`;
+    printWindow.document.open();printWindow.document.write(html);printWindow.document.close();
+  }catch(e){printWindow.document.body.textContent='Unable to prepare invoice: '+(e.message||String(e));}
+}
 // Phase 7 — Administrator-only official invoice issuance.
 // Client-side controls supplement, but never replace, database authorisation.
 let rockInvoiceIssueBusy=false;
