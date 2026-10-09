@@ -91,12 +91,23 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 .rock-alert-note{font-size:12px;color:var(--muted);margin:0 0 16px;line-height:1.6}
 @media(max-width:650px){.rock-alert-grid{grid-template-columns:1fr}}
 </style>
+<style>
+/* THE ROCK | Phase 7: Invoice Management */
+.rock-invoice-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:24px}
+.rock-invoice-kpis .value{font-size:clamp(19px,2vw,29px);overflow-wrap:anywhere}
+.rock-invoice-table{min-width:800px}
+.rock-invoice-table td{line-height:1.5}
+.rock-invoice-ref{font-weight:800;color:var(--green-dark)}
+.rock-invoice-sub{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+@media(max-width:1050px){.rock-invoice-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.rock-invoice-kpis{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
 <div id="app" class="app">
 <header class="topbar"><div class="brand"><h1>THE ROCK</h1><span>PLANNING & LAND USE MANAGEMENT</span></div><div class="user-area"><span id="userEmail" class="user-email"></span><button class="logout-button" onclick="logout()">Sign Out</button></div></header>
-<div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navOperations" class="nav-button" onclick="showSection('operations',this)">Operations Dashboard</button><button id="navTasks" class="nav-button" onclick="showSection('tasks',this)">Tasks &amp; Deadlines</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
+<div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navOperations" class="nav-button" onclick="showSection('operations',this)">Operations Dashboard</button><button id="navTasks" class="nav-button" onclick="showSection('tasks',this)">Tasks &amp; Deadlines</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Financial Management</div><button id="navInvoices" class="nav-button" onclick="showSection('invoices',this)">Invoice Management</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
 <main class="main">
 <section id="dashboard" class="section active"><div class="page-header"><div><h2>Professional Dashboard</h2><p>Manage planning applications, enquiries and active projects.</p></div></div><div class="stats-grid"><div class="stat-card"><div class="label">New Applications</div><div id="statNew" class="value">0</div></div><div class="stat-card"><div class="label">Total Applications</div><div id="statTotal" class="value">0</div></div><div class="stat-card"><div class="label">Active Projects</div><div id="statActive" class="value">0</div></div><div class="stat-card"><div class="label">Completed</div><div id="statCompleted" class="value">0</div></div></div><div class="content-card"><h3>Recent Applications</h3><div id="recentApplications" class="table-wrapper"><div class="loading">Loading applications...</div></div></div><div class="content-card"><h3>Pipeline Overview</h3><div id="dashboardPipeline" class="pipeline-grid"><div class="loading">Loading pipeline...</div></div></div></section>
 <section id="operations" class="section"><div class="page-header"><div><h2>Professional Operations Dashboard</h2><p>Portfolio-wide municipal application tracking, professional clearance and action deadlines.</p></div><button class="button button-secondary" onclick="rockLoadOperations()">Refresh Dashboard</button></div><div id="rockOperationsContainer"><div class="loading">Open this section to load portfolio intelligence.</div></div></section>
@@ -104,6 +115,16 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 <section id="applications" class="section"><div class="page-header"><div><h2>Applications</h2><p>Review and manage planning applications.</p></div></div><div class="content-card"><div id="applicationsTable" class="table-wrapper"><div class="loading">Loading applications...</div></div></div></section>
 <section id="enquiries" class="section"><div class="page-header"><div><h2>Client Enquiries</h2><p>Review incoming planning enquiries.</p></div></div><div class="content-card"><div id="enquiriesTable" class="table-wrapper"><div class="loading">Loading enquiries...</div></div></div></section>
 <section id="pipeline" class="section"><div class="page-header"><div><h2>Project Pipeline</h2><p>Track applications through the planning process.</p></div></div><div id="pipelineSummary" class="pipeline-grid" style="margin-bottom:25px"><div class="loading">Loading pipeline...</div></div><div class="content-card"><div id="fullPipeline" class="table-wrapper"><div class="loading">Loading pipeline applications...</div></div></div></section>
+<section id="invoices" class="section">
+  <div class="page-header"><div><h2>Invoice Management</h2><p>Review authorised invoices, drafts and issued totals.</p></div><button class="button button-secondary" onclick="rockLoadInvoices()">Refresh Invoices</button></div>
+  <div class="rock-invoice-kpis">
+    <div class="stat-card"><div class="label">Total issued value</div><div class="value" id="rockInvoiceIssuedValue">R0.00</div></div>
+    <div class="stat-card"><div class="label">Draft invoices</div><div class="value" id="rockInvoiceDraftCount">—</div></div>
+    <div class="stat-card"><div class="label">Issued invoices</div><div class="value" id="rockInvoiceIssuedCount">—</div></div>
+    <div class="stat-card"><div class="label">Recorded unpaid balance</div><div class="value" id="rockInvoiceUnpaid">—</div></div>
+  </div>
+  <div class="content-card"><h3>Invoice Register</h3><p class="doc-hint">Draft references are internal identifiers. Official invoice numbers are allocated on authorised issuance. Payment balances are not calculated until payment records are integrated.</p><div id="rockInvoiceFeedback" role="status" aria-live="polite"></div><div class="table-wrapper" id="rockInvoiceRegister"><div class="loading">Open this section to load invoices.</div></div></div>
+</section>
 <section id="caseFile" class="section"><div id="caseFileContainer"><div class="content-card"><div class="empty">Select an application to open its case file.</div></div></div></section>
 </main></div></div>
 <script>
@@ -125,7 +146,7 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{e.preve
 async function logout(){await supabaseClient.auth.signOut({scope:"local"});currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen()}
 supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen();return}if(event==="SIGNED_IN"&&session){if(!currentUser||currentUser.id!==session.user.id)setTimeout(()=>verifyProfessional(session.user),0)}});
 function showLoginError(message){const b=document.getElementById("loginMessage");b.textContent=message;b.className="login-message error"}function clearLoginMessage(){const b=document.getElementById("loginMessage");b.textContent="";b.className="login-message"}
-function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="operations")rockLoadOperations();if(id==="tasks")rockLoadTaskPortfolio();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}}
+function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="operations")rockLoadOperations();if(id==="tasks")rockLoadTaskPortfolio();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}if(id==="invoices")rockLoadInvoices()}
 async function loadDashboard(){await loadApplicationStats();await loadRecentApplications();await loadPipelineSummary("dashboardPipeline")}
 async function loadApplicationStats(){const {data,error}=await supabaseClient.from("applications").select("status");if(error)return console.error(error);const a=data||[],newA=a.filter(x=>(x.status||"").toLowerCase()==="new").length,completed=a.filter(x=>(x.status||"").toLowerCase()==="completed").length,active=a.filter(x=>{const s=(x.status||"").toLowerCase();return s!=="new"&&s!=="completed"&&s!==""}).length;document.getElementById("statNew").textContent=newA;document.getElementById("statTotal").textContent=a.length;document.getElementById("statActive").textContent=active;document.getElementById("statCompleted").textContent=completed}
 async function loadRecentApplications(){const c=document.getElementById("recentApplications"),{data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false}).limit(8);if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}c.innerHTML=data&&data.length?buildApplicationsTable(data):'<div class="empty">No applications have been received yet.</div>'}
@@ -943,6 +964,41 @@ function rockRenderTaskPortfolio(){
   }).join('')}</tbody></table>`;
 }
 
+</script>
+<script>
+// THE ROCK | Phase 7 — Read-only Invoice Management Dashboard.
+// Database RLS remains authoritative for which invoices are visible.
+let rockInvoiceLoading=false;
+async function rockLoadInvoices(){
+  const target=document.getElementById('rockInvoiceRegister');
+  if(!target||rockInvoiceLoading)return;
+  rockInvoiceLoading=true;
+  const feedback=document.getElementById('rockInvoiceFeedback');
+  target.innerHTML='<div class="loading">Loading authorised invoice records...</div>';
+  feedback.textContent='';
+  try{
+    const {data,error}=await supabaseClient.from('professional_invoices')
+      .select('id,application_id,draft_reference,invoice_number,invoice_status,invoice_date,due_date,description,subtotal,vat_amount,total_amount,created_at,issued_at')
+      .order('created_at',{ascending:false}).limit(500);
+    if(error)throw error;
+    const invoices=data||[];
+    const draft=invoices.filter(i=>i.invoice_status==='draft');
+    const issued=invoices.filter(i=>['issued','partially_paid','paid','overdue'].includes(i.invoice_status));
+    const total=issued.reduce((sum,i)=>sum+Number(i.total_amount||0),0);
+    const money=n=>'R'+Number(n||0).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('rockInvoiceIssuedValue').textContent=money(total);
+    document.getElementById('rockInvoiceDraftCount').textContent=String(draft.length);
+    document.getElementById('rockInvoiceIssuedCount').textContent=String(issued.length);
+    document.getElementById('rockInvoiceUnpaid').textContent='Not tracked';
+    const statuses={draft:'Draft',issued:'Issued',partially_paid:'Partially paid',paid:'Paid',overdue:'Overdue',cancelled:'Cancelled'};
+    const badge=i=>i.invoice_status==='paid'?'badge-green':i.invoice_status==='overdue'?'badge-red':i.invoice_status==='draft'?'badge-gold':'badge-blue';
+    target.innerHTML=invoices.length?`<table class="rock-invoice-table"><thead><tr><th>Reference</th><th>Description</th><th>Invoice date</th><th>Due date</th><th>Status</th><th>Total (incl. VAT)</th></tr></thead><tbody>${invoices.map(i=>`<tr><td><span class="rock-invoice-ref">${escapeHtml(i.invoice_number||i.draft_reference||'Unassigned')}</span><span class="rock-invoice-sub">${i.invoice_number?'Official invoice':'Internal draft reference'}</span></td><td>${escapeHtml(i.description||'—')}</td><td>${escapeHtml(i.invoice_date||'—')}</td><td>${escapeHtml(i.due_date||'—')}</td><td><span class="badge ${badge(i)}">${escapeHtml(statuses[i.invoice_status]||i.invoice_status||'Unknown')}</span></td><td><strong>${money(i.total_amount)}</strong></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No accessible invoices found.</div>';
+    if(invoices.length===500)feedback.textContent='Showing the 500 most recent accessible invoices. Totals are limited to these records.';
+  }catch(e){
+    target.innerHTML=`<div class="error-box">Unable to load invoices: ${escapeHtml(e.message||String(e))}</div>`;
+    for(const id of ['rockInvoiceIssuedValue','rockInvoiceDraftCount','rockInvoiceIssuedCount','rockInvoiceUnpaid'])document.getElementById(id).textContent='—';
+  }finally{rockInvoiceLoading=false;}
+}
 </script>
 </body>
 </html>
