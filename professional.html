@@ -102,6 +102,20 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 @media(max-width:1050px){.rock-invoice-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.rock-invoice-kpis{grid-template-columns:1fr}}
 </style>
+<style>
+/* Phase 7: Create Draft Invoice */
+.rock-invoice-form{border:1px solid #e1e8df;border-radius:12px;padding:22px;background:#fbfcfa;margin-bottom:22px}
+.rock-invoice-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}
+.rock-invoice-form-grid .wide{grid-column:1/-1}
+.rock-invoice-preview{background:#eff5ef;border:1px solid #d7e7d8;border-radius:10px;padding:16px;margin:10px 0 20px}
+.rock-invoice-preview-line{display:flex;justify-content:space-between;gap:12px;margin:8px 0;font-size:14px}
+.rock-invoice-preview-line.total{border-top:1px solid #c8d7ca;padding-top:12px;font-weight:800;color:var(--green-dark);font-size:18px}
+.rock-invoice-form-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.rock-invoice-form-feedback{margin-top:12px;font-size:13px;line-height:1.5}
+.rock-invoice-form-feedback.error{color:var(--danger)}
+.rock-invoice-form-feedback.success{color:var(--green)}
+@media(max-width:650px){.rock-invoice-form-grid{grid-template-columns:1fr}.rock-invoice-form-grid .wide{grid-column:auto}}
+</style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
@@ -117,6 +131,35 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 <section id="pipeline" class="section"><div class="page-header"><div><h2>Project Pipeline</h2><p>Track applications through the planning process.</p></div></div><div id="pipelineSummary" class="pipeline-grid" style="margin-bottom:25px"><div class="loading">Loading pipeline...</div></div><div class="content-card"><div id="fullPipeline" class="table-wrapper"><div class="loading">Loading pipeline applications...</div></div></div></section>
 <section id="invoices" class="section">
   <div class="page-header"><div><h2>Invoice Management</h2><p>Review authorised invoices, drafts and issued totals.</p></div><button class="button button-secondary" onclick="rockLoadInvoices()">Refresh Invoices</button></div>
+  <div class="content-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div><h3 style="margin-bottom:6px">Create Draft Invoice</h3><p class="doc-hint">Save an internal draft against an authorised planning application. This does not issue or send an invoice.</p></div>
+      <button type="button" class="button button-secondary" onclick="rockToggleDraftInvoiceForm()" id="rockInvoiceFormToggle" aria-expanded="false">+ New Draft Invoice</button>
+    </div>
+    <div id="rockInvoiceDraftFormPanel" class="rock-invoice-form" hidden>
+      <form id="rockInvoiceDraftForm" onsubmit="rockCreateDraftInvoice(event)">
+        <div class="rock-invoice-form-grid">
+          <div class="form-group wide"><label for="rockInvoiceApplication">Planning application *</label><select class="form-control" id="rockInvoiceApplication" required onchange="rockInvoiceApplicationChanged()"><option value="">Loading authorised applications...</option></select><div class="doc-hint" id="rockInvoiceApplicationDetails"></div></div>
+          <div class="form-group wide"><label for="rockInvoiceDescription">Service description *</label><textarea id="rockInvoiceDescription" class="form-control" rows="3" maxlength="4000" required placeholder="Describe the professional planning services invoiced"></textarea></div>
+          <div class="form-group"><label for="rockInvoiceSubtotal">Professional fee excluding VAT (R) *</label><input id="rockInvoiceSubtotal" class="form-control" type="number" min="0.01" step="0.01" required placeholder="0.00" oninput="rockInvoiceUpdatePreview()"></div>
+          <div class="form-group"><label for="rockInvoiceVatRate">VAT rate (%)</label><input id="rockInvoiceVatRate" class="form-control" value="15.00" readonly><div class="doc-hint">The database calculates VAT and the final total.</div></div>
+          <div class="form-group"><label for="rockInvoiceDate">Invoice date *</label><input id="rockInvoiceDate" class="form-control" type="date" required onchange="rockInvoiceUpdatePreview()"></div>
+          <div class="form-group"><label for="rockInvoiceDueDate">Due date *</label><input id="rockInvoiceDueDate" class="form-control" type="date" required></div>
+          <div class="form-group"><label for="rockInvoiceClientName">Client billing name *</label><input id="rockInvoiceClientName" class="form-control" maxlength="250" required></div>
+          <div class="form-group"><label for="rockInvoiceClientVat">Client VAT registration number (optional)</label><input id="rockInvoiceClientVat" class="form-control" maxlength="80" autocomplete="off"></div>
+          <div class="form-group wide"><label for="rockInvoiceClientAddress">Client billing address (optional)</label><textarea id="rockInvoiceClientAddress" class="form-control" rows="2" maxlength="2000"></textarea></div>
+          <div class="form-group"><label for="rockInvoiceSupplierName">Supplier legal name *</label><input id="rockInvoiceSupplierName" class="form-control" maxlength="250" required placeholder="Enter the actual registered supplier name"></div>
+          <div class="form-group"><label for="rockInvoiceSupplierVat">Supplier VAT registration number (if registered)</label><input id="rockInvoiceSupplierVat" class="form-control" maxlength="80" autocomplete="off" placeholder="Leave blank if not available"></div>
+          <div class="form-group wide"><label for="rockInvoiceTerms">Payment terms (optional)</label><textarea id="rockInvoiceTerms" class="form-control" rows="2" maxlength="2000" placeholder="e.g. Payment due within 30 days"></textarea></div>
+        </div>
+        <div class="rock-invoice-preview" aria-live="polite"><div class="rock-invoice-preview-line"><span>Subtotal</span><strong id="rockInvoicePreviewSubtotal">R0,00</strong></div><div class="rock-invoice-preview-line"><span>VAT (15%)</span><strong id="rockInvoicePreviewVat">R0,00</strong></div><div class="rock-invoice-preview-line total"><span>Draft total</span><span id="rockInvoicePreviewTotal">R0,00</span></div></div>
+        <p class="doc-hint">An indicative planning fee is a reference only. Confirm the agreed professional fee before saving. Drafts receive an internal DRAFT reference; no official invoice number is allocated.</p>
+        <div class="rock-invoice-form-actions"><button type="submit" id="rockInvoiceSaveDraft" class="button button-primary">Save Draft Invoice</button><button type="button" class="button button-secondary" onclick="rockToggleDraftInvoiceForm(false)">Cancel</button></div>
+        <div id="rockInvoiceDraftFeedback" class="rock-invoice-form-feedback" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+    <div id="rockInvoiceCreateNotice" role="status" aria-live="polite" class="rock-invoice-form-feedback"></div>
+  </div>
   <div class="rock-invoice-kpis">
     <div class="stat-card"><div class="label">Total issued value</div><div class="value" id="rockInvoiceIssuedValue">R0.00</div></div>
     <div class="stat-card"><div class="label">Draft invoices</div><div class="value" id="rockInvoiceDraftCount">—</div></div>
@@ -146,7 +189,7 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{e.preve
 async function logout(){await supabaseClient.auth.signOut({scope:"local"});currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen()}
 supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen();return}if(event==="SIGNED_IN"&&session){if(!currentUser||currentUser.id!==session.user.id)setTimeout(()=>verifyProfessional(session.user),0)}});
 function showLoginError(message){const b=document.getElementById("loginMessage");b.textContent=message;b.className="login-message error"}function clearLoginMessage(){const b=document.getElementById("loginMessage");b.textContent="";b.className="login-message"}
-function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="operations")rockLoadOperations();if(id==="tasks")rockLoadTaskPortfolio();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}if(id==="invoices")rockLoadInvoices()}
+function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="operations")rockLoadOperations();if(id==="tasks")rockLoadTaskPortfolio();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}if(id==="invoices"){rockLoadInvoices();rockInvoiceLoadApplications()}}
 async function loadDashboard(){await loadApplicationStats();await loadRecentApplications();await loadPipelineSummary("dashboardPipeline")}
 async function loadApplicationStats(){const {data,error}=await supabaseClient.from("applications").select("status");if(error)return console.error(error);const a=data||[],newA=a.filter(x=>(x.status||"").toLowerCase()==="new").length,completed=a.filter(x=>(x.status||"").toLowerCase()==="completed").length,active=a.filter(x=>{const s=(x.status||"").toLowerCase();return s!=="new"&&s!=="completed"&&s!==""}).length;document.getElementById("statNew").textContent=newA;document.getElementById("statTotal").textContent=a.length;document.getElementById("statActive").textContent=active;document.getElementById("statCompleted").textContent=completed}
 async function loadRecentApplications(){const c=document.getElementById("recentApplications"),{data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false}).limit(8);if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}c.innerHTML=data&&data.length?buildApplicationsTable(data):'<div class="empty">No applications have been received yet.</div>'}
@@ -345,7 +388,8 @@ body{font-family:Arial,Helvetica,sans-serif;color:#1d2b24;margin:0;background:#f
 <div class="section"><h2>9. Professional Record</h2><div class="text">${esc(m.professional_notes)||"No professional mandate notes recorded."}</div></div>
 <div class="section"><h2>10. Client Acknowledgement &amp; Signatures</h2><div class="terms"><p>By signing below, the parties acknowledge the appointment, scope of professional services, responsibilities, assumptions, exclusions and financial terms recorded in this mandate and the associated accepted quotation.</p><p>The client confirms that the information supplied for the assignment is, to the best of the client's knowledge, accurate and complete and undertakes to notify THE ROCK of material changes affecting the assignment.</p></div><div class="signatures"><div class="sig">Client signature<br><br>Name: ${esc(m.client_name)}<br>Date: __________________<br><br>Signature: ______________________________</div><div class="sig">Professional signature<br><br>THE ROCK — Planning &amp; Land Use Management<br>Date: __________________<br><br>Signature: ______________________________</div></div></div>
 <div class="notice">This document is generated from the mandate record held in THE ROCK. It should be reviewed by the professional before issue and signature. The mandate should be read together with the accepted quotation and any written variation or additional instruction agreed between the parties.</div>
-</div></body></html>`;
+</div>
+</body></html>`;
 w.document.open();w.document.write(html);w.document.close();
 }
 
@@ -998,6 +1042,77 @@ async function rockLoadInvoices(){
     target.innerHTML=`<div class="error-box">Unable to load invoices: ${escapeHtml(e.message||String(e))}</div>`;
     for(const id of ['rockInvoiceIssuedValue','rockInvoiceDraftCount','rockInvoiceIssuedCount','rockInvoiceUnpaid'])document.getElementById(id).textContent='—';
   }finally{rockInvoiceLoading=false;}
+}
+</script>
+<script>
+// THE ROCK | Phase 7 — Create Draft Invoice (authorisation enforced by database RLS).
+let rockInvoiceApplications=[];
+let rockInvoiceApplicationLoading=false;
+const rockInvoiceMoney=n=>'R'+Number(n||0).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+function rockInvoiceLocalDate(date){const d=new Date(date.getTime()-date.getTimezoneOffset()*60000);return d.toISOString().slice(0,10)}
+function rockInvoiceInitialDates(){const today=new Date(),due=new Date(today);due.setDate(due.getDate()+30);document.getElementById('rockInvoiceDate').value=rockInvoiceLocalDate(today);document.getElementById('rockInvoiceDueDate').value=rockInvoiceLocalDate(due)}
+function rockInvoiceFeedback(message,error=false){const e=document.getElementById('rockInvoiceDraftFeedback');if(e){e.textContent=message;e.className='rock-invoice-form-feedback '+(error?'error':'success')}}
+function rockInvoiceUpdatePreview(){const amount=Number(document.getElementById('rockInvoiceSubtotal').value||0);const subtotal=Number.isFinite(amount)&&amount>0?Math.round((amount+Number.EPSILON)*100)/100:0;const vat=Math.round((subtotal*0.15+Number.EPSILON)*100)/100;document.getElementById('rockInvoicePreviewSubtotal').textContent=rockInvoiceMoney(subtotal);document.getElementById('rockInvoicePreviewVat').textContent=rockInvoiceMoney(vat);document.getElementById('rockInvoicePreviewTotal').textContent=rockInvoiceMoney(subtotal+vat)}
+async function rockInvoiceLoadApplications(){
+  if(rockInvoiceApplicationLoading||!currentUser||!currentProfile)return;
+  const selector=document.getElementById('rockInvoiceApplication');if(!selector)return;
+  rockInvoiceApplicationLoading=true;
+  const selected=selector.value;
+  selector.innerHTML='<option value="">Loading authorised applications...</option>';
+  try{
+    // Existing applications SELECT RLS is broad. Apply role/assignment restrictions to this UI;
+    // invoice INSERT RLS independently enforces can_access_application_documents(application_id).
+    if(!['admin','planner'].includes(currentProfile.role)||currentProfile.active!==true)throw new Error('Professional invoice access is not available for this account.');
+    let query=supabaseClient.from('applications').select('id,application_reference,applicant_name,application_type,erf_number,municipality,assigned_planner,indicative_fee,created_at').order('created_at',{ascending:false}).limit(500);
+    if(currentProfile.role==='planner')query=query.eq('assigned_planner',currentUser.id);
+    const {data,error}=await query;
+    if(error)throw error;
+    rockInvoiceApplications=(data||[]).filter(a=>currentProfile.role==='admin'||a.assigned_planner===currentUser.id);
+    selector.innerHTML='<option value="">Select an authorised application</option>'+rockInvoiceApplications.map(a=>`<option value="${escapeHtml(a.id)}">${escapeHtml(a.application_reference||'Unreferenced · '+a.id.slice(0,8))} — ${escapeHtml(a.applicant_name||'Applicant not specified')} (${escapeHtml(a.application_type||'Planning application')})</option>`).join('');
+    if(rockInvoiceApplications.some(a=>a.id===selected))selector.value=selected;
+    rockInvoiceApplicationChanged();
+    if((data||[]).length===500)rockInvoiceFeedback('Showing up to 500 recent applications. Older cases may require a dedicated search.',true);
+  }catch(e){rockInvoiceApplications=[];selector.innerHTML='<option value="">Unable to load authorised applications</option>';rockInvoiceFeedback('Application list: '+e.message,true)}
+  finally{rockInvoiceApplicationLoading=false}
+}
+function rockInvoiceApplicationChanged(){
+  const id=document.getElementById('rockInvoiceApplication').value;
+  const a=rockInvoiceApplications.find(x=>x.id===id);
+  const details=document.getElementById('rockInvoiceApplicationDetails');
+  details.textContent=a?`Application: ${a.application_type||'—'} · Erf: ${a.erf_number||'—'} · Municipality: ${a.municipality||'—'}${a.indicative_fee!=null?' · Indicative fee (not automatically charged): '+rockInvoiceMoney(a.indicative_fee):''}`:'';
+  document.getElementById('rockInvoiceClientName').value=a?.applicant_name||'';
+  document.getElementById('rockInvoiceDescription').value=a?`Professional town planning services — ${a.application_type||'Planning application'}${a.application_reference?' ('+a.application_reference+')':''}`:'';
+}
+function rockToggleDraftInvoiceForm(force){
+  const panel=document.getElementById('rockInvoiceDraftFormPanel'),toggle=document.getElementById('rockInvoiceFormToggle');
+  const show=typeof force==='boolean'?force:panel.hidden;
+  panel.hidden=!show;toggle.setAttribute('aria-expanded',String(show));toggle.textContent=show?'Close Draft Form':'+ New Draft Invoice';
+  if(show){if(!document.getElementById('rockInvoiceDate').value)rockInvoiceInitialDates();rockInvoiceUpdatePreview();rockInvoiceLoadApplications()}
+}
+async function rockCreateDraftInvoice(event){
+  event.preventDefault();
+  const form=document.getElementById('rockInvoiceDraftForm');if(!form.reportValidity())return;
+  const btn=document.getElementById('rockInvoiceSaveDraft');
+  if(btn.disabled)return;
+  const value=id=>document.getElementById(id).value.trim();
+  const appId=value('rockInvoiceApplication');
+  if(!rockInvoiceApplications.some(a=>a.id===appId))return rockInvoiceFeedback('Select an authorised application.',true);
+  const subtotal=Number(value('rockInvoiceSubtotal'));
+  if(!Number.isFinite(subtotal)||subtotal<=0||Math.round(subtotal*100)!==subtotal*100&&Math.abs(Math.round(subtotal*100)-subtotal*100)>1e-7)return rockInvoiceFeedback('Enter a positive fee with no more than two decimal places.',true);
+  if(value('rockInvoiceDueDate')<value('rockInvoiceDate'))return rockInvoiceFeedback('The due date cannot precede the invoice date.',true);
+  if(!currentUser)return rockInvoiceFeedback('Your session has expired. Sign in again.',true);
+  btn.disabled=true;btn.textContent='Saving draft...';rockInvoiceFeedback('Saving draft invoice...');
+  const payload={application_id:appId,created_by:currentUser.id,invoice_status:'draft',invoice_date:value('rockInvoiceDate'),due_date:value('rockInvoiceDueDate'),description:value('rockInvoiceDescription'),subtotal:Math.round(subtotal*100)/100,vat_rate:15,client_billing_name:value('rockInvoiceClientName'),client_billing_address:value('rockInvoiceClientAddress')||null,client_vat_number:value('rockInvoiceClientVat')||null,supplier_legal_name:value('rockInvoiceSupplierName'),supplier_vat_number:value('rockInvoiceSupplierVat')||null,payment_terms:value('rockInvoiceTerms')||null};
+  try{
+    const {data,error}=await supabaseClient.from('professional_invoices').insert(payload).select('id,draft_reference,invoice_number,invoice_status,total_amount').single();
+    if(error)throw error;
+    if(!data||data.invoice_status!=='draft'||data.invoice_number!==null)throw new Error('The saved invoice requires verification. Refresh the register before continuing.');
+    document.getElementById('rockInvoiceCreateNotice').textContent=`Draft ${data.draft_reference||'created'} saved successfully · ${rockInvoiceMoney(data.total_amount)}. No official invoice number was issued.`;
+    document.getElementById('rockInvoiceCreateNotice').className='rock-invoice-form-feedback success';
+    form.reset();rockInvoiceInitialDates();rockInvoiceUpdatePreview();rockToggleDraftInvoiceForm(false);
+    await rockLoadInvoices();
+  }catch(e){rockInvoiceFeedback('Could not save draft: '+(e.message||String(e)),true)}
+  finally{btn.disabled=false;btn.textContent='Save Draft Invoice'}
 }
 </script>
 </body>
