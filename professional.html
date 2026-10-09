@@ -1164,6 +1164,8 @@ async function rockReviewInvoice(invoiceId){
     const safe=v=>escapeHtml(String(v===null||v===undefined||v===''?'Not provided':v));
     const field=(label,value)=>`<div class="rock-review-item"><small>${escapeHtml(label)}</small><strong>${safe(value)}</strong></div>`;
     const isDraft=i.invoice_status==='draft';
+    const isAdmin=currentProfile?.role==='admin' && currentProfile?.active===true;
+    const isInternalTest=String(i.description||'').toUpperCase().includes('INTERNAL TEST') || String(i.client_billing_name||'').toUpperCase().includes('INTERNAL TEST') || String(i.supplier_legal_name||'').toUpperCase().includes('INTERNAL TEST');
     const checks=[];
     if(isDraft){
       if(!String(i.supplier_legal_name||'').trim())checks.push('Supplier legal name is missing.');
@@ -1189,13 +1191,68 @@ async function rockReviewInvoice(invoiceId){
         <div class="rock-invoice-preview-line"><span>VAT (${safe(i.vat_rate)}%)</span><strong>${rockInvoiceMoney(i.vat_amount)}</strong></div>
         <div class="rock-invoice-preview-line total"><span>Total including VAT</span><strong>${rockInvoiceMoney(i.total_amount)}</strong></div>
       </div>
-      <div class="rock-review-note">${isDraft?(checks.length?'<strong>Draft validation observations:</strong> '+checks.map(escapeHtml).join(' '):'No missing fields detected in this preliminary review. Final statutory and professional validation is still required.'):'This record is not a draft. Details are displayed for review only.'}<br><strong>No invoice will be issued, numbered, modified or sent from this screen.</strong></div>
-      <div class="rock-review-actions">${isDraft?`<button type="button" class="button button-primary" onclick="rockEditDraftInvoice('${i.id}')">Edit Draft</button>`:""}<button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div>`;
+      <div class="rock-review-note">${isDraft?(checks.length?'<strong>Draft validation observations:</strong> '+checks.map(escapeHtml).join(' '):'No missing fields detected in this preliminary review. Final statutory and professional validation is still required.'):'This record is not a draft. Details are displayed for review only.'}${isInternalTest?'<br><strong>Internal test invoice: official issuance is blocked in this portal.</strong>':''}<br><strong>Reviewing alone does not issue, number, modify or send an invoice.</strong></div>
+      <div class="rock-review-actions">${isDraft?`<button type="button" class="button button-primary" onclick="rockEditDraftInvoice('${i.id}')">Edit Draft</button>`:""}${isDraft&&isAdmin&&!isInternalTest?`<button type="button" class="button button-primary" ${checks.length?'disabled title="Complete required invoice fields before issuing"':''} onclick="rockIssueInvoice('${i.id}')">Issue Invoice</button>`:""}<button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div><div id="rockIssueFeedback" class="rock-invoice-form-feedback" role="status" aria-live="polite"></div>`;
   }catch(e){
     if(request!==rockInvoiceReviewRequest)return;
     content.innerHTML=`<div class="error-box">Unable to review invoice: ${escapeHtml(e.message||String(e))}</div>`;
   }
  }
+// Phase 7 — Administrator-only official invoice issuance.
+// Client-side controls supplement, but never replace, database authorisation.
+let rockInvoiceIssueBusy=false;
+async function rockIssueInvoice(invoiceId){
+  if(rockInvoiceIssueBusy)return;
+  const feedback=document.getElementById('rockIssueFeedback');
+  if(!feedback)return;
+  const report=(message,error=false)=>{
+    if(!feedback.isConnected)return;
+    feedback.className='rock-invoice-form-feedback '+(error?'error':'success');
+    feedback.textContent=message;
+  };
+  if(currentProfile?.role!=='admin'||currentProfile?.active!==true){
+    report('Only active administrators may issue invoices.',true);return;
+  }
+  const {data:i,error:loadError}=await supabaseClient.from('professional_invoices')
+    .select('id,invoice_status,draft_reference,invoice_number,description,subtotal,vat_rate,supplier_legal_name,supplier_vat_number,client_billing_name,total_amount')
+    .eq('id',invoiceId).maybeSingle();
+  if(loadError||!i){report('Could not verify this invoice: '+(loadError?.message||'Invoice not found.'),true);return;}
+  if(i.invoice_status!=='draft'||i.invoice_number){
+    report('This invoice is no longer an unissued draft.',true);return;
+  }
+  if([i.description,i.client_billing_name,i.supplier_legal_name].some(v=>String(v||'').toUpperCase().includes('INTERNAL TEST'))){
+    report('Internal test invoices cannot be issued through this portal.',true);return;
+  }
+  if(!(Number(i.subtotal)>0)||Number(i.vat_rate)!==15||
+      !String(i.supplier_legal_name||'').trim()||
+      !String(i.supplier_vat_number||'').trim()||
+      !String(i.client_billing_name||'').trim()){
+    report('Complete the supplier legal name, VAT number, client billing name and valid invoice amount before issuance.',true);return;
+  }
+  const reference=i.draft_reference||'this draft';
+  if(!window.confirm('OFFICIAL INVOICE ISSUANCE\\n\\n'+reference+
+      '\\nTotal: '+rockInvoiceMoney(i.total_amount)+
+      '\\n\\nThis action allocates an official invoice number and locks billing details. It cannot be undone through this portal.\\n\\nIssue this invoice now?'))return;
+  rockInvoiceIssueBusy=true;
+  const button=Array.from(document.querySelectorAll('#rockInvoiceReviewContent button')).find(b=>b.textContent.trim()==='Issue Invoice');
+  if(button){button.disabled=true;button.textContent='Issuing...';}
+  try{
+    const {data,error}=await supabaseClient.rpc('rock_issue_invoice',{p_invoice_id:invoiceId});
+    if(error)throw error;
+    const number=data?.invoice_number;
+    if(!number)throw new Error('Issuance returned without an official invoice number. Refresh and inspect the record before retrying.');
+    rockDraftEditorClose();
+    await rockReviewInvoice(invoiceId);
+    await rockLoadInvoices();
+    const notice=document.getElementById('rockInvoiceCreateNotice');
+    if(notice){notice.className='rock-invoice-form-feedback success';notice.textContent='Official invoice '+number+' issued successfully. It has not been emailed to the client.';}
+  }catch(e){
+    report('Invoice issuance not confirmed: '+(e.message||String(e))+'. Refresh and review the invoice before retrying.',true);
+  }finally{
+    rockInvoiceIssueBusy=false;
+    if(button?.isConnected){button.disabled=false;button.textContent='Issue Invoice';}
+  }
+}
 // Phase 7 — Draft editor. The database RPC validates authentication, access and draft status.
 let rockDraftEditorInvoice=null;
 function rockDraftEditorClose(){
