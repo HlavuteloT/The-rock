@@ -117,7 +117,7 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 @media(max-width:650px){.rock-invoice-form-grid{grid-template-columns:1fr}.rock-invoice-form-grid .wide{grid-column:auto}}
 </style>
 <style>
-/* Phase 7: Read-only invoice review */
+/* Phase 7: Invoice review and draft editing */
 .rock-review-panel{border:1px solid #d7e4d9;border-radius:12px;padding:22px;background:#fbfcfa;margin-bottom:22px}
 .rock-review-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
 .rock-review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:17px 0}
@@ -1136,6 +1136,7 @@ async function rockCreateDraftInvoice(event){
 // THE ROCK | Phase 7 — read-only invoice review. RLS authorises each detail fetch.
 let rockInvoiceReviewRequest=0;
 function rockCloseInvoiceReview(){
+  rockDraftEditorClose();
   rockInvoiceReviewRequest++;
   const panel=document.getElementById('rockInvoiceReviewPanel');
   if(panel)panel.hidden=true;
@@ -1189,11 +1190,102 @@ async function rockReviewInvoice(invoiceId){
         <div class="rock-invoice-preview-line total"><span>Total including VAT</span><strong>${rockInvoiceMoney(i.total_amount)}</strong></div>
       </div>
       <div class="rock-review-note">${isDraft?(checks.length?'<strong>Draft validation observations:</strong> '+checks.map(escapeHtml).join(' '):'No missing fields detected in this preliminary review. Final statutory and professional validation is still required.'):'This record is not a draft. Details are displayed for review only.'}<br><strong>No invoice will be issued, numbered, modified or sent from this screen.</strong></div>
-      <div class="rock-review-actions"><button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div>`;
+      <div class="rock-review-actions">${isDraft?`<button type="button" class="button button-primary" onclick="rockEditDraftInvoice('${i.id}')">Edit Draft</button>`:""}<button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div>`;
   }catch(e){
     if(request!==rockInvoiceReviewRequest)return;
     content.innerHTML=`<div class="error-box">Unable to review invoice: ${escapeHtml(e.message||String(e))}</div>`;
   }
+ }
+// Phase 7 — Draft editor. The database RPC validates authentication, access and draft status.
+let rockDraftEditorInvoice=null;
+function rockDraftEditorClose(){
+  rockDraftEditorInvoice=null;
+  const panel=document.getElementById('rockDraftEditorPanel');
+  if(panel)panel.remove();
+}
+function rockDraftEditorPreview(){
+  const input=document.getElementById('rockEditSubtotal');
+  const preview=document.getElementById('rockEditPreview');
+  if(!input||!preview)return;
+  const subtotal=Number(input.value);
+  if(!Number.isFinite(subtotal)||subtotal<=0){preview.textContent='Enter a valid amount greater than R0.';return;}
+  const vat=Math.round((subtotal*0.15+Number.EPSILON)*100)/100;
+  preview.textContent=`Subtotal ${rockInvoiceMoney(subtotal)} + VAT (15%) ${rockInvoiceMoney(vat)} = ${rockInvoiceMoney(subtotal+vat)} (indicative; database is authoritative)`;
+}
+async function rockEditDraftInvoice(invoiceId){
+  rockDraftEditorClose();
+  const review=document.getElementById('rockInvoiceReviewPanel');
+  if(!review||review.hidden)return;
+  const panel=document.createElement('div');
+  panel.id='rockDraftEditorPanel';
+  panel.className='rock-invoice-form';
+  panel.innerHTML='<div class="loading">Loading draft for editing...</div>';
+  review.insertAdjacentElement('afterend',panel);
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+  try{
+    const {data:i,error}=await supabaseClient.from('professional_invoices')
+      .select('id,invoice_status,description,subtotal,invoice_date,due_date,payment_terms,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number')
+      .eq('id',invoiceId).maybeSingle();
+    if(!panel.isConnected)return;
+    if(error)throw error;
+    if(!i||i.invoice_status!=='draft')throw new Error('This invoice is no longer an accessible draft.');
+    rockDraftEditorInvoice=i.id;
+    const val=v=>escapeHtml(String(v??''));
+    panel.innerHTML=`<h3>Edit Draft Invoice</h3><p class="doc-hint">Only draft billing details can be edited. Application and invoice references are locked. Saving does not issue or send an invoice.</p>
+      <form id="rockDraftEditorForm">
+      <div class="rock-invoice-form-grid">
+        <div class="form-group wide"><label for="rockEditDescription">Service description *</label><textarea class="form-control" id="rockEditDescription" maxlength="4000" rows="3" required>${val(i.description)}</textarea></div>
+        <div class="form-group"><label for="rockEditSubtotal">Professional fee excluding VAT (R) *</label><input class="form-control" id="rockEditSubtotal" type="number" min="0.01" step="0.01" required value="${val(i.subtotal)}" oninput="rockDraftEditorPreview()"></div>
+        <div class="form-group"><label>VAT rate</label><input class="form-control" value="15% — database calculated" readonly></div>
+        <div class="form-group"><label for="rockEditDate">Invoice date *</label><input class="form-control" id="rockEditDate" type="date" required value="${val(i.invoice_date)}"></div>
+        <div class="form-group"><label for="rockEditDue">Due date *</label><input class="form-control" id="rockEditDue" type="date" required value="${val(i.due_date)}"></div>
+        <div class="form-group"><label for="rockEditClientName">Client billing name *</label><input class="form-control" id="rockEditClientName" maxlength="250" required value="${val(i.client_billing_name)}"></div>
+        <div class="form-group"><label for="rockEditClientVat">Client VAT number</label><input class="form-control" id="rockEditClientVat" maxlength="80" value="${val(i.client_vat_number)}"></div>
+        <div class="form-group wide"><label for="rockEditClientAddress">Client billing address</label><textarea class="form-control" id="rockEditClientAddress" maxlength="2000" rows="2">${val(i.client_billing_address)}</textarea></div>
+        <div class="form-group"><label for="rockEditSupplierName">Supplier legal name *</label><input class="form-control" id="rockEditSupplierName" maxlength="250" required value="${val(i.supplier_legal_name)}"></div>
+        <div class="form-group"><label for="rockEditSupplierVat">Supplier VAT registration number</label><input class="form-control" id="rockEditSupplierVat" maxlength="80" value="${val(i.supplier_vat_number)}"></div>
+        <div class="form-group wide"><label for="rockEditTerms">Payment terms</label><textarea class="form-control" id="rockEditTerms" maxlength="2000" rows="2">${val(i.payment_terms)}</textarea></div>
+      </div><div class="rock-invoice-preview" id="rockEditPreview" aria-live="polite"></div>
+      <div class="rock-invoice-form-actions"><button id="rockEditSave" type="submit" class="button button-primary">Save Draft Changes</button><button type="button" class="button button-secondary" onclick="rockDraftEditorClose()">Cancel</button></div>
+      <div id="rockEditFeedback" role="status" aria-live="polite" class="rock-invoice-form-feedback"></div></form>`;
+    document.getElementById('rockDraftEditorForm').addEventListener('submit',rockDraftEditorSave);
+    rockDraftEditorPreview();
+  }catch(e){if(panel.isConnected)panel.innerHTML=`<div class="error-box">Unable to open draft editor: ${escapeHtml(e.message||String(e))}</div><button type="button" class="button button-secondary" onclick="rockDraftEditorClose()">Close</button>`;}
+}
+async function rockDraftEditorSave(event){
+  event.preventDefault();
+  if(!rockDraftEditorInvoice)return;
+  const get=id=>document.getElementById(id).value.trim();
+  const subtotal=Number(get('rockEditSubtotal'));
+  const feedback=document.getElementById('rockEditFeedback');
+  const save=document.getElementById('rockEditSave');
+  if(!Number.isFinite(subtotal)||subtotal<=0||get('rockEditDue')<get('rockEditDate')){
+    feedback.className='rock-invoice-form-feedback error';
+    feedback.textContent='Enter a positive subtotal and a due date on or after the invoice date.';return;
+  }
+  const id=rockDraftEditorInvoice;
+  save.disabled=true;save.textContent='Saving...';feedback.textContent='';
+  try{
+    const {error}=await supabaseClient.rpc('rock_update_draft_invoice',{
+      p_invoice_id:id,p_description:get('rockEditDescription'),p_subtotal:subtotal,
+      p_invoice_date:get('rockEditDate'),p_due_date:get('rockEditDue'),
+      p_payment_terms:get('rockEditTerms')||null,
+      p_client_billing_name:get('rockEditClientName'),
+      p_client_billing_address:get('rockEditClientAddress')||null,
+      p_client_vat_number:get('rockEditClientVat')||null,
+      p_supplier_legal_name:get('rockEditSupplierName'),
+      p_supplier_vat_number:get('rockEditSupplierVat')||null
+    });
+    if(error)throw error;
+    rockDraftEditorClose();
+    await rockReviewInvoice(id);
+    await rockLoadInvoices();
+    const notice=document.getElementById('rockInvoiceCreateNotice');
+    if(notice){notice.className='rock-invoice-form-feedback success';notice.textContent='Draft invoice changes saved. Review the refreshed VAT and total.';}
+  }catch(e){
+    feedback.className='rock-invoice-form-feedback error';
+    feedback.textContent='Draft not saved: '+(e.message||String(e));
+  }finally{if(save.isConnected){save.disabled=false;save.textContent='Save Draft Changes';}}
 }
 </script>
 </body>
