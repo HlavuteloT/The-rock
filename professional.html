@@ -77,20 +77,16 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 .rock-activity-entry{background:#fff;border:1px solid var(--border);border-radius:9px;padding:14px;margin:12px 0}
 .rock-activity-entry p{margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.5}
 .rock-activity-date{float:right;color:var(--muted);font-size:11px;margin-left:10px}
-
-/* Phase 6 · Portfolio Tasks & Deadlines */
-.rock-portfolio-controls{display:flex;gap:12px;flex-wrap:wrap;margin:17px 0}.rock-portfolio-controls .form-group{flex:1;min-width:175px;margin:0}.rock-portfolio-controls label{display:block;margin-bottom:6px;font-size:12px;font-weight:700}.rock-portfolio-table{min-width:850px}.rock-portfolio-table td{line-height:1.55}.rock-portfolio-due{font-weight:700;color:var(--danger)}.rock-portfolio-empty{padding:24px;text-align:center;color:var(--muted)}
 </style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
 <div id="app" class="app">
 <header class="topbar"><div class="brand"><h1>THE ROCK</h1><span>PLANNING & LAND USE MANAGEMENT</span></div><div class="user-area"><span id="userEmail" class="user-email"></span><button class="logout-button" onclick="logout()">Sign Out</button></div></header>
-<div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navOperations" class="nav-button" onclick="showSection('operations',this)">Operations Dashboard</button><button id="navTasks" class="nav-button" onclick="showSection('tasks',this)">Tasks &amp; Deadlines</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
+<div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navOperations" class="nav-button" onclick="showSection('operations',this)">Operations Dashboard</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
 <main class="main">
 <section id="dashboard" class="section active"><div class="page-header"><div><h2>Professional Dashboard</h2><p>Manage planning applications, enquiries and active projects.</p></div></div><div class="stats-grid"><div class="stat-card"><div class="label">New Applications</div><div id="statNew" class="value">0</div></div><div class="stat-card"><div class="label">Total Applications</div><div id="statTotal" class="value">0</div></div><div class="stat-card"><div class="label">Active Projects</div><div id="statActive" class="value">0</div></div><div class="stat-card"><div class="label">Completed</div><div id="statCompleted" class="value">0</div></div></div><div class="content-card"><h3>Recent Applications</h3><div id="recentApplications" class="table-wrapper"><div class="loading">Loading applications...</div></div></div><div class="content-card"><h3>Pipeline Overview</h3><div id="dashboardPipeline" class="pipeline-grid"><div class="loading">Loading pipeline...</div></div></div></section>
 <section id="operations" class="section"><div class="page-header"><div><h2>Professional Operations Dashboard</h2><p>Portfolio-wide municipal application tracking, professional clearance and action deadlines.</p></div><button class="button button-secondary" onclick="rockLoadOperations()">Refresh Dashboard</button></div><div id="rockOperationsContainer"><div class="loading">Open this section to load portfolio intelligence.</div></div></section>
-<section id="tasks" class="section"><div class="page-header"><div><h2>Portfolio Tasks &amp; Deadlines</h2><p>Monitor planning deliverables and deadlines across your authorised applications.</p></div><button class="button button-secondary" onclick="rockLoadTaskPortfolio()">Refresh Tasks</button></div><div id="rockTaskPortfolioContainer"><div class="loading">Open this section to load portfolio tasks.</div></div></section>
 <section id="applications" class="section"><div class="page-header"><div><h2>Applications</h2><p>Review and manage planning applications.</p></div></div><div class="content-card"><div id="applicationsTable" class="table-wrapper"><div class="loading">Loading applications...</div></div></div></section>
 <section id="enquiries" class="section"><div class="page-header"><div><h2>Client Enquiries</h2><p>Review incoming planning enquiries.</p></div></div><div class="content-card"><div id="enquiriesTable" class="table-wrapper"><div class="loading">Loading enquiries...</div></div></div></section>
 <section id="pipeline" class="section"><div class="page-header"><div><h2>Project Pipeline</h2><p>Track applications through the planning process.</p></div></div><div id="pipelineSummary" class="pipeline-grid" style="margin-bottom:25px"><div class="loading">Loading pipeline...</div></div><div class="content-card"><div id="fullPipeline" class="table-wrapper"><div class="loading">Loading pipeline applications...</div></div></div></section>
@@ -115,7 +111,7 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{e.preve
 async function logout(){await supabaseClient.auth.signOut({scope:"local"});currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen()}
 supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen();return}if(event==="SIGNED_IN"&&session){if(!currentUser||currentUser.id!==session.user.id)setTimeout(()=>verifyProfessional(session.user),0)}});
 function showLoginError(message){const b=document.getElementById("loginMessage");b.textContent=message;b.className="login-message error"}function clearLoginMessage(){const b=document.getElementById("loginMessage");b.textContent="";b.className="login-message"}
-function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="operations")rockLoadOperations();if(id==="tasks")rockLoadTaskPortfolio();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}}
+function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="operations")rockLoadOperations();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}}
 async function loadDashboard(){await loadApplicationStats();await loadRecentApplications();await loadPipelineSummary("dashboardPipeline")}
 async function loadApplicationStats(){const {data,error}=await supabaseClient.from("applications").select("status");if(error)return console.error(error);const a=data||[],newA=a.filter(x=>(x.status||"").toLowerCase()==="new").length,completed=a.filter(x=>(x.status||"").toLowerCase()==="completed").length,active=a.filter(x=>{const s=(x.status||"").toLowerCase();return s!=="new"&&s!=="completed"&&s!==""}).length;document.getElementById("statNew").textContent=newA;document.getElementById("statTotal").textContent=a.length;document.getElementById("statActive").textContent=active;document.getElementById("statCompleted").textContent=completed}
 async function loadRecentApplications(){const c=document.getElementById("recentApplications"),{data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false}).limit(8);if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}c.innerHTML=data&&data.length?buildApplicationsTable(data):'<div class="empty">No applications have been received yet.</div>'}
@@ -843,72 +839,6 @@ async function rockRevokeClientAccess(userId,email){if(!currentApplication)retur
  if(error||!data?.success)return rockClientFeedback('Unable to revoke access: '+(error?.message||'Unknown error'),true);
  await rockLoadClientAccess(appId);rockClientFeedback('Client access revoked. The application will no longer appear in their client dashboard.');
 }
-
-// Phase 6 · Portfolio Tasks & Deadlines
-let rockPortfolioTasks=[],rockPortfolioApplications=new Map();
-const rockPortfolioStatusLabels={pending:"Pending",in_progress:"In progress",completed:"Completed",cancelled:"Cancelled"};
-function rockPortfolioLocalToday(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
-function rockPortfolioOverdue(t){return !!(t.due_date&&t.due_date<rockPortfolioLocalToday()&&!['completed','cancelled'].includes(t.task_status));}
-async function rockFetchPortfolioRows(table,columns,sortColumn){
-  const rows=[];const size=500;
-  for(let offset=0;offset<10000;offset+=size){
-    const {data,error}=await supabaseClient.from(table).select(columns).order(sortColumn,{ascending:false}).range(offset,offset+size-1);
-    if(error)throw error;
-    rows.push(...(data||[]));
-    if(!data||data.length<size)return rows;
-  }
-  throw new Error('Portfolio exceeds the 10,000-record dashboard limit; narrow or paginate the query.');
-}
-async function rockLoadTaskPortfolio(){
-  const panel=document.getElementById('rockTaskPortfolioContainer');if(!panel||!currentUser)return;
-  panel.innerHTML='<div class="loading">Loading portfolio tasks...</div>';
-  try{
-    const [tasks,apps]=await Promise.all([
-      rockFetchPortfolioRows('application_case_tasks','id,application_id,task_title,priority,task_status,due_date,assigned_to,created_at','created_at'),
-      rockFetchPortfolioRows('applications','id,application_reference,application_type,municipality','created_at')
-    ]);
-    if(!document.getElementById('tasks')?.classList.contains('active'))return;
-    rockPortfolioApplications=new Map(apps.map(a=>[a.id,a]));
-    rockPortfolioTasks=tasks.filter(t=>rockPortfolioApplications.has(t.application_id));
-    panel.innerHTML=`<div class="rock-task-summary" id="rockPortfolioStats"></div>
-    <div class="content-card"><h3>Case Task Register</h3><div class="rock-portfolio-controls">
-    <div class="form-group"><label for="rockPortfolioSearch">Search task or application</label><input class="form-control" id="rockPortfolioSearch" placeholder="Task title, reference or municipality" oninput="rockRenderTaskPortfolio()"></div>
-    <div class="form-group"><label for="rockPortfolioStatus">Status</label><select class="form-control" id="rockPortfolioStatus" onchange="rockRenderTaskPortfolio()"><option value="all">All statuses</option><option value="open">Open tasks</option><option value="overdue">Overdue</option><option value="pending">Pending</option><option value="in_progress">In progress</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></div>
-    <div class="form-group"><label for="rockPortfolioPriority">Priority</label><select class="form-control" id="rockPortfolioPriority" onchange="rockRenderTaskPortfolio()"><option value="all">All priorities</option><option value="urgent">Urgent</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></div></div>
-    <div id="rockPortfolioResults" class="table-wrapper"></div></div>`;
-    rockRenderTaskPortfolio();
-  }catch(error){panel.innerHTML=`<div class="error-box">Unable to load portfolio tasks: ${escapeHtml(error.message||String(error))}</div>`;}
-}
-function rockRenderTaskPortfolio(){
-  const stats=document.getElementById('rockPortfolioStats'),results=document.getElementById('rockPortfolioResults');if(!stats||!results)return;
-  const all=rockPortfolioTasks,open=all.filter(t=>!['completed','cancelled'].includes(t.task_status));
-  const metrics=[['Total tasks',all.length],['Open tasks',open.length],['Overdue',all.filter(rockPortfolioOverdue).length],['Completed',all.filter(t=>t.task_status==='completed').length]];
-  stats.innerHTML=metrics.map(([name,value])=>`<div class="rock-task-stat"><strong>${value}</strong><span>${name}</span></div>`).join('');
-  const query=(document.getElementById('rockPortfolioSearch')?.value||'').trim().toLowerCase();
-  const status=document.getElementById('rockPortfolioStatus')?.value||'all';
-  const priority=document.getElementById('rockPortfolioPriority')?.value||'all';
-  const filtered=all.filter(t=>{
-    const a=rockPortfolioApplications.get(t.application_id)||{};
-    if(query&&![t.task_title,a.application_reference,a.municipality,a.application_type].some(v=>String(v||'').toLowerCase().includes(query)))return false;
-    if(priority!=='all'&&t.priority!==priority)return false;
-    if(status==='overdue')return rockPortfolioOverdue(t);
-    if(status==='open')return !['completed','cancelled'].includes(t.task_status);
-    return status==='all'||t.task_status===status;
-  }).sort((a,b)=>{
-    const aOpen=!['completed','cancelled'].includes(a.task_status),bOpen=!['completed','cancelled'].includes(b.task_status);
-    if(aOpen!==bOpen)return aOpen?-1:1;
-    if(a.due_date&&!b.due_date)return -1;if(!a.due_date&&b.due_date)return 1;
-    if(a.due_date&&b.due_date&&a.due_date!==b.due_date)return a.due_date.localeCompare(b.due_date);
-    return String(b.created_at||'').localeCompare(String(a.created_at||''));
-  });
-  if(!filtered.length){results.innerHTML='<div class="rock-portfolio-empty">No tasks match your filters.</div>';return;}
-  results.innerHTML=`<div class="doc-hint">Showing ${filtered.length} of ${all.length} accessible tasks. Select an application reference to open its Case File.</div><table class="rock-portfolio-table"><thead><tr><th>Task</th><th>Application</th><th>Priority</th><th>Status</th><th>Deadline</th></tr></thead><tbody>${filtered.map(t=>{
-    const a=rockPortfolioApplications.get(t.application_id)||{},late=rockPortfolioOverdue(t),reference=a.application_reference||'Unreferenced';
-    const badge=late?'badge-red':t.task_status==='completed'?'badge-green':t.task_status==='cancelled'?'badge-gray':'badge-blue';
-    return `<tr><td><strong>${escapeHtml(t.task_title)}</strong></td><td><a href="javascript:void(0)" class="reference-link" onclick="openCaseFileByReference('${escapeJs(reference)}')">${escapeHtml(reference)}</a><div class="doc-hint">${escapeHtml(a.municipality||'')}</div></td><td>${escapeHtml((t.priority||'').toUpperCase())}</td><td><span class="badge ${badge}">${late?'Overdue · ':''}${escapeHtml(rockPortfolioStatusLabels[t.task_status]||t.task_status)}</span></td><td class="${late?'rock-portfolio-due':''}">${t.due_date?escapeHtml(t.due_date):'Not set'}</td></tr>`;
-  }).join('')}</tbody></table>`;
-}
-
 </script>
 </body>
 </html>
