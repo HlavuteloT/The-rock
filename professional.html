@@ -593,7 +593,7 @@ async function rockSetDecisionPublication(decisionId,makeVisible){
  const button=document.getElementById('rockPublishButton_'+decisionId);
  if(button){button.disabled=true;button.textContent='Updating visibility...'}
  try{
-  const {data,error}=await supabaseClient.rpc('set_municipal_decision_visibility',{p_decision_id:decisionId,p_visible:makeVisible});
+  const {data,error}=await supabaseClient.rpc('set_municipal_decision_visibility',{p_decision_id:decisionId,p_client_visible:makeVisible});
   if(error)throw error;
   // Refresh from the database and verify the resulting publication state.
   const {data:verified,error:readError}=await supabaseClient.from('municipal_decisions').select('id,client_visible').eq('id',decisionId).eq('application_id',appId).single();
