@@ -116,6 +116,18 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 .rock-invoice-form-feedback.success{color:var(--green)}
 @media(max-width:650px){.rock-invoice-form-grid{grid-template-columns:1fr}.rock-invoice-form-grid .wide{grid-column:auto}}
 </style>
+<style>
+/* Phase 7: Read-only invoice review */
+.rock-review-panel{border:1px solid #d7e4d9;border-radius:12px;padding:22px;background:#fbfcfa;margin-bottom:22px}
+.rock-review-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.rock-review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:17px 0}
+.rock-review-item{padding:12px;background:#fff;border:1px solid #e7ede7;border-radius:9px;min-width:0;overflow-wrap:anywhere}
+.rock-review-item small{display:block;color:#6b7280;font-size:11px;margin-bottom:6px}
+.rock-review-item strong{white-space:pre-wrap;font-size:13px}
+.rock-review-note{background:#fff7e5;border:1px solid #ecd6a0;border-radius:9px;padding:13px;font-size:12px;line-height:1.6;margin:14px 0}
+.rock-review-actions{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:650px){.rock-review-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
@@ -159,6 +171,10 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
       </form>
     </div>
     <div id="rockInvoiceCreateNotice" role="status" aria-live="polite" class="rock-invoice-form-feedback"></div>
+  </div>
+  <div id="rockInvoiceReviewPanel" class="rock-review-panel" hidden aria-live="polite">
+    <div class="rock-review-head"><div><h3 style="margin:0 0 5px;color:var(--green-dark)">Review Invoice</h3><p class="doc-hint" style="margin:0">Read-only inspection. Reviewing does not save, issue, or send an invoice.</p></div><button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div>
+    <div id="rockInvoiceReviewContent"><div class="loading">Select a draft from the register.</div></div>
   </div>
   <div class="rock-invoice-kpis">
     <div class="stat-card"><div class="label">Total issued value</div><div class="value" id="rockInvoiceIssuedValue">R0.00</div></div>
@@ -389,6 +405,7 @@ body{font-family:Arial,Helvetica,sans-serif;color:#1d2b24;margin:0;background:#f
 <div class="section"><h2>10. Client Acknowledgement &amp; Signatures</h2><div class="terms"><p>By signing below, the parties acknowledge the appointment, scope of professional services, responsibilities, assumptions, exclusions and financial terms recorded in this mandate and the associated accepted quotation.</p><p>The client confirms that the information supplied for the assignment is, to the best of the client's knowledge, accurate and complete and undertakes to notify THE ROCK of material changes affecting the assignment.</p></div><div class="signatures"><div class="sig">Client signature<br><br>Name: ${esc(m.client_name)}<br>Date: __________________<br><br>Signature: ______________________________</div><div class="sig">Professional signature<br><br>THE ROCK — Planning &amp; Land Use Management<br>Date: __________________<br><br>Signature: ______________________________</div></div></div>
 <div class="notice">This document is generated from the mandate record held in THE ROCK. It should be reviewed by the professional before issue and signature. The mandate should be read together with the accepted quotation and any written variation or additional instruction agreed between the parties.</div>
 </div>
+
 </body></html>`;
 w.document.open();w.document.write(html);w.document.close();
 }
@@ -1036,7 +1053,7 @@ async function rockLoadInvoices(){
     document.getElementById('rockInvoiceUnpaid').textContent='Not tracked';
     const statuses={draft:'Draft',issued:'Issued',partially_paid:'Partially paid',paid:'Paid',overdue:'Overdue',cancelled:'Cancelled'};
     const badge=i=>i.invoice_status==='paid'?'badge-green':i.invoice_status==='overdue'?'badge-red':i.invoice_status==='draft'?'badge-gold':'badge-blue';
-    target.innerHTML=invoices.length?`<table class="rock-invoice-table"><thead><tr><th>Reference</th><th>Description</th><th>Invoice date</th><th>Due date</th><th>Status</th><th>Total (incl. VAT)</th></tr></thead><tbody>${invoices.map(i=>`<tr><td><span class="rock-invoice-ref">${escapeHtml(i.invoice_number||i.draft_reference||'Unassigned')}</span><span class="rock-invoice-sub">${i.invoice_number?'Official invoice':'Internal draft reference'}</span></td><td>${escapeHtml(i.description||'—')}</td><td>${escapeHtml(i.invoice_date||'—')}</td><td>${escapeHtml(i.due_date||'—')}</td><td><span class="badge ${badge(i)}">${escapeHtml(statuses[i.invoice_status]||i.invoice_status||'Unknown')}</span></td><td><strong>${money(i.total_amount)}</strong></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No accessible invoices found.</div>';
+    target.innerHTML=invoices.length?`<table class="rock-invoice-table"><thead><tr><th>Reference</th><th>Description</th><th>Invoice date</th><th>Due date</th><th>Status</th><th>Total (incl. VAT)</th><th>Actions</th></tr></thead><tbody>${invoices.map(i=>`<tr><td><span class="rock-invoice-ref">${escapeHtml(i.invoice_number||i.draft_reference||'Unassigned')}</span><span class="rock-invoice-sub">${i.invoice_number?'Official invoice':'Internal draft reference'}</span></td><td>${escapeHtml(i.description||'—')}</td><td>${escapeHtml(i.invoice_date||'—')}</td><td>${escapeHtml(i.due_date||'—')}</td><td><span class="badge ${badge(i)}">${escapeHtml(statuses[i.invoice_status]||i.invoice_status||'Unknown')}</span></td><td><strong>${money(i.total_amount)}</strong></td><td><button type="button" class="button button-secondary" style="padding:8px 12px;font-size:12px" onclick="rockReviewInvoice('${i.id}')">Review</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No accessible invoices found.</div>';
     if(invoices.length===500)feedback.textContent='Showing the 500 most recent accessible invoices. Totals are limited to these records.';
   }catch(e){
     target.innerHTML=`<div class="error-box">Unable to load invoices: ${escapeHtml(e.message||String(e))}</div>`;
@@ -1113,6 +1130,70 @@ async function rockCreateDraftInvoice(event){
     await rockLoadInvoices();
   }catch(e){rockInvoiceFeedback('Could not save draft: '+(e.message||String(e)),true)}
   finally{btn.disabled=false;btn.textContent='Save Draft Invoice'}
+}
+</script>
+<script>
+// THE ROCK | Phase 7 — read-only invoice review. RLS authorises each detail fetch.
+let rockInvoiceReviewRequest=0;
+function rockCloseInvoiceReview(){
+  rockInvoiceReviewRequest++;
+  const panel=document.getElementById('rockInvoiceReviewPanel');
+  if(panel)panel.hidden=true;
+  const content=document.getElementById('rockInvoiceReviewContent');
+  if(content)content.innerHTML='';
+}
+async function rockReviewInvoice(invoiceId){
+  const panel=document.getElementById('rockInvoiceReviewPanel');
+  const content=document.getElementById('rockInvoiceReviewContent');
+  if(!panel||!content||!invoiceId)return;
+  const request=++rockInvoiceReviewRequest;
+  panel.hidden=false;
+  content.innerHTML='<div class="loading">Loading invoice details securely...</div>';
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+  try{
+    const {data:i,error}=await supabaseClient.from('professional_invoices')
+      .select('id,application_id,draft_reference,invoice_number,invoice_status,invoice_date,due_date,description,subtotal,vat_rate,vat_amount,total_amount,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,payment_terms,created_at,issued_at,issued_by')
+      .eq('id',invoiceId).maybeSingle();
+    if(request!==rockInvoiceReviewRequest)return;
+    if(error)throw error;
+    if(!i)throw new Error('Invoice not found or you do not have access to it.');
+    const {data:a,error:appError}=await supabaseClient.from('applications')
+      .select('application_reference,application_type,municipality').eq('id',i.application_id).maybeSingle();
+    if(request!==rockInvoiceReviewRequest)return;
+    const safe=v=>escapeHtml(String(v===null||v===undefined||v===''?'Not provided':v));
+    const field=(label,value)=>`<div class="rock-review-item"><small>${escapeHtml(label)}</small><strong>${safe(value)}</strong></div>`;
+    const isDraft=i.invoice_status==='draft';
+    const checks=[];
+    if(isDraft){
+      if(!String(i.supplier_legal_name||'').trim())checks.push('Supplier legal name is missing.');
+      if(!String(i.supplier_vat_number||'').trim())checks.push('Supplier VAT registration number is missing.');
+      if(!String(i.client_billing_name||'').trim())checks.push('Client billing name is missing.');
+      if(!(Number(i.subtotal)>0))checks.push('Professional fee must exceed R0.');
+      if(Number(i.vat_rate)!==15)checks.push('VAT rate requires review.');
+    }
+    content.innerHTML=`
+      <div class="rock-review-grid">
+        ${field('Reference',i.invoice_number||i.draft_reference)}
+        ${field('Status',String(i.invoice_status||'').replaceAll('_',' '))}
+        ${field('Planning application',appError?'Unable to load application reference':(a?.application_reference||i.application_id))}
+        ${field('Application type / municipality',appError?'Not available':[(a?.application_type||''),(a?.municipality||'')].filter(Boolean).join(' · '))}
+        ${field('Invoice date',i.invoice_date)}${field('Due date',i.due_date)}
+        ${field('Service description',i.description)}${field('Payment terms',i.payment_terms)}
+        ${field('Client billing name',i.client_billing_name)}${field('Client VAT number',i.client_vat_number)}
+        ${field('Client billing address',i.client_billing_address)}${field('Supplier legal name',i.supplier_legal_name)}
+        ${field('Supplier VAT registration number',i.supplier_vat_number)}${field('Issued at',i.issued_at)}
+      </div>
+      <div class="rock-invoice-preview">
+        <div class="rock-invoice-preview-line"><span>Professional fee excluding VAT</span><strong>${rockInvoiceMoney(i.subtotal)}</strong></div>
+        <div class="rock-invoice-preview-line"><span>VAT (${safe(i.vat_rate)}%)</span><strong>${rockInvoiceMoney(i.vat_amount)}</strong></div>
+        <div class="rock-invoice-preview-line total"><span>Total including VAT</span><strong>${rockInvoiceMoney(i.total_amount)}</strong></div>
+      </div>
+      <div class="rock-review-note">${isDraft?(checks.length?'<strong>Draft validation observations:</strong> '+checks.map(escapeHtml).join(' '):'No missing fields detected in this preliminary review. Final statutory and professional validation is still required.'):'This record is not a draft. Details are displayed for review only.'}<br><strong>No invoice will be issued, numbered, modified or sent from this screen.</strong></div>
+      <div class="rock-review-actions"><button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div>`;
+  }catch(e){
+    if(request!==rockInvoiceReviewRequest)return;
+    content.innerHTML=`<div class="error-box">Unable to review invoice: ${escapeHtml(e.message||String(e))}</div>`;
+  }
 }
 </script>
 </body>
