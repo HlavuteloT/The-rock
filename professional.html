@@ -137,12 +137,20 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 @media(max-width:900px){.rock-financial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.rock-financial-grid{grid-template-columns:1fr}}
 </style>
+<style>
+/* Phase 9 — Financial Dashboard */
+.rock-detail-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.rock-detail-filters .form-group{margin:0}
+.rock-detail-table{min-width:900px}
+.rock-detail-table td{white-space:nowrap}
+@media(max-width:850px){.rock-detail-filters{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
 <div id="app" class="app">
 <header class="topbar"><div class="brand"><h1>THE ROCK</h1><span>PLANNING & LAND USE MANAGEMENT</span></div><div class="user-area"><span id="userEmail" class="user-email"></span><button class="logout-button" onclick="logout()">Sign Out</button></div></header>
-<div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navOperations" class="nav-button" onclick="showSection('operations',this)">Operations Dashboard</button><button id="navTasks" class="nav-button" onclick="showSection('tasks',this)">Tasks &amp; Deadlines</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Financial Management</div><button id="navInvoices" class="nav-button" onclick="showSection('invoices',this)">Invoice Management</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
+<div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navOperations" class="nav-button" onclick="showSection('operations',this)">Operations Dashboard</button><button id="navTasks" class="nav-button" onclick="showSection('tasks',this)">Tasks &amp; Deadlines</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Financial Management</div><button id="navFinancialDashboard" class="nav-button" onclick="showSection('financialDashboard',this)">Financial Dashboard</button><button id="navInvoices" class="nav-button" onclick="showSection('invoices',this)">Invoice Management</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
 <main class="main">
 <section id="dashboard" class="section active"><div class="page-header"><div><h2>Professional Dashboard</h2><p>Manage planning applications, enquiries and active projects.</p></div></div><div class="stats-grid"><div class="stat-card"><div class="label">New Applications</div><div id="statNew" class="value">0</div></div><div class="stat-card"><div class="label">Total Applications</div><div id="statTotal" class="value">0</div></div><div class="stat-card"><div class="label">Active Projects</div><div id="statActive" class="value">0</div></div><div class="stat-card"><div class="label">Completed</div><div id="statCompleted" class="value">0</div></div></div>
 <div id="rockFinancialOverview" class="content-card" hidden>
@@ -169,6 +177,30 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 <section id="applications" class="section"><div class="page-header"><div><h2>Applications</h2><p>Review and manage planning applications.</p></div></div><div class="content-card"><div id="applicationsTable" class="table-wrapper"><div class="loading">Loading applications...</div></div></div></section>
 <section id="enquiries" class="section"><div class="page-header"><div><h2>Client Enquiries</h2><p>Review incoming planning enquiries.</p></div></div><div class="content-card"><div id="enquiriesTable" class="table-wrapper"><div class="loading">Loading enquiries...</div></div></div></section>
 <section id="pipeline" class="section"><div class="page-header"><div><h2>Project Pipeline</h2><p>Track applications through the planning process.</p></div></div><div id="pipelineSummary" class="pipeline-grid" style="margin-bottom:25px"><div class="loading">Loading pipeline...</div></div><div class="content-card"><div id="fullPipeline" class="table-wrapper"><div class="loading">Loading pipeline applications...</div></div></div></section>
+
+<section id="financialDashboard" class="section">
+  <div class="page-header"><div><h2>Financial Dashboard</h2><p>Administrator-only financial reporting and invoice-level balances. Read-only.</p></div><button class="button button-secondary" type="button" onclick="rockLoadDetailedFinancials()">Refresh Financials</button></div>
+  <div id="rockDetailStatus" class="doc-hint" role="status" aria-live="polite">Open this section to load live reports.</div>
+  <div class="rock-financial-grid">
+    <div class="stat-card"><div class="label">Draft invoice value</div><div class="value" id="rockDetailDraft">—</div></div>
+    <div class="stat-card"><div class="label">Issued invoice value</div><div class="value" id="rockDetailIssued">—</div></div>
+    <div class="stat-card"><div class="label">Payments received</div><div class="value" id="rockDetailPaid">—</div></div>
+    <div class="stat-card"><div class="label">Outstanding receivables</div><div class="value" id="rockDetailOutstanding">—</div></div>
+    <div class="stat-card"><div class="label">Overdue balance</div><div class="value" id="rockDetailOverdue">—</div></div>
+    <div class="stat-card"><div class="label">Invoices requiring review</div><div class="value" id="rockDetailReview">—</div></div>
+  </div>
+  <div class="content-card">
+    <h3>Invoice Financial Register</h3>
+    <p class="doc-hint">Amounts and payment statuses come from the live reporting gateway. Draft invoices are not receivables.</p>
+    <div class="rock-detail-filters">
+      <div class="form-group"><label for="rockDetailSearch">Search invoice number</label><input class="form-control" id="rockDetailSearch" placeholder="Invoice number or ID" oninput="rockRenderDetailedInvoices()"></div>
+      <div class="form-group"><label for="rockDetailStatusFilter">Payment status</label><select class="form-control" id="rockDetailStatusFilter" onchange="rockRenderDetailedInvoices()"><option value="">All statuses</option></select></div>
+      <div class="form-group"><label for="rockDetailInvoiceFilter">Invoice status</label><select class="form-control" id="rockDetailInvoiceFilter" onchange="rockRenderDetailedInvoices()"><option value="">All invoice statuses</option></select></div>
+    </div>
+    <div id="rockDetailCount" class="doc-hint"></div>
+    <div id="rockDetailTable" class="table-wrapper"><div class="empty">No financial report loaded yet.</div></div>
+  </div>
+</section>
 <section id="invoices" class="section">
   <div class="page-header"><div><h2>Invoice Management</h2><p>Review authorised invoices, drafts and issued totals.</p></div><button class="button button-secondary" onclick="rockLoadInvoices()">Refresh Invoices</button></div>
   <div class="content-card">
@@ -233,7 +265,7 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{e.preve
 async function logout(){await supabaseClient.auth.signOut({scope:"local"});currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen()}
 supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen();return}if(event==="SIGNED_IN"&&session){if(!currentUser||currentUser.id!==session.user.id)setTimeout(()=>verifyProfessional(session.user),0)}});
 function showLoginError(message){const b=document.getElementById("loginMessage");b.textContent=message;b.className="login-message error"}function clearLoginMessage(){const b=document.getElementById("loginMessage");b.textContent="";b.className="login-message"}
-function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="operations")rockLoadOperations();if(id==="tasks")rockLoadTaskPortfolio();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}if(id==="invoices"){rockLoadInvoices();rockInvoiceLoadApplications()}}
+function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="operations")rockLoadOperations();if(id==="tasks")rockLoadTaskPortfolio();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}if(id==="financialDashboard")rockLoadDetailedFinancials();if(id==="invoices"){rockLoadInvoices();rockInvoiceLoadApplications()}}
 async function loadDashboard(){await loadApplicationStats();await loadRecentApplications();await loadPipelineSummary("dashboardPipeline");void rockLoadFinancialOverview()}
 async function loadApplicationStats(){const {data,error}=await supabaseClient.from("applications").select("status");if(error)return console.error(error);const a=data||[],newA=a.filter(x=>(x.status||"").toLowerCase()==="new").length,completed=a.filter(x=>(x.status||"").toLowerCase()==="completed").length,active=a.filter(x=>{const s=(x.status||"").toLowerCase();return s!=="new"&&s!=="completed"&&s!==""}).length;document.getElementById("statNew").textContent=newA;document.getElementById("statTotal").textContent=a.length;document.getElementById("statActive").textContent=active;document.getElementById("statCompleted").textContent=completed}
 async function loadRecentApplications(){const c=document.getElementById("recentApplications"),{data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false}).limit(8);if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}c.innerHTML=data&&data.length?buildApplicationsTable(data):'<div class="empty">No applications have been received yet.</div>'}
@@ -1499,6 +1531,123 @@ supabaseClient.auth.onAuthStateChange((event) => {
     const panel = document.getElementById("rockFinancialOverview");
     if (panel) panel.hidden = true;
   }
+});
+</script>
+<script>
+// THE ROCK — Step 87.1, read-only invoice financial dashboard.
+let rockDetailInvoices = [];
+let rockDetailRequest = 0;
+
+function rockDetailText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+function rockDetailClear(message) {
+  rockDetailRequest++;
+  rockDetailInvoices = [];
+  for (const id of ["rockDetailDraft","rockDetailIssued","rockDetailPaid","rockDetailOutstanding","rockDetailOverdue","rockDetailReview"]) rockDetailText(id,"—");
+  rockDetailText("rockDetailStatus",message);
+  rockDetailText("rockDetailCount","");
+  const table = document.getElementById("rockDetailTable");
+  if (table) table.replaceChildren();
+}
+async function rockDetailFetch(path, token) {
+  const response = await fetch(ROCK_FINANCIAL_API + path, {
+    method: "GET", headers: { Authorization: "Bearer " + token }, cache: "no-store"
+  });
+  if (!response.ok) throw new Error("Financial API returned HTTP " + response.status);
+  const result = await response.json();
+  if (!Array.isArray(result?.data)) throw new Error("Unexpected reporting response.");
+  return result.data;
+}
+async function rockLoadDetailedFinancials() {
+  const id = ++rockDetailRequest;
+  const userId = currentUser?.id;
+  if (!userId || currentProfile?.role !== "admin" || currentProfile?.active !== true) {
+    rockDetailClear("Administrator access required.");
+    return;
+  }
+  rockDetailText("rockDetailStatus", "Loading live financial reports...");
+  try {
+    const { data, error } = await supabaseClient.auth.getSession();
+    if (error || !data?.session?.access_token || data.session.user?.id !== userId) throw new Error("Administrator session unavailable.");
+    const [dash, invoices] = await Promise.all([
+      rockDetailFetch("/api/financial/dashboard", data.session.access_token),
+      rockDetailFetch("/api/financial/invoices", data.session.access_token)
+    ]);
+    if (dash.length !== 1 || !dash[0]) throw new Error("Unexpected dashboard summary.");
+    if (id !== rockDetailRequest || currentUser?.id !== userId || currentProfile?.role !== "admin" || currentProfile?.active !== true) return;
+    const d = dash[0];
+    for (const [target, value] of [
+      ["rockDetailDraft", d.draft_invoice_value],
+      ["rockDetailIssued", d.issued_invoice_value],
+      ["rockDetailPaid", d.payments_received],
+      ["rockDetailOutstanding", d.outstanding_receivables],
+      ["rockDetailOverdue", d.overdue_balance]
+    ]) rockDetailText(target, rockFinancialMoney(value));
+    rockDetailText("rockDetailReview", String(d.invoices_requiring_review ?? "—"));
+    rockDetailInvoices = invoices;
+    rockDetailUpdateFilters();
+    rockRenderDetailedInvoices();
+    rockDetailText("rockDetailStatus", "Live financial reports loaded successfully.");
+  } catch (error) {
+    if (id === rockDetailRequest) rockDetailClear("Unable to load reports: " + (error?.message || "Unknown error"));
+  }
+}
+function rockDetailUpdateFilters() {
+  for (const [elementId, field] of [
+    ["rockDetailStatusFilter", "derived_payment_status"],
+    ["rockDetailInvoiceFilter", "stored_invoice_status"]
+  ]) {
+    const select = document.getElementById(elementId);
+    if (!select) continue;
+    const previous = select.value;
+    select.replaceChildren(new Option(field === "derived_payment_status" ? "All payment statuses" : "All invoice statuses", ""));
+    const values = [...new Set(rockDetailInvoices.map(i => String(i[field] ?? "").trim()).filter(Boolean))].sort();
+    for (const value of values) select.add(new Option(value.replaceAll("_", " "), value));
+    select.value = values.includes(previous) ? previous : "";
+  }
+}
+function rockRenderDetailedInvoices() {
+  const table = document.getElementById("rockDetailTable");
+  if (!table) return;
+  const search = (document.getElementById("rockDetailSearch")?.value || "").trim().toLowerCase();
+  const payment = document.getElementById("rockDetailStatusFilter")?.value || "";
+  const status = document.getElementById("rockDetailInvoiceFilter")?.value || "";
+  const rows = rockDetailInvoices.filter(i =>
+    (!search || String(i.invoice_number ?? i.invoice_id ?? "").toLowerCase().includes(search)) &&
+    (!payment || i.derived_payment_status === payment) &&
+    (!status || i.stored_invoice_status === status)
+  );
+  rockDetailText("rockDetailCount", `${rows.length} of ${rockDetailInvoices.length} invoices displayed`);
+  table.replaceChildren();
+  if (!rows.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "No invoices match the selected filters.";
+    table.append(empty);
+    return;
+  }
+  const headings = ["Invoice", "Invoice status", "Invoice date", "Due date", "Invoice amount", "Paid", "Balance", "Payment status"];
+  const columns = ["invoice_number", "stored_invoice_status", "invoice_date", "due_date", "invoice_amount", "amount_paid", "calculated_balance", "derived_payment_status"];
+  const moneyFields = new Set(["invoice_amount", "amount_paid", "calculated_balance"]);
+  const t = document.createElement("table");
+  t.className = "rock-detail-table";
+  const thead = t.createTHead(), head = thead.insertRow();
+  for (const label of headings) { const th = document.createElement("th"); th.textContent = label; head.append(th); }
+  const body = t.createTBody();
+  for (const invoice of rows) {
+    const tr = body.insertRow();
+    for (const field of columns) {
+      const td = tr.insertCell();
+      const raw = field === "invoice_number" ? (invoice.invoice_number || invoice.invoice_id) : invoice[field];
+      td.textContent = moneyFields.has(field) ? rockFinancialMoney(raw) : String(raw ?? "—").replaceAll("_", " ");
+    }
+  }
+  table.append(t);
+}
+supabaseClient.auth.onAuthStateChange((event) => {
+  if (event === "SIGNED_OUT") rockDetailClear("Signed out.");
 });
 </script>
 </body>
