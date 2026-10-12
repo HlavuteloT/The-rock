@@ -138,11 +138,17 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 @media(max-width:600px){.rock-financial-grid{grid-template-columns:1fr}}
 </style>
 <style>
-/* Phase 9 — Financial Dashboard */
+/* Phase 9 — Financial Dashboard — Step 87.3 */
 .rock-detail-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
 .rock-detail-filters .form-group{margin:0}
 .rock-detail-table{min-width:900px}
 .rock-detail-table td{white-space:nowrap}
+.rock-report-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.rock-report-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0}
+.rock-report-summary .stat-card{padding:15px}.rock-report-summary .value{font-size:23px}
+.rock-report-overdue{color:#b42318;font-weight:700}
+@media(max-width:950px){.rock-report-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.rock-report-summary{grid-template-columns:1fr}}
 @media(max-width:850px){.rock-detail-filters{grid-template-columns:1fr}}
 </style>
 </head>
@@ -192,11 +198,21 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
   <div class="content-card">
     <h3>Invoice Financial Register</h3>
     <p class="doc-hint">Amounts and payment statuses come from the live reporting gateway. Draft invoices are not receivables.</p>
+    <div class="rock-report-summary" aria-label="Invoice status summary">
+      <div class="stat-card"><div class="label">Draft invoices</div><div class="value" id="rockReportDraftCount">—</div></div>
+      <div class="stat-card"><div class="label">Issued / active invoices</div><div class="value" id="rockReportIssuedCount">—</div></div>
+      <div class="stat-card"><div class="label">Partially paid</div><div class="value" id="rockReportPartialCount">—</div></div>
+      <div class="stat-card"><div class="label">Fully paid</div><div class="value" id="rockReportPaidCount">—</div></div>
+    </div>
     <div class="rock-detail-filters">
       <div class="form-group"><label for="rockDetailSearch">Search invoice number</label><input class="form-control" id="rockDetailSearch" placeholder="Invoice number or ID" oninput="rockRenderDetailedInvoices()"></div>
       <div class="form-group"><label for="rockDetailStatusFilter">Payment status</label><select class="form-control" id="rockDetailStatusFilter" onchange="rockRenderDetailedInvoices()"><option value="">All statuses</option></select></div>
       <div class="form-group"><label for="rockDetailInvoiceFilter">Invoice status</label><select class="form-control" id="rockDetailInvoiceFilter" onchange="rockRenderDetailedInvoices()"><option value="">All invoice statuses</option></select></div>
+      <div class="form-group"><label for="rockDetailDueFilter">Due date</label><select class="form-control" id="rockDetailDueFilter" onchange="rockRenderDetailedInvoices()"><option value="">All due dates</option><option value="overdue">Overdue issued invoices</option><option value="next30">Due within 30 days (issued)</option></select></div>
+      <div class="form-group"><label for="rockDetailFrom">Invoice date from</label><input type="date" class="form-control" id="rockDetailFrom" onchange="rockRenderDetailedInvoices()"></div>
+      <div class="form-group"><label for="rockDetailTo">Invoice date to</label><input type="date" class="form-control" id="rockDetailTo" onchange="rockRenderDetailedInvoices()"></div>
     </div>
+    <div class="rock-report-actions"><button type="button" class="button button-secondary" onclick="rockResetFinancialFilters()">Clear filters</button><button type="button" class="button button-primary" onclick="rockExportFinancialCsv()">Export filtered report (CSV)</button><span class="doc-hint">Exports only the invoices currently displayed. Keep downloaded reports confidential.</span></div>
     <div id="rockDetailCount" class="doc-hint"></div>
     <div id="rockDetailTable" class="table-wrapper"><div class="empty">No financial report loaded yet.</div></div>
   </div>
@@ -1545,6 +1561,7 @@ function rockDetailText(id, value) {
 function rockDetailClear(message) {
   rockDetailRequest++;
   rockDetailInvoices = [];
+  for (const id of ["rockReportDraftCount","rockReportIssuedCount","rockReportPartialCount","rockReportPaidCount"]) rockDetailText(id,"—");
   for (const id of ["rockDetailDraft","rockDetailIssued","rockDetailPaid","rockDetailOutstanding","rockDetailOverdue","rockDetailReview"]) rockDetailText(id,"—");
   rockDetailText("rockDetailStatus",message);
   rockDetailText("rockDetailCount","");
@@ -1587,6 +1604,7 @@ async function rockLoadDetailedFinancials() {
     ]) rockDetailText(target, rockFinancialMoney(value));
     rockDetailText("rockDetailReview", String(d.invoices_requiring_review ?? "—"));
     rockDetailInvoices = invoices;
+    rockDetailUpdateSummary();
     rockDetailUpdateFilters();
     rockRenderDetailedInvoices();
     rockDetailText("rockDetailStatus", "Live financial reports loaded successfully.");
@@ -1608,17 +1626,79 @@ function rockDetailUpdateFilters() {
     select.value = values.includes(previous) ? previous : "";
   }
 }
-function rockRenderDetailedInvoices() {
-  const table = document.getElementById("rockDetailTable");
-  if (!table) return;
+function rockDetailUpdateSummary() {
+  const rows = rockDetailInvoices;
+  const draft = rows.filter(i => i.stored_invoice_status === "draft").length;
+  const issued = rows.filter(i => i.stored_invoice_status !== "draft" && i.stored_invoice_status !== "review_required").length;
+  const partial = rows.filter(i => i.derived_payment_status === "partially_paid" || i.derived_payment_status === "partial").length;
+  const paid = rows.filter(i => i.derived_payment_status === "paid" || i.derived_payment_status === "fully_paid").length;
+  rockDetailText("rockReportDraftCount", String(draft));
+  rockDetailText("rockReportIssuedCount", String(issued));
+  rockDetailText("rockReportPartialCount", String(partial));
+  rockDetailText("rockReportPaidCount", String(paid));
+}
+function rockFinancialToday() { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
+function rockDetailIsOverdue(i, today) {
+  return i.stored_invoice_status !== "draft" &&
+    i.stored_invoice_status !== "review_required" &&
+    !!i.due_date && i.due_date < today && Number(i.calculated_balance) > 0;
+}
+function rockFilteredFinancialInvoices() {
   const search = (document.getElementById("rockDetailSearch")?.value || "").trim().toLowerCase();
   const payment = document.getElementById("rockDetailStatusFilter")?.value || "";
   const status = document.getElementById("rockDetailInvoiceFilter")?.value || "";
-  const rows = rockDetailInvoices.filter(i =>
-    (!search || String(i.invoice_number ?? i.invoice_id ?? "").toLowerCase().includes(search)) &&
+  const due = document.getElementById("rockDetailDueFilter")?.value || "";
+  const from = document.getElementById("rockDetailFrom")?.value || "";
+  const to = document.getElementById("rockDetailTo")?.value || "";
+  // Date-only values use the browser's local calendar date.
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+  const future = new Date(now.getFullYear(), now.getMonth(), now.getDate()+30);
+  const in30 = `${future.getFullYear()}-${String(future.getMonth()+1).padStart(2,"0")}-${String(future.getDate()).padStart(2,"0")}`;
+  return rockDetailInvoices.filter(i =>
+    (!search || String(i.invoice_number || i.invoice_id || "").toLowerCase().includes(search)) &&
     (!payment || i.derived_payment_status === payment) &&
-    (!status || i.stored_invoice_status === status)
+    (!status || i.stored_invoice_status === status) &&
+    (!from || (i.invoice_date && i.invoice_date >= from)) &&
+    (!to || (i.invoice_date && i.invoice_date <= to)) &&
+    (!due || (due === "overdue" ? rockDetailIsOverdue(i, today) :
+      (i.stored_invoice_status !== "draft" && i.stored_invoice_status !== "review_required" &&
+       !!i.due_date && i.due_date >= today && i.due_date <= in30 && Number(i.calculated_balance) > 0)))
   );
+}
+function rockResetFinancialFilters() {
+  for (const id of ["rockDetailSearch","rockDetailStatusFilter","rockDetailInvoiceFilter","rockDetailDueFilter","rockDetailFrom","rockDetailTo"]) {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  }
+  rockRenderDetailedInvoices();
+}
+function rockExportFinancialCsv() {
+  if (currentProfile?.role !== "admin" || currentProfile?.active !== true || !currentUser) return;
+  const rows = rockFilteredFinancialInvoices();
+  if (!rows.length) { rockDetailText("rockDetailStatus", "No matching invoices to export."); return; }
+  const fields = ["invoice_number","invoice_id","stored_invoice_status","invoice_date","due_date","invoice_amount","amount_paid","calculated_balance","derived_payment_status"];
+  const labels = ["Invoice Number","Invoice ID","Invoice Status","Invoice Date","Due Date","Invoice Amount (ZAR)","Amount Paid (ZAR)","Balance (ZAR)","Payment Status"];
+  // Neutralize spreadsheet formulas when CSV is opened in Excel or similar software.
+  const cell = value => {
+    let text = String(value ?? "");
+    if (/^[\s\u0000-\u001f]*[=+@-]/.test(text) && !/^-?\d+(?:\.\d+)?$/.test(text)) text = "'" + text;
+    return '"' + text.replaceAll('"','""') + '"';
+  };
+  const csv = [labels.map(cell).join(","), ...rows.map(i => fields.map(f => cell(i[f])).join(","))].join("\r\n");
+  const blob = new Blob(["\uFEFF",csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "the-rock-financial-report-" + new Date().toISOString().slice(0,10) + ".csv";
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  rockDetailText("rockDetailStatus", `${rows.length} filtered invoice records exported.`);
+}
+function rockRenderDetailedInvoices() {
+  const table = document.getElementById("rockDetailTable");
+  if (!table) return;
+  const rows = rockFilteredFinancialInvoices();
   rockDetailText("rockDetailCount", `${rows.length} of ${rockDetailInvoices.length} invoices displayed`);
   table.replaceChildren();
   if (!rows.length) {
@@ -1642,6 +1722,7 @@ function rockRenderDetailedInvoices() {
       const td = tr.insertCell();
       const raw = field === "invoice_number" ? (invoice.invoice_number || invoice.invoice_id) : invoice[field];
       td.textContent = moneyFields.has(field) ? rockFinancialMoney(raw) : String(raw ?? "—").replaceAll("_", " ");
+      if (field === "due_date" && rockDetailIsOverdue(invoice, rockFinancialToday())) td.classList.add("rock-report-overdue");
     }
   }
   table.append(t);
