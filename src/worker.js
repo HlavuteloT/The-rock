@@ -3,9 +3,12 @@
  * THE ROCK
  * Town Planning & Land Use Management
  *
- * Phase 7 — Step 85.50
- * Financial API authentication preparation
+ * Phase 7 — Step 85.54
+ * Supabase authentication verification
  */
+
+const ROCK_SUPABASE_URL =
+  "https://iuwnsrvlmicgdilmrftl.supabase.co";
 
 // Standard JSON response helper
 function rockJsonResponse(data, status = 200) {
@@ -19,9 +22,7 @@ function rockJsonResponse(data, status = 200) {
   });
 }
 
-// Extract a Bearer token from the Authorization header.
-// This function only extracts the token.
-// It does NOT verify or authorise the user.
+// Extract an access token from the Authorization header
 function rockGetBearerToken(request) {
   const authorization = request.headers.get("Authorization");
 
@@ -36,13 +37,53 @@ function rockGetBearerToken(request) {
   return match ? match[1] : null;
 }
 
+// Verify an access token using Supabase Auth.
+// Returns the authenticated user or null.
+//
+// This function does not grant administrator access.
+async function rockVerifySupabaseUser(token, env) {
+  if (!token || !env.SUPABASE_PUBLISHABLE_KEY) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(
+      `${ROCK_SUPABASE_URL}/auth/v1/user`,
+      {
+        method: "GET",
+        headers: {
+          "apikey": env.SUPABASE_PUBLISHABLE_KEY,
+          "Authorization": `Bearer ${token}`,
+          "Accept": "application/json"
+        },
+        redirect: "error",
+        signal: AbortSignal.timeout(8000)
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const user = await response.json();
+
+    if (!user || typeof user.id !== "string") {
+      return null;
+    }
+
+    return user;
+  } catch {
+    return null;
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Financial API remains disabled until
-    // token verification and administrator
-    // authorisation have been implemented.
+    // All financial API routes remain disabled.
+    // Authentication and administrator authorisation
+    // must be integrated and tested before enabling them.
     if (url.pathname.startsWith("/api/")) {
       return rockJsonResponse(
         { error: "Financial API not yet enabled" },
@@ -50,7 +91,7 @@ export default {
       );
     }
 
-    // Serve the existing website and professional portal.
+    // Serve the existing website and professional portal
     return env.ASSETS.fetch(request);
   }
 };
