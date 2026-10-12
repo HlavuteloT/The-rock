@@ -1,5 +1,6 @@
+
 {
-  "name": "the-rock",
+  "name": "financial-dashboard-backend",
   "main": "src/worker.js",
   "compatibility_date": "2026-10-10",
   "assets": {
