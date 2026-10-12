@@ -1,4 +1,17 @@
 
+// THE ROCK | Phase 7 | Secure API response helper
+function rockJsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff"
+    }
+  });
+}
+
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
