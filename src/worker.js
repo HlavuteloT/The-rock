@@ -1,5 +1,13 @@
 
-// THE ROCK | Phase 7 | Secure API response helper
+/**
+ * THE ROCK
+ * Town Planning & Land Use Management
+ *
+ * Phase 7 — Step 85.50
+ * Financial API authentication preparation
+ */
+
+// Standard JSON response helper
 function rockJsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -11,29 +19,38 @@ function rockJsonResponse(data, status = 200) {
   });
 }
 
+// Extract a Bearer token from the Authorization header.
+// This function only extracts the token.
+// It does NOT verify or authorise the user.
+function rockGetBearerToken(request) {
+  const authorization = request.headers.get("Authorization");
+
+  if (!authorization) {
+    return null;
+  }
+
+  const match = /^Bearer\s+(\S+)$/i.exec(
+    authorization.trim()
+  );
+
+  return match ? match[1] : null;
+}
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Financial API is disabled until authentication
-    // and administrator authorisation are implemented.
+    // Financial API remains disabled until
+    // token verification and administrator
+    // authorisation have been implemented.
     if (url.pathname.startsWith("/api/")) {
-      return new Response(
-        JSON.stringify({
-          error: "Financial API not yet enabled"
-        }),
-        {
-          status: 503,
-          headers: {
-            "Content-Type": "application/json",
-            "Cache-Control": "no-store"
-          }
-        }
+      return rockJsonResponse(
+        { error: "Financial API not yet enabled" },
+        503
       );
     }
 
-    // Serve THE ROCK's existing static website.
+    // Serve the existing website and professional portal.
     return env.ASSETS.fetch(request);
   }
 };
