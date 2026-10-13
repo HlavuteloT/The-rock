@@ -159,6 +159,15 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 .rock-register-toolbar .button{padding:10px 14px}
 @media(max-width:650px){.rock-register-tools{grid-template-columns:1fr}}
 </style>
+<style>
+/* Step 89.3 — draft lifecycle workspace */
+.rock-lifecycle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.rock-lifecycle-editor{border:1px solid #cddfd1;border-radius:12px;background:#fff;padding:18px;margin:16px 0}
+.rock-lifecycle-editor .form-group{margin-bottom:12px}
+.rock-lifecycle-banner{border-left:4px solid #b7791f;background:#fff9e9;padding:12px 15px;font-size:12px;line-height:1.6;margin:14px 0}
+.rock-lifecycle-events{padding-left:22px;font-size:13px;line-height:1.8}
+@media(max-width:700px){.rock-lifecycle-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
@@ -258,7 +267,7 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
   </div>
   <div id="rockInvoiceReviewPanel" class="rock-review-panel" hidden aria-live="polite"><div class="rock-review-note"><strong>DEVELOPMENT MODEL — NOT FOR OFFICIAL INVOICING.</strong> THE ROCK branding and supplier tax details are placeholders. Invoice issuance is disabled in this interface.</div>
     <div class="rock-review-head"><div><h3 style="margin:0 0 5px;color:var(--green-dark)">Review Invoice</h3><p class="doc-hint" style="margin:0">Read-only inspection. Reviewing does not save, issue, or send an invoice.</p></div><button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div>
-    <div id="rockInvoiceReviewContent"><div class="loading">Select a draft from the register.</div></div>
+    <div id="rockInvoiceReviewContent"><div class="loading">Select a draft from the register.</div></div><div id="rockLifecycleEditor" hidden></div><div id="rockLifecycleHistory" class="rock-review-panel" hidden></div>
   </div>
   <div class="rock-invoice-kpis">
     <div class="stat-card"><div class="label">Total issued value</div><div class="value" id="rockInvoiceIssuedValue">R0.00</div></div>
@@ -493,6 +502,109 @@ body{font-family:Arial,Helvetica,sans-serif;color:#1d2b24;margin:0;background:#f
 <div class="notice">This document is generated from the mandate record held in THE ROCK. It should be reviewed by the professional before issue and signature. The mandate should be read together with the accepted quotation and any written variation or additional instruction agreed between the parties.</div>
 </div>
 
+<script>
+// THE ROCK | Step 89.3 — invoice lifecycle (draft-only updates, no issuance).
+let rockLifecycleInvoice=null;
+const rockLifecycleSessionEvents=new Map();
+const rockLifecycleFields=[
+ ['description','Service description','textarea'],
+ ['subtotal','Professional fee excluding VAT (R)','number'],
+ ['invoice_date','Invoice date','date'],
+ ['due_date','Due date','date'],
+ ['client_billing_name','Client billing name','text'],
+ ['client_billing_address','Client billing address','textarea'],
+ ['client_vat_number','Client VAT number','text'],
+ ['supplier_legal_name','Supplier legal name','text'],
+ ['supplier_vat_number','Supplier VAT number','text'],
+ ['payment_terms','Payment terms','textarea']
+];
+function rockDraftEditorClose(){
+ const panel=document.getElementById('rockLifecycleEditor');
+ if(panel){panel.hidden=true;panel.innerHTML='';}
+ rockLifecycleInvoice=null;
+ const history=document.getElementById('rockLifecycleHistory');
+ if(history){history.hidden=true;history.innerHTML='';}
+}
+function rockLifecycleHistoryRender(i){
+ const panel=document.getElementById('rockLifecycleHistory');
+ if(!panel)return;
+ const events=[
+ {when:i.created_at,label:'Invoice record created'},
+ ...(i.issued_at?[{when:i.issued_at,label:'Issuance timestamp recorded in database'}]:[]),
+ ...(rockLifecycleSessionEvents.get(i.id)||[])
+ ].sort((a,b)=>String(a.when||'').localeCompare(String(b.when||'')));
+ panel.hidden=false;
+ panel.innerHTML='<h3>Lifecycle timeline</h3><p class="doc-hint">Database creation/issuance timestamps and edits made in this browser session only. This is NOT a permanent audit trail; historical changes require a server-side audit table and triggers.</p>'+
+ '<ol class="rock-lifecycle-events">'+events.map(e=>'<li><strong>'+escapeHtml(e.label)+'</strong> — '+escapeHtml(e.when?new Date(e.when).toLocaleString('en-ZA'):'Date unavailable')+'</li>').join('')+'</ol>';
+}
+async function rockEditDraftInvoice(invoiceId){
+ const panel=document.getElementById('rockLifecycleEditor');
+ if(!panel||!invoiceId)return;
+ panel.hidden=false;
+ panel.innerHTML='<div class="loading">Loading editable draft...</div>';
+ try{
+  const {data:i,error}=await supabaseClient.from('professional_invoices')
+   .select('id,application_id,invoice_status,invoice_number,description,subtotal,invoice_date,due_date,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,payment_terms,created_at,issued_at')
+   .eq('id',invoiceId).maybeSingle();
+  if(error)throw error;
+  if(!i||i.invoice_status!=='draft'||i.invoice_number)throw new Error('Only unissued draft invoices can be edited.');
+  if(!currentUser||!currentProfile?.active||!['admin','planner'].includes(currentProfile.role))throw new Error('Active professional access is required.');
+  rockLifecycleInvoice=i;
+  const input=(key,label,type)=>{
+    const v=String(i[key]??'');
+    const required=['description','subtotal','invoice_date','due_date','client_billing_name','supplier_legal_name'].includes(key)?'required':'';
+    const attr=type==='number'?'type="number" min="0.01" step="0.01"':type==='date'?'type="date"':'type="text"';
+    const body=type==='textarea'?'<textarea rows="2" class="form-control" id="rockEdit_'+key+'" '+required+'>'+escapeHtml(v)+'</textarea>':
+      '<input class="form-control" id="rockEdit_'+key+'" '+attr+' value="'+escapeHtml(v)+'" '+required+'>';
+    return '<div class="form-group"><label for="rockEdit_'+key+'">'+escapeHtml(label)+'</label>'+body+'</div>';
+  };
+  panel.innerHTML='<div class="rock-lifecycle-editor"><h3>Edit internal draft</h3>'+
+   '<div class="rock-lifecycle-banner">Development mode. Saving modifies an existing DRAFT record only. No official invoice is issued or payment recorded. VAT and totals are calculated by the database; verify them after saving.</div>'+
+   '<form id="rockLifecycleForm" onsubmit="rockLifecycleSave(event)"><div class="rock-lifecycle-grid">'+
+   rockLifecycleFields.map(([k,l,t])=>input(k,l,t)).join('')+'</div>'+
+   '<div class="rock-review-actions"><button id="rockLifecycleSaveButton" class="button button-primary" type="submit">Save draft changes</button>'+
+   '<button type="button" class="button button-secondary" onclick="rockDraftEditorClose()">Cancel editing</button></div>'+
+   '<p id="rockLifecycleFeedback" class="rock-invoice-form-feedback" role="status" aria-live="polite"></p></form></div>';
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+ }catch(e){panel.innerHTML='<div class="error-box">'+escapeHtml(e.message||String(e))+'</div>';}
+}
+async function rockLifecycleSave(event){
+ event.preventDefault();
+ const i=rockLifecycleInvoice,form=document.getElementById('rockLifecycleForm');
+ const feedback=document.getElementById('rockLifecycleFeedback');
+ if(!i||!form||!form.reportValidity())return;
+ const v=k=>document.getElementById('rockEdit_'+k).value.trim();
+ const subtotal=Number(v('subtotal'));
+ if(!Number.isFinite(subtotal)||subtotal<=0||Math.abs(subtotal*100-Math.round(subtotal*100))>0.000001){
+  feedback.textContent='Enter a positive subtotal with no more than two decimal places.';return;
+ }
+ if(v('due_date')<v('invoice_date')){feedback.textContent='Due date cannot precede invoice date.';return;}
+ const patch={};
+ for(const [key] of rockLifecycleFields)patch[key]=key==='subtotal'?Math.round(subtotal*100)/100:v(key)||null;
+ for(const key of ['description','client_billing_name','supplier_legal_name'])if(!patch[key]){feedback.textContent='Required fields cannot be blank.';return;}
+ const button=document.getElementById('rockLifecycleSaveButton');
+ button.disabled=true;feedback.textContent='Saving draft changes...';
+ try{
+  // Recheck draft state and apply conditional UPDATE. Database RLS and
+  // server-side constraints must independently enforce access and immutability.
+  const {data,error}=await supabaseClient.from('professional_invoices').update(patch)
+   .eq('id',i.id).eq('invoice_status','draft').is('invoice_number',null)
+   .select('id,invoice_status,invoice_number,subtotal,vat_amount,total_amount,created_at,issued_at').maybeSingle();
+  if(error)throw error;
+  if(!data)throw new Error('No draft was updated. Check invoice access, RLS and draft status.');
+  if(data.invoice_status!=='draft'||data.invoice_number)throw new Error('Unexpected invoice state. Verify the record.');
+  const events=rockLifecycleSessionEvents.get(i.id)||[];
+  events.push({when:new Date().toISOString(),label:'Draft edited in this browser session'});
+  rockLifecycleSessionEvents.set(i.id,events);
+  feedback.textContent='Draft saved. Database total: '+rockInvoiceMoney(data.total_amount)+'. No invoice issued.';
+  await rockLoadInvoices();
+  await rockReviewInvoice(i.id);
+  rockDraftEditorClose();
+  rockLifecycleHistoryRender({...i,...data});
+ }catch(e){feedback.textContent='Could not update draft: '+(e.message||String(e));}
+ finally{button.disabled=false;}
+}
+</script>
 </body></html>`;
 w.document.open();w.document.write(html);w.document.close();
 }
@@ -1316,6 +1428,7 @@ async function rockReviewInvoice(invoiceId){
       </div>
       <div class="rock-review-note">${isDraft?(checks.length?'<strong>Draft validation observations:</strong> '+checks.map(escapeHtml).join(' '):'No missing fields detected in this preliminary review. Final statutory and professional validation is still required.'):'This record is not a draft. Details are displayed for review only.'}${isInternalTest?'<br><strong>Internal test invoice: official issuance is blocked in this portal.</strong>':''}<br><strong>Reviewing alone does not issue, number, modify or send an invoice.</strong></div>
       <div class="rock-review-actions"><button type="button" class="button button-secondary" onclick="rockPrintInvoice('${i.id}')">Print / Save PDF</button>${isDraft?`<button type="button" class="button button-primary" onclick="rockEditDraftInvoice('${i.id}')">Edit Draft</button>`:""}${isDraft&&isAdmin?`<button type="button" class="button button-primary" onclick="rockPreviewIssuance('${i.id}')">Review Issuance Readiness</button>`:""}<button type="button" class="button button-secondary" onclick="rockCloseInvoiceReview()">Close Review</button></div><div id="rockIssueFeedback" class="rock-invoice-form-feedback" role="status" aria-live="polite"></div>`;
+    rockLifecycleHistoryRender(i);
   }catch(e){
     if(request!==rockInvoiceReviewRequest)return;
     content.innerHTML=`<div class="error-box">Unable to review invoice: ${escapeHtml(e.message||String(e))}</div>`;
@@ -1339,9 +1452,9 @@ async function rockPrintInvoice(invoiceId){
     const safe=v=>escapeHtml(String(v??''));
     const display=v=>safe(v||'—');
     const draft=i.invoice_status==='draft';
-    if(!draft && (!i.invoice_number || i.invoice_status!=='issued'))throw new Error('Unsupported invoice status for printable tax invoice.');
+    // All records print as explicitly non-official development previews; never a tax invoice.
     const reference=i.invoice_number||i.draft_reference||'DRAFT';
-    const heading=draft?'MODEL DRAFT INVOICE':'MODEL INVOICE RECORD';
+    const heading=draft?'MODEL DRAFT INVOICE':'MODEL INVOICE RECORD — '+String(i.invoice_status||'').replaceAll('_',' ').toUpperCase();
     const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${safe(reference)} — THE ROCK</title><style>
       @page{size:A4;margin:16mm}*{box-sizing:border-box}body{margin:0;font:13px/1.55 Arial,Helvetica,sans-serif;color:#183b2b;background:#fff}main{max-width:780px;margin:auto}.head{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #c4a267;padding-bottom:18px}.brand{font:bold 29px Georgia,serif;letter-spacing:2px;color:#0a3927}.tag{font-size:10px;letter-spacing:2px;color:#9b7c3c}.heading{text-align:right;font:bold 21px Georgia,serif}.ref{font-size:12px;margin-top:6px}.draft{border:2px solid #b7791f;color:#895e14;background:#fff9e9;padding:11px 14px;font-weight:bold;margin:22px 0;text-align:center}.grid{display:grid;grid-template-columns:1fr 1fr;gap:25px;margin:25px 0}.box{border:1px solid #dfe6df;border-radius:8px;padding:16px;overflow-wrap:anywhere;white-space:pre-wrap}.label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#667b70;font-weight:bold;margin-bottom:6px}.name{font-size:15px;font-weight:bold;margin-bottom:6px}table{width:100%;border-collapse:collapse;margin-top:20px}th{text-align:left;background:#0a3927;color:#fff;padding:12px}td{border-bottom:1px solid #e2e9e2;padding:13px;vertical-align:top;overflow-wrap:anywhere}.money{text-align:right;white-space:nowrap}.totals{width:300px;max-width:100%;margin:22px 0 22px auto}.totalrow{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #e0e6e0}.grand{background:#0a3927;color:#fff;font-size:17px;font-weight:bold;padding:14px;margin-top:8px}.foot{border-top:1px solid #dfe6df;margin-top:38px;padding-top:15px;font-size:11px;color:#53695e}.muted{color:#687c71}.meta{margin:18px 0;display:flex;gap:22px;flex-wrap:wrap}.meta div{min-width:140px}button{border:0;background:#0f5132;color:#fff;padding:12px 18px;border-radius:6px;cursor:pointer;margin:16px 0}@media print{button{display:none}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}@media(max-width:560px){.grid{grid-template-columns:1fr}.head{display:block}.heading{text-align:left;margin-top:16px}}
     </style></head><body><main><button type="button" onclick="window.print()">Print / Save as PDF</button><div class="head"><div><div class="brand">THE ROCK</div><div class="tag">TOWN PLANNING &amp; LAND USE MANAGEMENT</div></div><div><div class="heading">${heading}</div><div class="ref">${safe(reference)}</div></div></div>
@@ -1350,7 +1463,7 @@ async function rockPrintInvoice(invoiceId){
     <div class="grid"><div class="box"><div class="label">Supplier</div><div class="name">${display(i.supplier_legal_name)}</div><div class="label">VAT registration number</div>${display(i.supplier_vat_number)}</div><div class="box"><div class="label">Bill to</div><div class="name">${display(i.client_billing_name)}</div><div>${display(i.client_billing_address)}</div><div class="label" style="margin-top:12px">Client VAT number</div>${display(i.client_vat_number)}</div></div>
     <div class="muted">${display(a?.application_type)}${a?.municipality?' · '+safe(a.municipality):''}</div>
     <table><thead><tr><th>Professional services</th><th class="money">Amount (ZAR)</th></tr></thead><tbody><tr><td style="white-space:pre-wrap">${display(i.description)}</td><td class="money">${rockInvoiceMoney(i.subtotal)}</td></tr></tbody></table>
-    <div class="totals"><div class="totalrow"><span>Subtotal</span><strong>${rockInvoiceMoney(i.subtotal)}</strong></div><div class="totalrow"><span>VAT (${safe(i.vat_rate)}%)</span><strong>${rockInvoiceMoney(i.vat_amount)}</strong></div><div class="totalrow grand"><span>Total payable</span><span>${rockInvoiceMoney(i.total_amount)}</span></div></div>
+    <div class="totals"><div class="totalrow"><span>Subtotal</span><strong>${rockInvoiceMoney(i.subtotal)}</strong></div><div class="totalrow"><span>VAT (${safe(i.vat_rate)}%)</span><strong>${rockInvoiceMoney(i.vat_amount)}</strong></div><div class="totalrow grand"><span>Model total (not payable)</span><span>${rockInvoiceMoney(i.total_amount)}</span></div></div>
     <div><div class="label">Payment terms</div><div style="white-space:pre-wrap">${display(i.payment_terms)}</div></div><div class="foot">THE ROCK · Professional Planning Services · DEVELOPMENT PREVIEW ONLY — NOT FOR CLIENT DISTRIBUTION<p>Verify all required tax-invoice particulars and payment instructions before sending to a client. This document is generated from the invoice record and does not change its status.</p></div></main></body></html>`;
     printWindow.document.open();printWindow.document.write(html);printWindow.document.close();
   }catch(e){printWindow.document.body.textContent='Unable to prepare invoice: '+(e.message||String(e));}
