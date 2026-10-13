@@ -151,6 +151,14 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 @media(max-width:600px){.rock-report-summary{grid-template-columns:1fr}}
 @media(max-width:850px){.rock-detail-filters{grid-template-columns:1fr}}
 </style>
+<style>
+/* Step 89.1: Read-only invoice register controls */
+.rock-register-tools{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin:16px 0}
+.rock-register-tools .form-group{margin:0}
+.rock-register-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.rock-register-toolbar .button{padding:10px 14px}
+@media(max-width:650px){.rock-register-tools{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
@@ -258,7 +266,10 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
     <div class="stat-card"><div class="label">Issued invoices</div><div class="value" id="rockInvoiceIssuedCount">—</div></div>
     <div class="stat-card"><div class="label">Recorded unpaid balance</div><div class="value" id="rockInvoiceUnpaid">—</div></div>
   </div>
-  <div class="content-card"><h3>Invoice Register</h3><p class="doc-hint">Draft references are internal identifiers. Official invoice numbers are allocated on authorised issuance. Payment balances are not calculated until payment records are integrated.</p><div id="rockInvoiceFeedback" role="status" aria-live="polite"></div><div class="table-wrapper" id="rockInvoiceRegister"><div class="loading">Open this section to load invoices.</div></div></div>
+  <div class="content-card"><h3>Invoice Register</h3><p class="doc-hint">Development-only records. Draft values are not receivables. Financial balances are reported separately through the read-only Financial Dashboard.</p>
+    <div class="rock-register-tools"><div class="form-group"><label for="rockInvoiceRegisterSearch">Search invoices</label><input id="rockInvoiceRegisterSearch" class="form-control" type="search" placeholder="Reference, description or application ID" oninput="rockRenderInvoiceRegister()"></div><div class="form-group"><label for="rockInvoiceRegisterStatus">Invoice status</label><select id="rockInvoiceRegisterStatus" class="form-control" onchange="rockRenderInvoiceRegister()"><option value="">All statuses</option><option value="draft">Draft</option><option value="issued">Issued</option><option value="partially_paid">Partially paid</option><option value="paid">Paid</option><option value="overdue">Overdue</option><option value="cancelled">Cancelled</option></select></div></div>
+    <div class="rock-register-toolbar"><button type="button" class="button button-secondary" onclick="rockClearInvoiceRegisterFilters()">Clear filters</button><button type="button" class="button button-primary" onclick="rockExportInvoiceRegisterCsv()">Export visible invoices (CSV)</button><span id="rockInvoiceRegisterCount" class="doc-hint" role="status" aria-live="polite"></span></div>
+    <div id="rockInvoiceFeedback" role="status" aria-live="polite"></div><div class="table-wrapper" id="rockInvoiceRegister"><div class="loading">Open this section to load invoices.</div></div></div>
 </section>
 <section id="caseFile" class="section"><div id="caseFileContainer"><div class="content-card"><div class="empty">Select an application to open its case file.</div></div></div></section>
 </main></div></div>
@@ -1106,11 +1117,46 @@ function rockRenderTaskPortfolio(){
 // THE ROCK | Phase 7 — Read-only Invoice Management Dashboard.
 // Database RLS remains authoritative for which invoices are visible.
 let rockInvoiceLoading=false;
+let rockInvoiceRegisterData=[];
+let rockInvoiceRegisterReady=false;
+function rockInvoiceRegisterFiltered(){
+  const query=(document.getElementById('rockInvoiceRegisterSearch')?.value||'').trim().toLowerCase();
+  const status=document.getElementById('rockInvoiceRegisterStatus')?.value||'';
+  return rockInvoiceRegisterData.filter(i=>(!status||i.invoice_status===status)&&(!query||[i.invoice_number,i.draft_reference,i.description,i.application_id].some(v=>String(v||'').toLowerCase().includes(query))));
+}
+function rockRenderInvoiceRegister(){
+  const target=document.getElementById('rockInvoiceRegister');
+  if(!target||!rockInvoiceRegisterReady)return;
+  const invoices=rockInvoiceRegisterFiltered();
+  const money=n=>'R'+Number(n||0).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const statuses={draft:'Draft',issued:'Issued',partially_paid:'Partially paid',paid:'Paid',overdue:'Overdue',cancelled:'Cancelled'};
+  const badge=i=>i.invoice_status==='paid'?'badge-green':i.invoice_status==='overdue'?'badge-red':i.invoice_status==='draft'?'badge-gold':'badge-blue';
+  const count=document.getElementById('rockInvoiceRegisterCount');
+  if(count)count.textContent=`Showing ${invoices.length} of ${rockInvoiceRegisterData.length} loaded invoices${rockInvoiceRegisterData.length===500?' (500-record limit)':''}.`;
+  target.innerHTML=invoices.length?`<table class="rock-invoice-table"><thead><tr><th>Reference</th><th>Description</th><th>Invoice date</th><th>Due date</th><th>Status</th><th>Total (incl. VAT)</th><th>Actions</th></tr></thead><tbody>${invoices.map(i=>`<tr><td><span class="rock-invoice-ref">${escapeHtml(i.invoice_number||i.draft_reference||'Unassigned')}</span><span class="rock-invoice-sub">${i.invoice_status==='draft'?'Internal draft reference':'Historical record — model portal'}</span></td><td>${escapeHtml(i.description||'—')}</td><td>${escapeHtml(i.invoice_date||'—')}</td><td>${escapeHtml(i.due_date||'—')}</td><td><span class="badge ${badge(i)}">${escapeHtml(statuses[i.invoice_status]||i.invoice_status||'Unknown')}</span></td><td><strong>${money(i.total_amount)}</strong></td><td><button type="button" class="button button-secondary" style="padding:8px 12px;font-size:12px" onclick="rockReviewInvoice('${i.id}')">Review</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No invoices match these filters.</div>';
+}
+function rockClearInvoiceRegisterFilters(){
+  const search=document.getElementById('rockInvoiceRegisterSearch'),status=document.getElementById('rockInvoiceRegisterStatus');
+  if(search)search.value='';if(status)status.value='';rockRenderInvoiceRegister();
+}
+function rockExportInvoiceRegisterCsv(){
+  if(!rockInvoiceRegisterReady){alert('Load invoices before exporting.');return;}
+  const rows=rockInvoiceRegisterFiltered();
+  if(!rows.length){alert('No matching invoice records to export.');return;}
+  const fields=['draft_reference','invoice_number','invoice_status','invoice_date','due_date','description','subtotal','vat_amount','total_amount','application_id','created_at','issued_at'];
+  // Spreadsheet-formula protection: prefix cells that could be interpreted as formulas.
+  const cell=v=>{let s=String(v??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};
+  const csv='\uFEFF'+[fields.map(cell).join(','),...rows.map(r=>fields.map(f=>cell(r[f])).join(','))].join('\r\n');
+  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  const a=document.createElement('a');a.href=url;a.download='the-rock-model-invoice-register-'+rockInvoiceLocalDate(new Date())+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
 async function rockLoadInvoices(){
   const target=document.getElementById('rockInvoiceRegister');
   if(!target||rockInvoiceLoading)return;
   rockInvoiceLoading=true;
   const feedback=document.getElementById('rockInvoiceFeedback');
+  rockInvoiceRegisterReady=false;
   target.innerHTML='<div class="loading">Loading authorised invoice records...</div>';
   feedback.textContent='';
   try{
@@ -1127,11 +1173,12 @@ async function rockLoadInvoices(){
     document.getElementById('rockInvoiceDraftCount').textContent=String(draft.length);
     document.getElementById('rockInvoiceIssuedCount').textContent=String(issued.length);
     document.getElementById('rockInvoiceUnpaid').textContent='Not tracked';
-    const statuses={draft:'Draft',issued:'Issued',partially_paid:'Partially paid',paid:'Paid',overdue:'Overdue',cancelled:'Cancelled'};
-    const badge=i=>i.invoice_status==='paid'?'badge-green':i.invoice_status==='overdue'?'badge-red':i.invoice_status==='draft'?'badge-gold':'badge-blue';
-    target.innerHTML=invoices.length?`<table class="rock-invoice-table"><thead><tr><th>Reference</th><th>Description</th><th>Invoice date</th><th>Due date</th><th>Status</th><th>Total (incl. VAT)</th><th>Actions</th></tr></thead><tbody>${invoices.map(i=>`<tr><td><span class="rock-invoice-ref">${escapeHtml(i.invoice_number||i.draft_reference||'Unassigned')}</span><span class="rock-invoice-sub">${i.invoice_number?'Official invoice':'Internal draft reference'}</span></td><td>${escapeHtml(i.description||'—')}</td><td>${escapeHtml(i.invoice_date||'—')}</td><td>${escapeHtml(i.due_date||'—')}</td><td><span class="badge ${badge(i)}">${escapeHtml(statuses[i.invoice_status]||i.invoice_status||'Unknown')}</span></td><td><strong>${money(i.total_amount)}</strong></td><td><button type="button" class="button button-secondary" style="padding:8px 12px;font-size:12px" onclick="rockReviewInvoice('${i.id}')">Review</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No accessible invoices found.</div>';
+    rockInvoiceRegisterData=invoices;
+    rockInvoiceRegisterReady=true;
+    rockRenderInvoiceRegister();
     if(invoices.length===500)feedback.textContent='Showing the 500 most recent accessible invoices. Totals are limited to these records.';
   }catch(e){
+    rockInvoiceRegisterData=[];rockInvoiceRegisterReady=false;
     target.innerHTML=`<div class="error-box">Unable to load invoices: ${escapeHtml(e.message||String(e))}</div>`;
     for(const id of ['rockInvoiceIssuedValue','rockInvoiceDraftCount','rockInvoiceIssuedCount','rockInvoiceUnpaid'])document.getElementById(id).textContent='—';
   }finally{rockInvoiceLoading=false;}
@@ -1294,17 +1341,17 @@ async function rockPrintInvoice(invoiceId){
     const draft=i.invoice_status==='draft';
     if(!draft && (!i.invoice_number || i.invoice_status!=='issued'))throw new Error('Unsupported invoice status for printable tax invoice.');
     const reference=i.invoice_number||i.draft_reference||'DRAFT';
-    const heading=draft?'MODEL DRAFT INVOICE':'TAX INVOICE';
+    const heading=draft?'MODEL DRAFT INVOICE':'MODEL INVOICE RECORD';
     const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${safe(reference)} — THE ROCK</title><style>
       @page{size:A4;margin:16mm}*{box-sizing:border-box}body{margin:0;font:13px/1.55 Arial,Helvetica,sans-serif;color:#183b2b;background:#fff}main{max-width:780px;margin:auto}.head{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #c4a267;padding-bottom:18px}.brand{font:bold 29px Georgia,serif;letter-spacing:2px;color:#0a3927}.tag{font-size:10px;letter-spacing:2px;color:#9b7c3c}.heading{text-align:right;font:bold 21px Georgia,serif}.ref{font-size:12px;margin-top:6px}.draft{border:2px solid #b7791f;color:#895e14;background:#fff9e9;padding:11px 14px;font-weight:bold;margin:22px 0;text-align:center}.grid{display:grid;grid-template-columns:1fr 1fr;gap:25px;margin:25px 0}.box{border:1px solid #dfe6df;border-radius:8px;padding:16px;overflow-wrap:anywhere;white-space:pre-wrap}.label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#667b70;font-weight:bold;margin-bottom:6px}.name{font-size:15px;font-weight:bold;margin-bottom:6px}table{width:100%;border-collapse:collapse;margin-top:20px}th{text-align:left;background:#0a3927;color:#fff;padding:12px}td{border-bottom:1px solid #e2e9e2;padding:13px;vertical-align:top;overflow-wrap:anywhere}.money{text-align:right;white-space:nowrap}.totals{width:300px;max-width:100%;margin:22px 0 22px auto}.totalrow{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #e0e6e0}.grand{background:#0a3927;color:#fff;font-size:17px;font-weight:bold;padding:14px;margin-top:8px}.foot{border-top:1px solid #dfe6df;margin-top:38px;padding-top:15px;font-size:11px;color:#53695e}.muted{color:#687c71}.meta{margin:18px 0;display:flex;gap:22px;flex-wrap:wrap}.meta div{min-width:140px}button{border:0;background:#0f5132;color:#fff;padding:12px 18px;border-radius:6px;cursor:pointer;margin:16px 0}@media print{button{display:none}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}@media(max-width:560px){.grid{grid-template-columns:1fr}.head{display:block}.heading{text-align:left;margin-top:16px}}
     </style></head><body><main><button type="button" onclick="window.print()">Print / Save as PDF</button><div class="head"><div><div class="brand">THE ROCK</div><div class="tag">TOWN PLANNING &amp; LAND USE MANAGEMENT</div></div><div><div class="heading">${heading}</div><div class="ref">${safe(reference)}</div></div></div>
-    ${draft?'<div class="draft">MODEL PREVIEW — NOT A TAX INVOICE · NOT FOR PAYMENT</div>':''}
+    <div class="draft">DEVELOPMENT MODEL — NOT A TAX INVOICE · NOT FOR PAYMENT OR CLIENT DISTRIBUTION</div>
     <div class="meta"><div><div class="label">Invoice date</div>${display(i.invoice_date)}</div><div><div class="label">Payment due</div>${display(i.due_date)}</div><div><div class="label">Application reference</div>${display(a?.application_reference)}</div></div>
     <div class="grid"><div class="box"><div class="label">Supplier</div><div class="name">${display(i.supplier_legal_name)}</div><div class="label">VAT registration number</div>${display(i.supplier_vat_number)}</div><div class="box"><div class="label">Bill to</div><div class="name">${display(i.client_billing_name)}</div><div>${display(i.client_billing_address)}</div><div class="label" style="margin-top:12px">Client VAT number</div>${display(i.client_vat_number)}</div></div>
     <div class="muted">${display(a?.application_type)}${a?.municipality?' · '+safe(a.municipality):''}</div>
     <table><thead><tr><th>Professional services</th><th class="money">Amount (ZAR)</th></tr></thead><tbody><tr><td style="white-space:pre-wrap">${display(i.description)}</td><td class="money">${rockInvoiceMoney(i.subtotal)}</td></tr></tbody></table>
     <div class="totals"><div class="totalrow"><span>Subtotal</span><strong>${rockInvoiceMoney(i.subtotal)}</strong></div><div class="totalrow"><span>VAT (${safe(i.vat_rate)}%)</span><strong>${rockInvoiceMoney(i.vat_amount)}</strong></div><div class="totalrow grand"><span>Total payable</span><span>${rockInvoiceMoney(i.total_amount)}</span></div></div>
-    <div><div class="label">Payment terms</div><div style="white-space:pre-wrap">${display(i.payment_terms)}</div></div><div class="foot">THE ROCK · Professional Planning Services${draft?' · Preview only; no official invoice number has been allocated.':''}<p>Verify all required tax-invoice particulars and payment instructions before sending to a client. This document is generated from the invoice record and does not change its status.</p></div></main></body></html>`;
+    <div><div class="label">Payment terms</div><div style="white-space:pre-wrap">${display(i.payment_terms)}</div></div><div class="foot">THE ROCK · Professional Planning Services · DEVELOPMENT PREVIEW ONLY — NOT FOR CLIENT DISTRIBUTION<p>Verify all required tax-invoice particulars and payment instructions before sending to a client. This document is generated from the invoice record and does not change its status.</p></div></main></body></html>`;
     printWindow.document.open();printWindow.document.write(html);printWindow.document.close();
   }catch(e){printWindow.document.body.textContent='Unable to prepare invoice: '+(e.message||String(e));}
 }
