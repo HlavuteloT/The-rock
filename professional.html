@@ -285,6 +285,7 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
   </div>
   <div class="content-card"><h3>Invoice Register</h3><p class="doc-hint">Development-only records. Draft values are not receivables. Financial balances are reported separately through the read-only Financial Dashboard.</p>
     <div class="rock-register-tools"><div class="form-group"><label for="rockInvoiceRegisterSearch">Search invoices</label><input id="rockInvoiceRegisterSearch" class="form-control" type="search" placeholder="Reference, description or application ID" oninput="rockRenderInvoiceRegister()"></div><div class="form-group"><label for="rockInvoiceRegisterStatus">Invoice status</label><select id="rockInvoiceRegisterStatus" class="form-control" onchange="rockRenderInvoiceRegister()"><option value="">All statuses</option><option value="draft">Draft</option><option value="issued">Issued</option><option value="partially_paid">Partially paid</option><option value="paid">Paid</option><option value="overdue">Overdue</option><option value="cancelled">Cancelled</option></select></div></div>
+    <div class="rock-register-tools"><div class="form-group"><label for="rockInvoiceDateFrom">Invoice date from</label><input id="rockInvoiceDateFrom" class="form-control" type="date" onchange="rockRenderInvoiceRegister()"></div><div class="form-group"><label for="rockInvoiceDateTo">Invoice date to</label><input id="rockInvoiceDateTo" class="form-control" type="date" onchange="rockRenderInvoiceRegister()"></div></div>
     <div class="rock-register-toolbar"><button type="button" class="button button-secondary" onclick="rockClearInvoiceRegisterFilters()">Clear filters</button><button type="button" class="button button-primary" onclick="rockExportInvoiceRegisterCsv()">Export visible invoices (CSV)</button><span id="rockInvoiceRegisterCount" class="doc-hint" role="status" aria-live="polite"></span></div>
     <div id="rockInvoiceFeedback" role="status" aria-live="polite"></div><div class="table-wrapper" id="rockInvoiceRegister"><div class="loading">Open this section to load invoices.</div></div></div>
 </section>
@@ -1141,7 +1142,9 @@ let rockInvoiceRegisterReady=false;
 function rockInvoiceRegisterFiltered(){
   const query=(document.getElementById('rockInvoiceRegisterSearch')?.value||'').trim().toLowerCase();
   const status=document.getElementById('rockInvoiceRegisterStatus')?.value||'';
-  return rockInvoiceRegisterData.filter(i=>(!status||i.invoice_status===status)&&(!query||[i.invoice_number,i.draft_reference,i.description,i.application_id].some(v=>String(v||'').toLowerCase().includes(query))));
+  const from=document.getElementById('rockInvoiceDateFrom')?.value||'';
+  const to=document.getElementById('rockInvoiceDateTo')?.value||'';
+  return rockInvoiceRegisterData.filter(i=>(!status||i.invoice_status===status)&&(!from||(i.invoice_date&&i.invoice_date>=from))&&(!to||(i.invoice_date&&i.invoice_date<=to))&&(!query||[i.invoice_number,i.draft_reference,i.description,i.application_id].some(v=>String(v||'').toLowerCase().includes(query))));
 }
 function rockRenderInvoiceRegister(){
   const target=document.getElementById('rockInvoiceRegister');
@@ -1156,7 +1159,9 @@ function rockRenderInvoiceRegister(){
 }
 function rockClearInvoiceRegisterFilters(){
   const search=document.getElementById('rockInvoiceRegisterSearch'),status=document.getElementById('rockInvoiceRegisterStatus');
-  if(search)search.value='';if(status)status.value='';rockRenderInvoiceRegister();
+  if(search)search.value='';if(status)status.value='';
+  for(const id of ['rockInvoiceDateFrom','rockInvoiceDateTo']){const el=document.getElementById(id);if(el)el.value='';}
+  rockRenderInvoiceRegister();
 }
 function rockExportInvoiceRegisterCsv(){
   if(!rockInvoiceRegisterReady){alert('Load invoices before exporting.');return;}
