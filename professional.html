@@ -1,3 +1,4 @@
+```
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1774,14 +1775,25 @@ async function rockLifecycleSave(event){
  const button=document.getElementById('rockLifecycleSaveButton');
  button.disabled=true;feedback.textContent='Saving draft changes...';
  try{
-  // Recheck draft state and apply conditional UPDATE. Database RLS and
-  // server-side constraints must independently enforce access and immutability.
-  const {data,error}=await supabaseClient.from('professional_invoices').update(patch)
-   .eq('id',i.id).eq('invoice_status','draft').is('invoice_number',null)
-   .select('id,invoice_status,invoice_number,subtotal,vat_amount,total_amount,created_at,issued_at').maybeSingle();
+  // Route all draft amendments through the database's validated,
+  // application-authorised, draft-only SECURITY DEFINER function.
+  const {data,error}=await supabaseClient.rpc('rock_update_draft_invoice',{
+   p_invoice_id:i.id,
+   p_description:patch.description,
+   p_subtotal:patch.subtotal,
+   p_invoice_date:patch.invoice_date,
+   p_due_date:patch.due_date,
+   p_payment_terms:patch.payment_terms,
+   p_client_billing_name:patch.client_billing_name,
+   p_client_billing_address:patch.client_billing_address,
+   p_client_vat_number:patch.client_vat_number,
+   p_supplier_legal_name:patch.supplier_legal_name,
+   p_supplier_vat_number:patch.supplier_vat_number
+  });
   if(error)throw error;
-  if(!data)throw new Error('No draft was updated. Check invoice access, RLS and draft status.');
-  if(data.invoice_status!=='draft'||data.invoice_number)throw new Error('Unexpected invoice state. Verify the record.');
+  if(!data)throw new Error('Draft update returned no invoice. Check access and database permissions.');
+  if(data.invoice_status!=='draft'||data.invoice_number||data.issued_at)
+   throw new Error('Unexpected invoice state. Verify the record.');
   feedback.textContent='Draft saved. Database total: '+rockInvoiceMoney(data.total_amount)+'. No invoice issued.';
   await rockLoadInvoices();
   await rockReviewInvoice(i.id);
@@ -1793,3 +1805,4 @@ async function rockLifecycleSave(event){
 </script>
 </body>
 </html>
+```
