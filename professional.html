@@ -509,118 +509,8 @@ body{font-family:Arial,Helvetica,sans-serif;color:#1d2b24;margin:0;background:#f
 <div class="notice">This document is generated from the mandate record held in THE ROCK. It should be reviewed by the professional before issue and signature. The mandate should be read together with the accepted quotation and any written variation or additional instruction agreed between the parties.</div>
 </div>
 
-<script>
-// THE ROCK | Step 89.3 — invoice lifecycle (draft-only updates, no issuance).
-let rockLifecycleInvoice=null;
-const rockLifecycleSessionEvents=new Map();
-const rockLifecycleFields=[
- ['description','Service description','textarea'],
- ['subtotal','Professional fee excluding VAT (R)','number'],
- ['invoice_date','Invoice date','date'],
- ['due_date','Due date','date'],
- ['client_billing_name','Client billing name','text'],
- ['client_billing_address','Client billing address','textarea'],
- ['client_vat_number','Client VAT number','text'],
- ['supplier_legal_name','Supplier legal name','text'],
- ['supplier_vat_number','Supplier VAT number','text'],
- ['payment_terms','Payment terms','textarea']
-];
-function rockDraftEditorClose(){
- const panel=document.getElementById('rockLifecycleEditor');
- if(panel){panel.hidden=true;panel.innerHTML='';}
- rockLifecycleInvoice=null;
- const history=document.getElementById('rockLifecycleHistory');
- if(history){history.hidden=true;history.innerHTML='';delete history.dataset.invoiceId;}
-}
-async function rockLifecycleHistoryRender(i){
- const panel=document.getElementById('rockLifecycleHistory');
- if(!panel||!i?.id)return;
- panel.dataset.invoiceId=i.id;
- panel.hidden=false;
- panel.innerHTML='<h3>Permanent invoice audit history</h3><div class="loading">Loading secured database audit events...</div>';
- try{
-  const {data,error}=await supabaseClient.rpc('rock_get_invoice_audit',{p_invoice_id:i.id});
-  if(panel.dataset.invoiceId!==i.id)return;
-  if(error)throw error;
-  const events=Array.isArray(data)?data:[];
-  const safe=v=>escapeHtml(String(v===null||v===undefined?'—':v));
-  const label=k=>String(k).replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
-  const fmt=v=>{if(v===null||v===undefined)return '—';if(typeof v==='object')return JSON.stringify(v);return String(v)};
-  panel.innerHTML='<div class="rock-review-head"><div><h3>Permanent invoice audit history</h3><p class="doc-hint">Database-recorded changes since audit activation. Read-only. Actor IDs are shown as stored; a missing user ID can indicate a privileged or system operation.</p></div><button type="button" class="button button-secondary" onclick="rockLifecycleHistoryRender({id:'+JSON.stringify(i.id)+'})">Refresh history</button></div>'+
-  (events.length?events.map(e=>{
-   const before=e.previous_values||{},after=e.new_values||{};
-   const fields=Array.isArray(e.changed_fields)?e.changed_fields:[];
-   const changes=fields.map(k=>'<tr><td>'+safe(label(k))+'</td><td class="rock-audit-value">'+safe(fmt(before[k]))+'</td><td class="rock-audit-value">'+safe(fmt(after[k]))+'</td></tr>').join('');
-   const when=e.occurred_at?new Date(e.occurred_at).toLocaleString('en-ZA'):'Unknown time';
-   return '<div class="rock-audit-event"><div class="rock-review-head"><strong>'+safe(e.operation)+'</strong><span class="doc-hint">'+safe(when)+'</span></div><p class="doc-hint">Authenticated actor: '+safe(e.actor_user_id||'Not available')+' · Database/JWT role: '+safe(e.actor_role||'Unknown')+' · Session role: '+safe(e.session_role||'Unknown')+'</p><details><summary>View '+fields.length+' changed fields</summary><div class="table-wrapper"><table class="rock-audit-table"><thead><tr><th>Field</th><th>Previous</th><th>Updated</th></tr></thead><tbody>'+changes+'</tbody></table></div></details></div>';
-  }).join(''):'<div class="empty">No recorded audit events for this invoice since the audit trigger was installed. Earlier edits cannot be reconstructed.</div>');
- }catch(e){if(panel.dataset.invoiceId!==i.id)return;panel.innerHTML='<h3>Permanent invoice audit history</h3><div class="error-box">Audit history could not be loaded: '+escapeHtml(e.message||String(e))+'. Confirm that the Step 90.3 read-only RPC was installed and access was granted.</div>';}
-}
-async function rockEditDraftInvoice(invoiceId){
- const panel=document.getElementById('rockLifecycleEditor');
- if(!panel||!invoiceId)return;
- panel.hidden=false;
- panel.innerHTML='<div class="loading">Loading editable draft...</div>';
- try{
-  const {data:i,error}=await supabaseClient.from('professional_invoices')
-   .select('id,application_id,invoice_status,invoice_number,description,subtotal,invoice_date,due_date,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,payment_terms,created_at,issued_at')
-   .eq('id',invoiceId).maybeSingle();
-  if(error)throw error;
-  if(!i||i.invoice_status!=='draft'||i.invoice_number)throw new Error('Only unissued draft invoices can be edited.');
-  if(!currentUser||!currentProfile?.active||!['admin','planner'].includes(currentProfile.role))throw new Error('Active professional access is required.');
-  rockLifecycleInvoice=i;
-  const input=(key,label,type)=>{
-    const v=String(i[key]??'');
-    const required=['description','subtotal','invoice_date','due_date','client_billing_name','supplier_legal_name'].includes(key)?'required':'';
-    const attr=type==='number'?'type="number" min="0.01" step="0.01"':type==='date'?'type="date"':'type="text"';
-    const body=type==='textarea'?'<textarea rows="2" class="form-control" id="rockEdit_'+key+'" '+required+'>'+escapeHtml(v)+'</textarea>':
-      '<input class="form-control" id="rockEdit_'+key+'" '+attr+' value="'+escapeHtml(v)+'" '+required+'>';
-    return '<div class="form-group"><label for="rockEdit_'+key+'">'+escapeHtml(label)+'</label>'+body+'</div>';
-  };
-  panel.innerHTML='<div class="rock-lifecycle-editor"><h3>Edit internal draft</h3>'+
-   '<div class="rock-lifecycle-banner">Development mode. Saving modifies an existing DRAFT record only. No official invoice is issued or payment recorded. VAT and totals are calculated by the database; verify them after saving.</div>'+
-   '<form id="rockLifecycleForm" onsubmit="rockLifecycleSave(event)"><div class="rock-lifecycle-grid">'+
-   rockLifecycleFields.map(([k,l,t])=>input(k,l,t)).join('')+'</div>'+
-   '<div class="rock-review-actions"><button id="rockLifecycleSaveButton" class="button button-primary" type="submit">Save draft changes</button>'+
-   '<button type="button" class="button button-secondary" onclick="rockDraftEditorClose()">Cancel editing</button></div>'+
-   '<p id="rockLifecycleFeedback" class="rock-invoice-form-feedback" role="status" aria-live="polite"></p></form></div>';
-  panel.scrollIntoView({behavior:'smooth',block:'start'});
- }catch(e){panel.innerHTML='<div class="error-box">'+escapeHtml(e.message||String(e))+'</div>';}
-}
-async function rockLifecycleSave(event){
- event.preventDefault();
- const i=rockLifecycleInvoice,form=document.getElementById('rockLifecycleForm');
- const feedback=document.getElementById('rockLifecycleFeedback');
- if(!i||!form||!form.reportValidity())return;
- const v=k=>document.getElementById('rockEdit_'+k).value.trim();
- const subtotal=Number(v('subtotal'));
- if(!Number.isFinite(subtotal)||subtotal<=0||Math.abs(subtotal*100-Math.round(subtotal*100))>0.000001){
-  feedback.textContent='Enter a positive subtotal with no more than two decimal places.';return;
- }
- if(v('due_date')<v('invoice_date')){feedback.textContent='Due date cannot precede invoice date.';return;}
- const patch={};
- for(const [key] of rockLifecycleFields)patch[key]=key==='subtotal'?Math.round(subtotal*100)/100:v(key)||null;
- for(const key of ['description','client_billing_name','supplier_legal_name'])if(!patch[key]){feedback.textContent='Required fields cannot be blank.';return;}
- const button=document.getElementById('rockLifecycleSaveButton');
- button.disabled=true;feedback.textContent='Saving draft changes...';
- try{
-  // Recheck draft state and apply conditional UPDATE. Database RLS and
-  // server-side constraints must independently enforce access and immutability.
-  const {data,error}=await supabaseClient.from('professional_invoices').update(patch)
-   .eq('id',i.id).eq('invoice_status','draft').is('invoice_number',null)
-   .select('id,invoice_status,invoice_number,subtotal,vat_amount,total_amount,created_at,issued_at').maybeSingle();
-  if(error)throw error;
-  if(!data)throw new Error('No draft was updated. Check invoice access, RLS and draft status.');
-  if(data.invoice_status!=='draft'||data.invoice_number)throw new Error('Unexpected invoice state. Verify the record.');
-  feedback.textContent='Draft saved. Database total: '+rockInvoiceMoney(data.total_amount)+'. No invoice issued.';
-  await rockLoadInvoices();
-  await rockReviewInvoice(i.id);
-  rockDraftEditorClose();
-  await rockLifecycleHistoryRender({id:i.id});
- }catch(e){feedback.textContent='Could not update draft: '+(e.message||String(e));}
- finally{button.disabled=false;}
-}
-<\/script>
+
+
 </body></html>`;
 w.document.open();w.document.write(html);w.document.close();
 }
@@ -1788,6 +1678,118 @@ function rockRenderDetailedInvoices() {
 supabaseClient.auth.onAuthStateChange((event) => {
   if (event === "SIGNED_OUT") rockDetailClear("Signed out.");
 });
+</script>
+<script>
+// THE ROCK | Step 89.3 — invoice lifecycle (draft-only updates, no issuance).
+let rockLifecycleInvoice=null;
+const rockLifecycleSessionEvents=new Map();
+const rockLifecycleFields=[
+ ['description','Service description','textarea'],
+ ['subtotal','Professional fee excluding VAT (R)','number'],
+ ['invoice_date','Invoice date','date'],
+ ['due_date','Due date','date'],
+ ['client_billing_name','Client billing name','text'],
+ ['client_billing_address','Client billing address','textarea'],
+ ['client_vat_number','Client VAT number','text'],
+ ['supplier_legal_name','Supplier legal name','text'],
+ ['supplier_vat_number','Supplier VAT number','text'],
+ ['payment_terms','Payment terms','textarea']
+];
+function rockDraftEditorClose(){
+ const panel=document.getElementById('rockLifecycleEditor');
+ if(panel){panel.hidden=true;panel.innerHTML='';}
+ rockLifecycleInvoice=null;
+ const history=document.getElementById('rockLifecycleHistory');
+ if(history){history.hidden=true;history.innerHTML='';delete history.dataset.invoiceId;}
+}
+async function rockLifecycleHistoryRender(i){
+ const panel=document.getElementById('rockLifecycleHistory');
+ if(!panel||!i?.id)return;
+ panel.dataset.invoiceId=i.id;
+ panel.hidden=false;
+ panel.innerHTML='<h3>Permanent invoice audit history</h3><div class="loading">Loading secured database audit events...</div>';
+ try{
+  const {data,error}=await supabaseClient.rpc('rock_get_invoice_audit',{p_invoice_id:i.id});
+  if(panel.dataset.invoiceId!==i.id)return;
+  if(error)throw error;
+  const events=Array.isArray(data)?data:[];
+  const safe=v=>escapeHtml(String(v===null||v===undefined?'—':v));
+  const label=k=>String(k).replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
+  const fmt=v=>{if(v===null||v===undefined)return '—';if(typeof v==='object')return JSON.stringify(v);return String(v)};
+  panel.innerHTML='<div class="rock-review-head"><div><h3>Permanent invoice audit history</h3><p class="doc-hint">Database-recorded changes since audit activation. Read-only. Actor IDs are shown as stored; a missing user ID can indicate a privileged or system operation.</p></div><button type="button" class="button button-secondary" onclick="rockLifecycleHistoryRender({id:'+JSON.stringify(i.id)+'})">Refresh history</button></div>'+
+  (events.length?events.map(e=>{
+   const before=e.previous_values||{},after=e.new_values||{};
+   const fields=Array.isArray(e.changed_fields)?e.changed_fields:[];
+   const changes=fields.map(k=>'<tr><td>'+safe(label(k))+'</td><td class="rock-audit-value">'+safe(fmt(before[k]))+'</td><td class="rock-audit-value">'+safe(fmt(after[k]))+'</td></tr>').join('');
+   const when=e.occurred_at?new Date(e.occurred_at).toLocaleString('en-ZA'):'Unknown time';
+   return '<div class="rock-audit-event"><div class="rock-review-head"><strong>'+safe(e.operation)+'</strong><span class="doc-hint">'+safe(when)+'</span></div><p class="doc-hint">Authenticated actor: '+safe(e.actor_user_id||'Not available')+' · Database/JWT role: '+safe(e.actor_role||'Unknown')+' · Session role: '+safe(e.session_role||'Unknown')+'</p><details><summary>View '+fields.length+' changed fields</summary><div class="table-wrapper"><table class="rock-audit-table"><thead><tr><th>Field</th><th>Previous</th><th>Updated</th></tr></thead><tbody>'+changes+'</tbody></table></div></details></div>';
+  }).join(''):'<div class="empty">No recorded audit events for this invoice since the audit trigger was installed. Earlier edits cannot be reconstructed.</div>');
+ }catch(e){if(panel.dataset.invoiceId!==i.id)return;panel.innerHTML='<h3>Permanent invoice audit history</h3><div class="error-box">Audit history could not be loaded: '+escapeHtml(e.message||String(e))+'. Confirm that the Step 90.3 read-only RPC was installed and access was granted.</div>';}
+}
+async function rockEditDraftInvoice(invoiceId){
+ const panel=document.getElementById('rockLifecycleEditor');
+ if(!panel||!invoiceId)return;
+ panel.hidden=false;
+ panel.innerHTML='<div class="loading">Loading editable draft...</div>';
+ try{
+  const {data:i,error}=await supabaseClient.from('professional_invoices')
+   .select('id,application_id,invoice_status,invoice_number,description,subtotal,invoice_date,due_date,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,payment_terms,created_at,issued_at')
+   .eq('id',invoiceId).maybeSingle();
+  if(error)throw error;
+  if(!i||i.invoice_status!=='draft'||i.invoice_number)throw new Error('Only unissued draft invoices can be edited.');
+  if(!currentUser||!currentProfile?.active||!['admin','planner'].includes(currentProfile.role))throw new Error('Active professional access is required.');
+  rockLifecycleInvoice=i;
+  const input=(key,label,type)=>{
+    const v=String(i[key]??'');
+    const required=['description','subtotal','invoice_date','due_date','client_billing_name','supplier_legal_name'].includes(key)?'required':'';
+    const attr=type==='number'?'type="number" min="0.01" step="0.01"':type==='date'?'type="date"':'type="text"';
+    const body=type==='textarea'?'<textarea rows="2" class="form-control" id="rockEdit_'+key+'" '+required+'>'+escapeHtml(v)+'</textarea>':
+      '<input class="form-control" id="rockEdit_'+key+'" '+attr+' value="'+escapeHtml(v)+'" '+required+'>';
+    return '<div class="form-group"><label for="rockEdit_'+key+'">'+escapeHtml(label)+'</label>'+body+'</div>';
+  };
+  panel.innerHTML='<div class="rock-lifecycle-editor"><h3>Edit internal draft</h3>'+
+   '<div class="rock-lifecycle-banner">Development mode. Saving modifies an existing DRAFT record only. No official invoice is issued or payment recorded. VAT and totals are calculated by the database; verify them after saving.</div>'+
+   '<form id="rockLifecycleForm" onsubmit="rockLifecycleSave(event)"><div class="rock-lifecycle-grid">'+
+   rockLifecycleFields.map(([k,l,t])=>input(k,l,t)).join('')+'</div>'+
+   '<div class="rock-review-actions"><button id="rockLifecycleSaveButton" class="button button-primary" type="submit">Save draft changes</button>'+
+   '<button type="button" class="button button-secondary" onclick="rockDraftEditorClose()">Cancel editing</button></div>'+
+   '<p id="rockLifecycleFeedback" class="rock-invoice-form-feedback" role="status" aria-live="polite"></p></form></div>';
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+ }catch(e){panel.innerHTML='<div class="error-box">'+escapeHtml(e.message||String(e))+'</div>';}
+}
+async function rockLifecycleSave(event){
+ event.preventDefault();
+ const i=rockLifecycleInvoice,form=document.getElementById('rockLifecycleForm');
+ const feedback=document.getElementById('rockLifecycleFeedback');
+ if(!i||!form||!form.reportValidity())return;
+ const v=k=>document.getElementById('rockEdit_'+k).value.trim();
+ const subtotal=Number(v('subtotal'));
+ if(!Number.isFinite(subtotal)||subtotal<=0||Math.abs(subtotal*100-Math.round(subtotal*100))>0.000001){
+  feedback.textContent='Enter a positive subtotal with no more than two decimal places.';return;
+ }
+ if(v('due_date')<v('invoice_date')){feedback.textContent='Due date cannot precede invoice date.';return;}
+ const patch={};
+ for(const [key] of rockLifecycleFields)patch[key]=key==='subtotal'?Math.round(subtotal*100)/100:v(key)||null;
+ for(const key of ['description','client_billing_name','supplier_legal_name'])if(!patch[key]){feedback.textContent='Required fields cannot be blank.';return;}
+ const button=document.getElementById('rockLifecycleSaveButton');
+ button.disabled=true;feedback.textContent='Saving draft changes...';
+ try{
+  // Recheck draft state and apply conditional UPDATE. Database RLS and
+  // server-side constraints must independently enforce access and immutability.
+  const {data,error}=await supabaseClient.from('professional_invoices').update(patch)
+   .eq('id',i.id).eq('invoice_status','draft').is('invoice_number',null)
+   .select('id,invoice_status,invoice_number,subtotal,vat_amount,total_amount,created_at,issued_at').maybeSingle();
+  if(error)throw error;
+  if(!data)throw new Error('No draft was updated. Check invoice access, RLS and draft status.');
+  if(data.invoice_status!=='draft'||data.invoice_number)throw new Error('Unexpected invoice state. Verify the record.');
+  feedback.textContent='Draft saved. Database total: '+rockInvoiceMoney(data.total_amount)+'. No invoice issued.';
+  await rockLoadInvoices();
+  await rockReviewInvoice(i.id);
+  rockDraftEditorClose();
+  await rockLifecycleHistoryRender({id:i.id});
+ }catch(e){feedback.textContent='Could not update draft: '+(e.message||String(e));}
+ finally{button.disabled=false;}
+}
 </script>
 </body>
 </html>
