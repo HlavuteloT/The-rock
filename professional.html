@@ -263,6 +263,7 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
           <div class="form-group"><label for="rockInvoiceClientVat">Client VAT registration number (optional)</label><input id="rockInvoiceClientVat" class="form-control" maxlength="80" autocomplete="off"></div>
           <div class="form-group wide"><label for="rockInvoiceClientAddress">Client billing address (optional)</label><textarea id="rockInvoiceClientAddress" class="form-control" rows="2" maxlength="2000"></textarea></div>
           <div class="form-group"><label for="rockInvoiceSupplierName">Supplier legal name *</label><input id="rockInvoiceSupplierName" class="form-control" maxlength="250" required placeholder="Enter the actual registered supplier name"></div>
+          <div class="form-group wide"><label for="rockInvoiceSupplierAddress">Supplier physical address (enter manually)</label><textarea id="rockInvoiceSupplierAddress" class="form-control" rows="2" maxlength="2000" placeholder="Registered business physical address"></textarea></div>
           <div class="form-group"><label for="rockInvoiceSupplierVat">Supplier VAT registration number (if registered)</label><input id="rockInvoiceSupplierVat" class="form-control" maxlength="80" autocomplete="off" placeholder="Leave blank if not available"></div>
           <div class="form-group wide"><label for="rockInvoiceTerms">Payment terms (optional)</label><textarea id="rockInvoiceTerms" class="form-control" rows="2" maxlength="2000" placeholder="e.g. Payment due within 30 days"></textarea></div>
         </div>
@@ -1276,10 +1277,11 @@ async function rockCreateDraftInvoice(event){
     p_client_vat_number:value('rockInvoiceClientVat')||null,
     p_supplier_legal_name:value('rockInvoiceSupplierName'),
     p_supplier_vat_number:value('rockInvoiceSupplierVat')||null,
+    p_supplier_physical_address:value('rockInvoiceSupplierAddress')||null,
     p_vat_rate:15
   };
   try{
-    const {data:invoiceId,error:createError}=await supabaseClient.rpc('rock_create_draft_invoice',payload);
+    const {data:invoiceId,error:createError}=await supabaseClient.rpc('rock_create_draft_invoice_with_address',payload);
     if(createError)throw createError;
     if(!invoiceId||typeof invoiceId!=='string')throw new Error('Draft creation returned no invoice ID. Refresh the register before trying again.');
     // Verify the stored record through the existing authorised read pathway.
@@ -1318,7 +1320,7 @@ async function rockReviewInvoice(invoiceId){
   panel.scrollIntoView({behavior:'smooth',block:'start'});
   try{
     const {data:i,error}=await supabaseClient.from('professional_invoices')
-      .select('id,application_id,draft_reference,invoice_number,invoice_status,invoice_date,due_date,description,subtotal,vat_rate,vat_amount,total_amount,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,payment_terms,created_at,issued_at,issued_by')
+      .select('id,application_id,draft_reference,invoice_number,invoice_status,invoice_date,due_date,description,subtotal,vat_rate,vat_amount,total_amount,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,supplier_physical_address,payment_terms,created_at,issued_at,issued_by')
       .eq('id',invoiceId).maybeSingle();
     if(request!==rockInvoiceReviewRequest)return;
     if(error)throw error;
@@ -1335,6 +1337,7 @@ async function rockReviewInvoice(invoiceId){
     if(isDraft){
       if(!String(i.supplier_legal_name||'').trim())checks.push('Supplier legal name is missing.');
       if(!String(i.supplier_vat_number||'').trim())checks.push('Supplier VAT registration number is missing.');
+      if(!String(i.supplier_physical_address||'').trim())checks.push('Supplier physical address is missing.');
       if(!String(i.client_billing_name||'').trim())checks.push('Client billing name is missing.');
       if(!(Number(i.subtotal)>0))checks.push('Professional fee must exceed R0.');
       if(Number(i.vat_rate)!==15)checks.push('VAT rate requires review.');
@@ -1349,7 +1352,7 @@ async function rockReviewInvoice(invoiceId){
         ${field('Service description',i.description)}${field('Payment terms',i.payment_terms)}
         ${field('Client billing name',i.client_billing_name)}${field('Client VAT number',i.client_vat_number)}
         ${field('Client billing address',i.client_billing_address)}${field('Supplier legal name',i.supplier_legal_name)}
-        ${field('Supplier VAT registration number',i.supplier_vat_number)}${field('Issued at',i.issued_at)}
+        ${field('Supplier physical address',i.supplier_physical_address)}${field('Supplier VAT registration number',i.supplier_vat_number)}${field('Issued at',i.issued_at)}
       </div>
       <div class="rock-invoice-preview">
         <div class="rock-invoice-preview-line"><span>Professional fee excluding VAT</span><strong>${rockInvoiceMoney(i.subtotal)}</strong></div>
@@ -1372,7 +1375,7 @@ async function rockPrintInvoice(invoiceId){
   printWindow.document.write('<!doctype html><html><head><title>Preparing invoice</title></head><body><p>Preparing secure invoice preview...</p></body></html>');
   try{
     const {data:i,error}=await supabaseClient.from('professional_invoices')
-      .select('id,application_id,draft_reference,invoice_number,invoice_status,invoice_date,due_date,description,subtotal,vat_rate,vat_amount,total_amount,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,payment_terms')
+      .select('id,application_id,draft_reference,invoice_number,invoice_status,invoice_date,due_date,description,subtotal,vat_rate,vat_amount,total_amount,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,supplier_physical_address,payment_terms')
       .eq('id',invoiceId).maybeSingle();
     if(error)throw error;
     if(!i)throw new Error('Invoice not found or access denied.');
@@ -1390,7 +1393,7 @@ async function rockPrintInvoice(invoiceId){
     </style></head><body><div class="watermark" aria-hidden="true">DRAFT ONLY</div><main class="document-content"><button type="button" onclick="window.print()">Print / Save as PDF</button><div class="head"><div><div class="brand">THE ROCK</div><div class="tag">TOWN PLANNING &amp; LAND USE MANAGEMENT</div></div><div><div class="heading">${heading}</div><div class="ref">${safe(reference)}</div></div></div>
     <div class="draft">DRAFT — NOT A TAX INVOICE · INTERNAL REVIEW ONLY · NOT PAYABLE</div>
     <div class="meta"><div><div class="label">Invoice date</div>${display(i.invoice_date)}</div><div><div class="label">Proposed due date (not payable)</div>${display(i.due_date)}</div><div><div class="label">Application reference</div>${display(a?.application_reference)}</div></div>
-    <div class="grid"><div class="box"><div class="label">Supplier</div><div class="name">${display(i.supplier_legal_name)}</div><div class="label">VAT registration number</div>${display(i.supplier_vat_number)}</div><div class="box"><div class="label">Bill to</div><div class="name">${display(i.client_billing_name)}</div><div>${display(i.client_billing_address)}</div><div class="label" style="margin-top:12px">Client VAT number</div>${display(i.client_vat_number)}</div></div>
+    <div class="grid"><div class="box"><div class="label">Supplier</div><div class="name">${display(i.supplier_legal_name)}</div><div class="label">Physical address</div>${display(i.supplier_physical_address)}<div class="label" style="margin-top:12px">VAT registration number</div>${display(i.supplier_vat_number)}</div><div class="box"><div class="label">Bill to</div><div class="name">${display(i.client_billing_name)}</div><div>${display(i.client_billing_address)}</div><div class="label" style="margin-top:12px">Client VAT number</div>${display(i.client_vat_number)}</div></div>
     <div class="muted">${display(a?.application_type)}${a?.municipality?' · '+safe(a.municipality):''}</div>
     <table><thead><tr><th>Professional services</th><th class="money">Amount (ZAR)</th></tr></thead><tbody><tr><td style="white-space:pre-wrap">${display(i.description)}</td><td class="money">${rockInvoiceMoney(i.subtotal)}</td></tr></tbody></table>
     <div class="totals"><div class="totalrow"><span>Subtotal</span><strong>${rockInvoiceMoney(i.subtotal)}</strong></div><div class="totalrow"><span>VAT (${safe(i.vat_rate)}%)</span><strong>${rockInvoiceMoney(i.vat_amount)}</strong></div><div class="totalrow grand"><span>Model total (not payable)</span><span>${rockInvoiceMoney(i.total_amount)}</span></div></div>
@@ -1407,7 +1410,7 @@ async function rockPreviewIssuance(invoiceId){
   if(currentProfile?.role!=='admin'||currentProfile?.active!==true){set('Administrator review required.',true);return;}
   set('Checking draft readiness (no invoice will be issued)...');
   const {data:i,error}=await supabaseClient.from('professional_invoices')
-    .select('id,invoice_status,invoice_number,invoice_date,due_date,description,subtotal,vat_rate,client_billing_name,supplier_legal_name,supplier_vat_number')
+    .select('id,invoice_status,invoice_number,invoice_date,due_date,description,subtotal,vat_rate,client_billing_name,supplier_legal_name,supplier_vat_number,supplier_physical_address')
     .eq('id',invoiceId).maybeSingle();
   if(error||!i){set('Could not review draft: '+(error?.message||'Not found.'),true);return;}
   const missing=[];
@@ -1419,6 +1422,7 @@ async function rockPreviewIssuance(invoiceId){
   if(!String(i.client_billing_name||'').trim())missing.push('Client billing name');
   if(!String(i.supplier_legal_name||'').trim())missing.push('Supplier legal name');
   if(!String(i.supplier_vat_number||'').trim())missing.push('Supplier VAT registration number');
+  if(!String(i.supplier_physical_address||'').trim())missing.push('Supplier physical address');
   if(missing.length){set('MODEL REVIEW — incomplete: '+missing.join('; ')+'. No invoice issued.',true);return;}
   set('MODEL REVIEW — draft fields appear complete. Official issuance is still LOCKED until final legal supplier identity, VAT details and launch authorization are configured. No invoice issued.');
 }
@@ -1717,6 +1721,7 @@ const rockLifecycleFields=[
  ['client_vat_number','Client VAT number','text'],
  ['supplier_legal_name','Supplier legal name','text'],
  ['supplier_vat_number','Supplier VAT number','text'],
+ ['supplier_physical_address','Supplier physical address','textarea'],
  ['payment_terms','Payment terms','textarea']
 ];
 function rockDraftEditorClose(){
@@ -1757,7 +1762,7 @@ async function rockEditDraftInvoice(invoiceId){
  panel.innerHTML='<div class="loading">Loading editable draft...</div>';
  try{
   const {data:i,error}=await supabaseClient.from('professional_invoices')
-   .select('id,application_id,invoice_status,invoice_number,description,subtotal,invoice_date,due_date,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,payment_terms,created_at,issued_at')
+   .select('id,application_id,invoice_status,invoice_number,description,subtotal,invoice_date,due_date,client_billing_name,client_billing_address,client_vat_number,supplier_legal_name,supplier_vat_number,supplier_physical_address,payment_terms,created_at,issued_at')
    .eq('id',invoiceId).maybeSingle();
   if(error)throw error;
   if(!i||i.invoice_status!=='draft'||i.invoice_number)throw new Error('Only unissued draft invoices can be edited.');
@@ -1814,6 +1819,8 @@ async function rockLifecycleSave(event){
    p_supplier_vat_number:patch.supplier_vat_number
   });
   if(error)throw error;
+  const {error:addressError}=await supabaseClient.rpc('rock_update_draft_supplier_address',{p_invoice_id:i.id,p_supplier_physical_address:patch.supplier_physical_address});
+  if(addressError)throw new Error('Other draft changes were saved, but supplier address was NOT saved: '+addressError.message);
   if(!data)throw new Error('Draft update returned no invoice. Check access and database permissions.');
   if(data.invoice_status!=='draft'||data.invoice_number||data.issued_at)
    throw new Error('Unexpected invoice state. Verify the record.');
