@@ -1,3 +1,4 @@
+````
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -1261,11 +1262,33 @@ async function rockCreateDraftInvoice(event){
   if(value('rockInvoiceDueDate')<value('rockInvoiceDate'))return rockInvoiceFeedback('The due date cannot precede the invoice date.',true);
   if(!currentUser)return rockInvoiceFeedback('Your session has expired. Sign in again.',true);
   btn.disabled=true;btn.textContent='Saving draft...';rockInvoiceFeedback('Saving draft invoice...');
-  const payload={application_id:appId,created_by:currentUser.id,invoice_status:'draft',invoice_date:value('rockInvoiceDate'),due_date:value('rockInvoiceDueDate'),description:value('rockInvoiceDescription'),subtotal:Math.round(subtotal*100)/100,vat_rate:15,client_billing_name:value('rockInvoiceClientName'),client_billing_address:value('rockInvoiceClientAddress')||null,client_vat_number:value('rockInvoiceClientVat')||null,supplier_legal_name:value('rockInvoiceSupplierName'),supplier_vat_number:value('rockInvoiceSupplierVat')||null,payment_terms:value('rockInvoiceTerms')||null};
+  // Step 91.11: Only permitted draft fields are sent to the controlled RPC.
+  // The database sets created_by, draft status, references, VAT and totals.
+  const payload={
+    p_application_id:appId,
+    p_description:value('rockInvoiceDescription'),
+    p_subtotal:Math.round(subtotal*100)/100,
+    p_invoice_date:value('rockInvoiceDate'),
+    p_due_date:value('rockInvoiceDueDate'),
+    p_payment_terms:value('rockInvoiceTerms')||null,
+    p_client_billing_name:value('rockInvoiceClientName'),
+    p_client_billing_address:value('rockInvoiceClientAddress')||null,
+    p_client_vat_number:value('rockInvoiceClientVat')||null,
+    p_supplier_legal_name:value('rockInvoiceSupplierName'),
+    p_supplier_vat_number:value('rockInvoiceSupplierVat')||null,
+    p_vat_rate:15
+  };
   try{
-    const {data,error}=await supabaseClient.from('professional_invoices').insert(payload).select('id,draft_reference,invoice_number,invoice_status,total_amount').single();
-    if(error)throw error;
-    if(!data||data.invoice_status!=='draft'||data.invoice_number!==null)throw new Error('The saved invoice requires verification. Refresh the register before continuing.');
+    const {data:invoiceId,error:createError}=await supabaseClient.rpc('rock_create_draft_invoice',payload);
+    if(createError)throw createError;
+    if(!invoiceId||typeof invoiceId!=='string')throw new Error('Draft creation returned no invoice ID. Refresh the register before trying again.');
+    // Verify the stored record through the existing authorised read pathway.
+    // Do not retry the creation automatically if verification fails.
+    const {data,error}=await supabaseClient.from('professional_invoices')
+      .select('id,draft_reference,invoice_number,invoice_status,total_amount')
+      .eq('id',invoiceId).single();
+    if(error)throw new Error('Draft created, but verification failed: '+error.message+' Refresh the invoice register; do not submit again.');
+    if(!data||data.invoice_status!=='draft'||data.invoice_number!==null)throw new Error('Draft created, but its status needs verification. Refresh the register; do not submit again.');
     document.getElementById('rockInvoiceCreateNotice').textContent=`Draft ${data.draft_reference||'created'} saved successfully · ${rockInvoiceMoney(data.total_amount)}. No official invoice number was issued.`;
     document.getElementById('rockInvoiceCreateNotice').className='rock-invoice-form-feedback success';
     form.reset();rockInvoiceInitialDates();rockInvoiceUpdatePreview();rockToggleDraftInvoiceForm(false);
@@ -1806,3 +1829,4 @@ async function rockLifecycleSave(event){
 </body>
 </html>
 ```
+````
