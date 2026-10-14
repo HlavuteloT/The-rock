@@ -168,6 +168,13 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 .rock-lifecycle-events{padding-left:22px;font-size:13px;line-height:1.8}
 @media(max-width:700px){.rock-lifecycle-grid{grid-template-columns:1fr}}
 </style>
+<style>
+/* Step 90.3: secured, read-only invoice audit history */
+.rock-audit-event{padding:16px;border:1px solid var(--border);border-radius:10px;background:#fff;margin:12px 0}
+.rock-audit-event summary{cursor:pointer;font-weight:700;color:var(--green);padding:9px 0}
+.rock-audit-table{min-width:600px;table-layout:fixed}
+.rock-audit-value{overflow-wrap:anywhere;white-space:pre-wrap;max-width:340px}
+</style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
@@ -523,19 +530,31 @@ function rockDraftEditorClose(){
  if(panel){panel.hidden=true;panel.innerHTML='';}
  rockLifecycleInvoice=null;
  const history=document.getElementById('rockLifecycleHistory');
- if(history){history.hidden=true;history.innerHTML='';}
+ if(history){history.hidden=true;history.innerHTML='';delete history.dataset.invoiceId;}
 }
-function rockLifecycleHistoryRender(i){
+async function rockLifecycleHistoryRender(i){
  const panel=document.getElementById('rockLifecycleHistory');
- if(!panel)return;
- const events=[
- {when:i.created_at,label:'Invoice record created'},
- ...(i.issued_at?[{when:i.issued_at,label:'Issuance timestamp recorded in database'}]:[]),
- ...(rockLifecycleSessionEvents.get(i.id)||[])
- ].sort((a,b)=>String(a.when||'').localeCompare(String(b.when||'')));
+ if(!panel||!i?.id)return;
+ panel.dataset.invoiceId=i.id;
  panel.hidden=false;
- panel.innerHTML='<h3>Lifecycle timeline</h3><p class="doc-hint">Database creation/issuance timestamps and edits made in this browser session only. This is NOT a permanent audit trail; historical changes require a server-side audit table and triggers.</p>'+
- '<ol class="rock-lifecycle-events">'+events.map(e=>'<li><strong>'+escapeHtml(e.label)+'</strong> — '+escapeHtml(e.when?new Date(e.when).toLocaleString('en-ZA'):'Date unavailable')+'</li>').join('')+'</ol>';
+ panel.innerHTML='<h3>Permanent invoice audit history</h3><div class="loading">Loading secured database audit events...</div>';
+ try{
+  const {data,error}=await supabaseClient.rpc('rock_get_invoice_audit',{p_invoice_id:i.id});
+  if(panel.dataset.invoiceId!==i.id)return;
+  if(error)throw error;
+  const events=Array.isArray(data)?data:[];
+  const safe=v=>escapeHtml(String(v===null||v===undefined?'—':v));
+  const label=k=>String(k).replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
+  const fmt=v=>{if(v===null||v===undefined)return '—';if(typeof v==='object')return JSON.stringify(v);return String(v)};
+  panel.innerHTML='<div class="rock-review-head"><div><h3>Permanent invoice audit history</h3><p class="doc-hint">Database-recorded changes since audit activation. Read-only. Actor IDs are shown as stored; a missing user ID can indicate a privileged or system operation.</p></div><button type="button" class="button button-secondary" onclick="rockLifecycleHistoryRender({id:'+JSON.stringify(i.id)+'})">Refresh history</button></div>'+
+  (events.length?events.map(e=>{
+   const before=e.previous_values||{},after=e.new_values||{};
+   const fields=Array.isArray(e.changed_fields)?e.changed_fields:[];
+   const changes=fields.map(k=>'<tr><td>'+safe(label(k))+'</td><td class="rock-audit-value">'+safe(fmt(before[k]))+'</td><td class="rock-audit-value">'+safe(fmt(after[k]))+'</td></tr>').join('');
+   const when=e.occurred_at?new Date(e.occurred_at).toLocaleString('en-ZA'):'Unknown time';
+   return '<div class="rock-audit-event"><div class="rock-review-head"><strong>'+safe(e.operation)+'</strong><span class="doc-hint">'+safe(when)+'</span></div><p class="doc-hint">Authenticated actor: '+safe(e.actor_user_id||'Not available')+' · Database/JWT role: '+safe(e.actor_role||'Unknown')+' · Session role: '+safe(e.session_role||'Unknown')+'</p><details><summary>View '+fields.length+' changed fields</summary><div class="table-wrapper"><table class="rock-audit-table"><thead><tr><th>Field</th><th>Previous</th><th>Updated</th></tr></thead><tbody>'+changes+'</tbody></table></div></details></div>';
+  }).join(''):'<div class="empty">No recorded audit events for this invoice since the audit trigger was installed. Earlier edits cannot be reconstructed.</div>');
+ }catch(e){if(panel.dataset.invoiceId!==i.id)return;panel.innerHTML='<h3>Permanent invoice audit history</h3><div class="error-box">Audit history could not be loaded: '+escapeHtml(e.message||String(e))+'. Confirm that the Step 90.3 read-only RPC was installed and access was granted.</div>';}
 }
 async function rockEditDraftInvoice(invoiceId){
  const panel=document.getElementById('rockLifecycleEditor');
@@ -593,14 +612,11 @@ async function rockLifecycleSave(event){
   if(error)throw error;
   if(!data)throw new Error('No draft was updated. Check invoice access, RLS and draft status.');
   if(data.invoice_status!=='draft'||data.invoice_number)throw new Error('Unexpected invoice state. Verify the record.');
-  const events=rockLifecycleSessionEvents.get(i.id)||[];
-  events.push({when:new Date().toISOString(),label:'Draft edited in this browser session'});
-  rockLifecycleSessionEvents.set(i.id,events);
   feedback.textContent='Draft saved. Database total: '+rockInvoiceMoney(data.total_amount)+'. No invoice issued.';
   await rockLoadInvoices();
   await rockReviewInvoice(i.id);
   rockDraftEditorClose();
-  rockLifecycleHistoryRender({...i,...data});
+  await rockLifecycleHistoryRender({id:i.id});
  }catch(e){feedback.textContent='Could not update draft: '+(e.message||String(e));}
  finally{button.disabled=false;}
 }
