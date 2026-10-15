@@ -174,7 +174,7 @@ async function loadClientDocumentPanel(applicationId){
   uploadableRequirements=Array.isArray(reqResult.data)?reqResult.data:[];
   for(const r of uploadableRequirements){const opt=el('option',null,r.requirement_name+(r.is_mandatory?' (required)':''));opt.value=r.id;select.append(opt)}
   if(!uploadableRequirements.length)uploadStatus('No requirements are currently open for client document submission.');
-  select.disabled=!uploadableRequirements.length;button.disabled=!uploadableRequirements.length;
+  select.disabled=!uploadableRequirements.length;button.disabled=clientDocumentSubmissionInFlight||!uploadableRequirements.length;
  }
  list.replaceChildren();
  if(docResult.error){list.append(el('div','progress-entry','Unable to load submissions: '+docResult.error.message));return}
