@@ -18,6 +18,9 @@ main{max-width:1160px;margin:0 auto;padding:70px 26px 80px;min-height:calc(100vh
 .progress-btn{width:auto!important;margin-top:18px!important;padding:12px 19px!important}
 .progress-view{max-width:1010px;margin:auto}.progress-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}.progress-hero{background:linear-gradient(125deg,#103b30,#1c5441);color:white;border-radius:17px;padding:33px;position:relative;overflow:hidden;border-bottom:4px solid var(--gold)}.progress-hero h1{font:600 clamp(30px,4vw,46px) 'Playfair Display',serif;margin:10px 0}.progress-hero .eyebrow{color:#e5d3ac}.progress-hero p{color:#dce9df;font-size:13px;margin:8px 0}.progress-hero .pill{display:inline-block;margin-top:12px}.progress-grid{display:grid;grid-template-columns:1.35fr .85fr;gap:20px;margin-top:23px}.progress-panel{background:white;border:1px solid var(--line);border-radius:14px;padding:27px;box-shadow:0 12px 30px #12382b08}.progress-panel h2{font-size:26px}.progress-panel .hint{margin-bottom:17px}.milestones{list-style:none;margin:0;padding:0}.milestones li{position:relative;display:flex;gap:15px;padding:4px 0 25px}.milestones li:not(:last-child):before{content:'';position:absolute;top:30px;bottom:0;left:14px;width:2px;background:#dce6dc}.milestone-icon{display:grid;place-items:center;width:30px;height:30px;flex:none;border-radius:50%;background:#e5f1e8;color:#276744;font-weight:800}.milestone-icon.pending{background:#f3f0e7;color:#8a7655}.milestone-title{font-weight:800;font-size:13px;margin:3px 0 5px}.milestone-note{font-size:12px;color:var(--muted);line-height:1.7}.fact{padding:14px 0;border-bottom:1px solid var(--line)}.fact:last-child{border:0}.fact span{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.fact strong{display:block;font-size:13px;overflow-wrap:anywhere}.progress-footnote{font-size:11px;line-height:1.8;color:var(--muted);margin-top:20px;padding:14px 17px;border:1px solid #e9e1d3;border-radius:8px;background:#fcfaf5}.loader{color:var(--muted);padding:32px;text-align:center}.secondary-action{margin-top:18px}.progress-list{display:grid;gap:9px;margin-top:12px}.progress-entry{padding:12px 14px;background:#f6f8f3;border-radius:8px;border:1px solid #e5eadf;font-size:12px;line-height:1.75}.progress-entry strong{color:var(--green)}.client-section{margin-top:22px}.client-section h2{margin-bottom:8px}.client-section .progress-entry{margin-bottom:9px}.client-section .progress-entry:last-child{margin-bottom:0}.progress-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.progress-stamp{font-size:11px;color:var(--muted)}
 @media(max-width:720px){.progress-grid{grid-template-columns:1fr}.progress-hero{padding:25px}.progress-panel{padding:23px}}
+
+/* R2 Batch 03 — client submissions */
+.upload-area{margin-top:18px;padding:20px;border:1px solid #dce5d9;background:#f8faf5;border-radius:11px}.upload-area h3{margin:0 0 8px;font-size:17px;color:var(--green)}.upload-area select,.upload-area input{width:100%;padding:12px;border:1px solid #cdd9cb;border-radius:7px;background:white;color:var(--ink)}.upload-area label{margin-top:12px}.upload-area .primary{margin-top:14px}.upload-help{font-size:11px;color:var(--muted);line-height:1.7;margin-top:8px}.submission-card{border:1px solid #e2e8df;background:#fff;border-radius:9px;padding:13px;margin:9px 0;font-size:12px;line-height:1.7;overflow-wrap:anywhere}.submission-card strong{color:var(--green)}.submission-feedback{margin-top:7px;background:#fff8e9;padding:9px;border-radius:6px}.upload-status{font-size:12px;line-height:1.6;margin-top:12px}.upload-status.error{color:#8b3125}.upload-status.ok{color:#24593f}.upload-area button:disabled{opacity:.6;cursor:wait}
 </style>
 </head>
 <body>
@@ -125,6 +128,92 @@ function renderProgress(data){
  right.append(el('div','progress-footnote','This dashboard reflects records released through THE ROCK. Municipal decisions, legal effect, conditions and appeal periods must be confirmed from the official decision and your appointed professional.'));
  grid.append(left,right);container.append(hero,grid);
 }
+
+// R2 Batch 03: requirement identifiers are supplied only by an access-checked client RPC.
+let uploadableRequirements=[];
+let uploadRevision=0;
+const MAX_CLIENT_FILE_BYTES=15*1024*1024;
+const CLIENT_MIME_TYPES=['application/pdf','image/jpeg','image/png','image/webp'];
+function uploadStatus(txt,isError=false){const node=$('clientUploadStatus');if(!node)return;node.textContent=txt;node.className='upload-status '+(isError?'error':'ok')}
+function buildClientUploadSection(){
+ const section=el('section','client-section');section.id='clientUploadSection';
+ section.append(el('h2',null,'Submit requested documents'),el('p','hint','Upload documents for requirements published by your planning professional. PDF, JPG, PNG or WebP; maximum 15 MB per file.'));
+ const form=el('form','upload-area');form.id='clientUploadForm';
+ const heading=el('h3',null,'New document submission');form.append(heading);
+ const reqLabel=el('label',null,'Published requirement');reqLabel.htmlFor='clientUploadRequirement';
+ const select=el('select');select.id='clientUploadRequirement';select.required=true;select.disabled=true;
+ const option=el('option',null,'Loading published requirements…');option.value='';select.append(option);
+ const nameLabel=el('label',null,'Document description');nameLabel.htmlFor='clientUploadName';
+ const name=el('input');name.id='clientUploadName';name.type='text';name.maxLength=250;name.required=true;name.placeholder='e.g. Certified title deed';
+ const fileLabel=el('label',null,'Choose file');fileLabel.htmlFor='clientUploadFile';
+ const file=el('input');file.id='clientUploadFile';file.type='file';file.accept='.pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp';file.required=true;
+ const button=el('button','primary','Submit document securely');button.type='submit';button.id='clientUploadButton';button.disabled=true;
+ const help=el('div','upload-help','Submitted files are sent to THE ROCK for professional review. A submission is not an accepted document until reviewed.');
+ const status=el('div','upload-status');status.id='clientUploadStatus';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+ form.append(reqLabel,select,nameLabel,name,fileLabel,file,button,help,status);
+ form.addEventListener('submit',submitClientDocument);
+ section.append(form,el('h3',null,'My submitted documents'));
+ const list=el('div','progress-list','Loading your submissions…');list.id='clientSubmissionList';section.append(list);
+ return section;
+}
+async function loadClientDocumentPanel(applicationId){
+ const revision=++uploadRevision;
+ const select=$('clientUploadRequirement'),list=$('clientSubmissionList'),button=$('clientUploadButton');
+ if(!select||!list)return;
+ select.disabled=true;button.disabled=true;
+ const [reqResult,docResult]=await Promise.all([
+  client.rpc('rock_get_client_upload_requirements',{p_application_id:applicationId}),
+  client.rpc('rock_get_client_document_submissions',{p_application_id:applicationId})
+ ]);
+ if(revision!==uploadRevision||applicationId!==currentApplicationId||!$('clientUploadSection'))return;
+ uploadableRequirements=[];select.replaceChildren();
+ const placeholder=el('option',null,'Select a published requirement');placeholder.value='';select.append(placeholder);
+ if(reqResult.error){uploadStatus('Unable to load upload requirements: '+reqResult.error.message,true)}
+ else{
+  uploadableRequirements=Array.isArray(reqResult.data)?reqResult.data:[];
+  for(const r of uploadableRequirements){const opt=el('option',null,r.requirement_name+(r.is_mandatory?' (required)':''));opt.value=r.id;select.append(opt)}
+  if(!uploadableRequirements.length)uploadStatus('No requirements are currently open for client document submission.');
+  select.disabled=!uploadableRequirements.length;button.disabled=!uploadableRequirements.length;
+ }
+ list.replaceChildren();
+ if(docResult.error){list.append(el('div','progress-entry','Unable to load submissions: '+docResult.error.message));return}
+ const docs=Array.isArray(docResult.data)?docResult.data:[];
+ if(!docs.length){list.append(el('div','progress-entry','No documents submitted through this portal yet.'));return}
+ for(const d of docs){
+  const card=el('div','submission-card');
+  card.append(el('strong',null,d.document_name||d.file_name||'Document'),el('div',null,'File: '+(d.file_name||'Unknown')),el('div',null,'Status: '+clientFriendlyStatus(d.document_status)),el('div',null,'Submitted: '+displayDate(d.created_at)));
+  if(d.client_feedback)card.append(el('div','submission-feedback','Professional feedback: '+d.client_feedback));
+  list.append(card);
+ }
+}
+async function submitClientDocument(event){
+ event.preventDefault();
+ const appId=currentApplicationId,reqId=$('clientUploadRequirement')?.value;
+ const file=$('clientUploadFile')?.files?.[0],name=$('clientUploadName')?.value.trim();
+ const button=$('clientUploadButton');
+ if(!appId||!uploadableRequirements.some(r=>r.id===reqId)){uploadStatus('Choose an available published requirement.',true);return}
+ if(!file||!name||name.length>250){uploadStatus('Provide a file and document description (maximum 250 characters).',true);return}
+ if(!CLIENT_MIME_TYPES.includes(file.type)||file.size<1||file.size>MAX_CLIENT_FILE_BYTES){uploadStatus('Choose a PDF, JPG, PNG or WebP file between 1 byte and 15 MB.',true);return}
+ const {data:{user},error:userError}=await client.auth.getUser();
+ if(userError||!user){uploadStatus('Your session has expired. Please sign in again.',true);return}
+ // Unique, safe filename; storage RLS requires client-submissions/<application>/<user>/<filename>.
+ const extension={'application/pdf':'pdf','image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type];
+ const unique=crypto.randomUUID();const path='client-submissions/'+appId+'/'+user.id+'/'+unique+'.'+extension;
+ button.disabled=true;button.textContent='Uploading document…';uploadStatus('Uploading to secure storage…');
+ try{
+  const uploaded=await client.storage.from('application-documents').upload(path,file,{contentType:file.type,upsert:false});
+  if(uploaded.error)throw uploaded.error;
+  uploadStatus('Registering document for professional review…');
+  const registered=await client.rpc('rock_register_client_document',{p_application_id:appId,p_requirement_id:reqId,p_storage_path:path,p_document_name:name});
+  if(registered.error)throw new Error('File uploaded but registration failed: '+registered.error.message+'. Please contact THE ROCK; do not repeatedly upload the same file.');
+  if(appId!==currentApplicationId)return;
+  $('clientUploadForm')?.reset();uploadStatus('Document submitted successfully. Awaiting professional review.');
+  await loadClientDocumentPanel(appId);
+  uploadStatus('Document submitted successfully. Awaiting professional review.');
+ }catch(err){uploadStatus(err.message||'Unable to submit document.',true)}
+ finally{if(button.isConnected){button.textContent='Submit document securely';button.disabled=!uploadableRequirements.length}}
+}
+
 async function openProgress(applicationId,reference){
  const revision=++progressRevision;currentApplicationId=applicationId||null;
  $('dashboardView').classList.add('hidden');$('progressView').classList.remove('hidden');
@@ -136,11 +225,11 @@ async function openProgress(applicationId,reference){
   if(revision!==progressRevision||$('progressView').classList.contains('hidden'))return;
   if(error)throw error;
   if(!data)throw new Error('No progress data was returned.');
-  renderProgress(data);$('progressUpdated').textContent='Updated ' + new Intl.DateTimeFormat('en-ZA',{dateStyle:'medium',timeStyle:'short'}).format(new Date());
+  renderProgress(data);loadClientDocumentPanel(applicationId).catch(err=>uploadStatus('Unable to load document intake: '+err.message,true));$('progressUpdated').textContent='Updated ' + new Intl.DateTimeFormat('en-ZA',{dateStyle:'medium',timeStyle:'short'}).format(new Date());
  }catch(err){$('progressContent').replaceChildren();message('progressMessage','Unable to load project progress: '+(err.message||'Please try again.'),true)}
 }
 $('refreshProgress').addEventListener('click',()=>{if(currentApplicationId)openProgress(currentApplicationId)});
-$('backToApplications').addEventListener('click',()=>{++progressRevision;currentApplicationId=null;$('progressView').classList.add('hidden');$('dashboardView').classList.remove('hidden');clearMessage('progressMessage');window.scrollTo({top:0,behavior:'smooth'});});
+$('backToApplications').addEventListener('click',()=>{++uploadRevision;++progressRevision;currentApplicationId=null;$('progressView').classList.add('hidden');$('dashboardView').classList.remove('hidden');clearMessage('progressMessage');window.scrollTo({top:0,behavior:'smooth'});});
 async function refresh(){
   const revision=++viewRevision;
   const {data:{session},error}=await client.auth.getSession();
