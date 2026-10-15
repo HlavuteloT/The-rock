@@ -125,6 +125,7 @@ function renderProgress(data){
  const updates=Array.isArray(data.client_updates)?data.client_updates:[];
  left.append(clientFacingSection('Document requirements','Requirements released to your client account. Contact your professional before sending documents by email.',requirements,r=>[r.requirement_name||'Document requirement',clientFriendlyStatus(r.requirement_status),r.is_mandatory?'Required':'Optional',r.client_note||''].filter(Boolean).join(' · ')));
  left.append(clientFacingSection('Professional updates','Updates shared with you by your appointed professional.',updates,u=>[u.created_at?displayDate(u.created_at):'',u.title||'Professional update',u.message||''].filter(Boolean).join(' · ')));
+ left.append(buildClientUploadSection());
  right.append(el('div','progress-footnote','This dashboard reflects records released through THE ROCK. Municipal decisions, legal effect, conditions and appeal periods must be confirmed from the official decision and your appointed professional.'));
  grid.append(left,right);container.append(hero,grid);
 }
