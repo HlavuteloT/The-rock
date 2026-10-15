@@ -133,6 +133,7 @@ function renderProgress(data){
 // R2 Batch 03: requirement identifiers are supplied only by an access-checked client RPC.
 let uploadableRequirements=[];
 let uploadRevision=0;
+let clientDocumentSubmissionInFlight=false;
 const MAX_CLIENT_FILE_BYTES=15*1024*1024;
 const CLIENT_MIME_TYPES=['application/pdf','image/jpeg','image/png','image/webp'];
 function uploadStatus(txt,isError=false){const node=$('clientUploadStatus');if(!node)return;node.textContent=txt;node.className='upload-status '+(isError?'error':'ok')}
@@ -189,30 +190,43 @@ async function loadClientDocumentPanel(applicationId){
 }
 async function submitClientDocument(event){
  event.preventDefault();
- const appId=currentApplicationId,reqId=$('clientUploadRequirement')?.value;
- const file=$('clientUploadFile')?.files?.[0],name=$('clientUploadName')?.value.trim();
- const button=$('clientUploadButton');
+ // Set the lock synchronously, before any await, to prevent concurrent submissions.
+ if(clientDocumentSubmissionInFlight)return;
+ const appId=currentApplicationId;
+ const form=event.currentTarget;
+ const reqId=form.querySelector('#clientUploadRequirement')?.value;
+ const file=form.querySelector('#clientUploadFile')?.files?.[0];
+ const name=form.querySelector('#clientUploadName')?.value.trim();
+ const button=form.querySelector('#clientUploadButton');
  if(!appId||!uploadableRequirements.some(r=>r.id===reqId)){uploadStatus('Choose an available published requirement.',true);return}
  if(!file||!name||name.length>250){uploadStatus('Provide a file and document description (maximum 250 characters).',true);return}
  if(!CLIENT_MIME_TYPES.includes(file.type)||file.size<1||file.size>MAX_CLIENT_FILE_BYTES){uploadStatus('Choose a PDF, JPG, PNG or WebP file between 1 byte and 15 MB.',true);return}
- const {data:{user},error:userError}=await client.auth.getUser();
- if(userError||!user){uploadStatus('Your session has expired. Please sign in again.',true);return}
- // Unique, safe filename; storage RLS requires client-submissions/<application>/<user>/<filename>.
- const extension={'application/pdf':'pdf','image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type];
- const unique=crypto.randomUUID();const path='client-submissions/'+appId+'/'+user.id+'/'+unique+'.'+extension;
- button.disabled=true;button.textContent='Uploading document…';uploadStatus('Uploading to secure storage…');
+ clientDocumentSubmissionInFlight=true;
+ button.disabled=true;
+ button.textContent='Uploading document…';
+ uploadStatus('Preparing secure submission…');
  try{
+  const {data:{user},error:userError}=await client.auth.getUser();
+  if(userError||!user)throw new Error('Your session has expired. Please sign in again.');
+  const extension={'application/pdf':'pdf','image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[file.type];
+  const path='client-submissions/'+appId+'/'+user.id+'/'+crypto.randomUUID()+'.'+extension;
+  uploadStatus('Uploading to secure storage…');
   const uploaded=await client.storage.from('application-documents').upload(path,file,{contentType:file.type,upsert:false});
   if(uploaded.error)throw uploaded.error;
   uploadStatus('Registering document for professional review…');
   const registered=await client.rpc('rock_register_client_document',{p_application_id:appId,p_requirement_id:reqId,p_storage_path:path,p_document_name:name});
   if(registered.error)throw new Error('File uploaded but registration failed: '+registered.error.message+'. Please contact THE ROCK; do not repeatedly upload the same file.');
   if(appId!==currentApplicationId)return;
-  $('clientUploadForm')?.reset();uploadStatus('Document submitted successfully. Awaiting professional review.');
+  if(form.isConnected)form.reset();
+  uploadStatus('Document submitted successfully. Awaiting professional review.');
   await loadClientDocumentPanel(appId);
   uploadStatus('Document submitted successfully. Awaiting professional review.');
- }catch(err){uploadStatus(err.message||'Unable to submit document.',true)}
- finally{if(button.isConnected){button.textContent='Submit document securely';button.disabled=!uploadableRequirements.length}}
+ }catch(err){
+  if(appId===currentApplicationId)uploadStatus(err.message||'Unable to submit document.',true);
+ }finally{
+  clientDocumentSubmissionInFlight=false;
+  if(button.isConnected){button.textContent='Submit document securely';button.disabled=!uploadableRequirements.length||appId!==currentApplicationId;}
+ }
 }
 
 async function openProgress(applicationId,reference){
