@@ -861,7 +861,7 @@ async function refreshApplicationDocuments(applicationId){
  if(error){el.innerHTML=`<div class="error-box">Unable to load document register: ${escapeHtml(error.message)}</div>`;return}
  rockDocumentRows=data||[];
  if(!rockDocumentRows.length){el.innerHTML='<div class="empty">No documents uploaded for this application yet.</div>';return}
- el.innerHTML=`<table><thead><tr><th>Document</th><th>Category</th><th>Uploaded</th><th>Status</th><th>Professional Notes</th><th>Actions</th></tr></thead><tbody>${rockDocumentRows.map(d=>`<tr><td><strong>${escapeHtml(d.document_name||d.file_name)}</strong><div class="doc-hint">${escapeHtml(d.file_name)} · ${rockDocSize(d.file_size)}</div></td><td>${escapeHtml(d.document_category)}</td><td>${formatDateTime(d.created_at)}</td><td><select class="form-control" id="rockDocStatus_${d.id}">${rockDocOptions(ROCK_DOCUMENT_STATUSES,d.document_status)}</select></td><td><textarea class="form-control" id="rockDocNotes_${d.id}" rows="2" maxlength="3000" placeholder="Review findings or outstanding items">${escapeHtml(d.professional_notes||"")}</textarea></td><td><div class="doc-actions"><button class="button button-secondary" onclick="downloadApplicationDocument('${d.id}')">Download</button><button class="button button-primary" onclick="saveApplicationDocument('${d.id}')">Save Review</button><button class="button button-secondary" onclick="deleteApplicationDocument('${d.id}')">Delete</button></div></td></tr>`).join("")}</tbody></table>`;
+ el.innerHTML=`<table><thead><tr><th>Document</th><th>Category</th><th>Uploaded</th><th>Status</th><th>Internal Professional Notes</th><th>Feedback to Client</th><th>Actions</th></tr></thead><tbody>${rockDocumentRows.map(d=>`<tr><td><strong>${escapeHtml(d.document_name||d.file_name)}</strong><div class="doc-hint">${escapeHtml(d.file_name)} · ${rockDocSize(d.file_size)}</div></td><td>${escapeHtml(d.document_category)}</td><td>${formatDateTime(d.created_at)}</td><td><select class="form-control" id="rockDocStatus_${d.id}">${rockDocOptions(ROCK_DOCUMENT_STATUSES,d.document_status)}</select></td><td><textarea class="form-control" id="rockDocNotes_${d.id}" rows="2" maxlength="3000" placeholder="Review findings or outstanding items">${escapeHtml(d.professional_notes||"")}</textarea></td><td>${d.client_submission===true?`<textarea class="form-control" id="rockDocClientFeedback_${d.id}" rows="2" maxlength="3000" placeholder="Client-facing review feedback">${escapeHtml(d.client_feedback||"")}</textarea><div class="doc-hint">This feedback will be visible to the client.</div>`:`<span class="doc-hint">Not a client submission</span>`}</td><td><div class="doc-actions"><button class="button button-secondary" onclick="downloadApplicationDocument('${d.id}')">Download</button><button class="button button-primary" onclick="saveApplicationDocument('${d.id}')">Save Review</button><button class="button button-secondary" onclick="deleteApplicationDocument('${d.id}')">Delete</button></div></td></tr>`).join("")}</tbody></table>`;
 }
 async function uploadApplicationDocument(){
  const app=currentApplication,file=document.getElementById("rockDocumentFile")?.files?.[0],button=document.getElementById("rockDocumentUploadButton");
@@ -894,7 +894,15 @@ async function saveApplicationDocument(id){
  const d=rockDocumentRows.find(x=>x.id===id);if(!d||d.application_id!==currentApplication?.id)return;
  const status=document.getElementById("rockDocStatus_"+id)?.value,notes=document.getElementById("rockDocNotes_"+id)?.value||"";
  if(!ROCK_DOCUMENT_STATUSES.includes(status))return rockDocMessage("Invalid document status.",true);
- const {error}=await supabaseClient.from("application_documents").update({document_status:status,professional_notes:notes.trim()||null,updated_at:new Date().toISOString()}).eq("id",id).eq("application_id",d.application_id);
+ const patch={document_status:status,professional_notes:notes.trim()||null,updated_at:new Date().toISOString()};
+ if(d.client_submission===true){
+  const feedbackField=document.getElementById("rockDocClientFeedback_"+id);
+  if(!feedbackField)return rockDocMessage("Client feedback field is unavailable. Refresh the document register and retry.",true);
+  const feedback=feedbackField.value.trim();
+  if(status==="rejected"&&!feedback)return rockDocMessage("Enter client-facing feedback explaining why this submission was rejected.",true);
+  patch.client_feedback=feedback||null;
+ }
+ const {error}=await supabaseClient.from("application_documents").update(patch).eq("id",id).eq("application_id",d.application_id);
  if(error)return rockDocMessage("Review could not be saved: "+error.message,true);
  await refreshApplicationDocuments(d.application_id);rockDocMessage("Document review saved.");
 }
