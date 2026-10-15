@@ -204,7 +204,7 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 <div class="content-card"><h3>Recent Applications</h3><div id="recentApplications" class="table-wrapper"><div class="loading">Loading applications...</div></div></div><div class="content-card"><h3>Pipeline Overview</h3><div id="dashboardPipeline" class="pipeline-grid"><div class="loading">Loading pipeline...</div></div></div></section>
 <section id="operations" class="section"><div class="page-header"><div><h2>Professional Operations Dashboard</h2><p>Portfolio-wide municipal application tracking, professional clearance and action deadlines.</p></div><button class="button button-secondary" onclick="rockLoadOperations()">Refresh Dashboard</button></div><div id="rockOperationsContainer"><div class="loading">Open this section to load portfolio intelligence.</div></div></section>
 <section id="tasks" class="section"><div class="page-header"><div><h2>Portfolio Tasks &amp; Deadlines</h2><p>Monitor planning deliverables and deadlines across your authorised applications.</p></div><button class="button button-secondary" onclick="rockLoadTaskPortfolio()">Refresh Tasks</button></div><div id="rockTaskPortfolioContainer"><div class="loading">Open this section to load portfolio tasks.</div></div></section>
-<section id="applications" class="section"><div class="page-header"><div><h2>Applications</h2><p>Review and manage planning applications.</p></div></div><div class="content-card"><div id="applicationsTable" class="table-wrapper"><div class="loading">Loading applications...</div></div></div></section>
+<section id="applications" class="section"><div class="page-header"><div><h2>Applications</h2><p>Review and manage planning applications.</p></div></div><div class="content-card"><div id="rockApplicationControls"></div><div id="rockWorkloadSummary"></div><div id="applicationsTable" class="table-wrapper"><div class="loading">Loading applications...</div></div></div></section>
 <section id="enquiries" class="section"><div class="page-header"><div><h2>Client Enquiries</h2><p>Review incoming planning enquiries.</p></div></div><div class="content-card"><div id="enquiriesTable" class="table-wrapper"><div class="loading">Loading enquiries...</div></div></div></section>
 <section id="pipeline" class="section"><div class="page-header"><div><h2>Project Pipeline</h2><p>Track applications through the planning process.</p></div></div><div id="pipelineSummary" class="pipeline-grid" style="margin-bottom:25px"><div class="loading">Loading pipeline...</div></div><div class="content-card"><div id="fullPipeline" class="table-wrapper"><div class="loading">Loading pipeline applications...</div></div></div></section>
 
@@ -314,7 +314,53 @@ function showSection(id,button){document.querySelectorAll(".section").forEach(s=
 async function loadDashboard(){await loadApplicationStats();await loadRecentApplications();await loadPipelineSummary("dashboardPipeline");void rockLoadFinancialOverview()}
 async function loadApplicationStats(){const {data,error}=await supabaseClient.from("applications").select("status");if(error)return console.error(error);const a=data||[],newA=a.filter(x=>(x.status||"").toLowerCase()==="new").length,completed=a.filter(x=>(x.status||"").toLowerCase()==="completed").length,active=a.filter(x=>{const s=(x.status||"").toLowerCase();return s!=="new"&&s!=="completed"&&s!==""}).length;document.getElementById("statNew").textContent=newA;document.getElementById("statTotal").textContent=a.length;document.getElementById("statActive").textContent=active;document.getElementById("statCompleted").textContent=completed}
 async function loadRecentApplications(){const c=document.getElementById("recentApplications"),{data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false}).limit(8);if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}c.innerHTML=data&&data.length?buildApplicationsTable(data):'<div class="empty">No applications have been received yet.</div>'}
-async function loadApplications(){const c=document.getElementById("applicationsTable");c.innerHTML='<div class="loading">Loading applications...</div>';const {data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false});if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}c.innerHTML=data&&data.length?buildApplicationsTable(data):'<div class="empty">No applications found.</div>'}
+let rockApplicationRows=[],rockApplicationQuery="",rockApplicationStatus="all";
+function rockFilteredApplications(){
+ const q=rockApplicationQuery.toLowerCase();
+ return rockApplicationRows.filter(a=>(rockApplicationStatus==="all"||String(a.status||"").toLowerCase()===rockApplicationStatus)&&(!q||[a.application_reference,a.applicant_name,a.applicant_email,a.application_type,a.municipality,a.erf_number].some(v=>String(v||"").toLowerCase().includes(q))));
+}
+function rockRenderApplicationResults(){
+ const c=document.getElementById("applicationsTable");if(!c)return;
+ const filtered=rockFilteredApplications();
+ c.innerHTML=filtered.length?buildApplicationsTable(filtered):'<div class="empty">No matching applications.</div>';
+ const count=document.getElementById("rockApplicationResultCount");
+ if(count)count.textContent=filtered.length+" of "+rockApplicationRows.length+" loaded applications";
+}
+function rockFilterApplications(){
+ rockApplicationQuery=document.getElementById("rockApplicationSearch")?.value.trim()||"";
+ rockApplicationStatus=document.getElementById("rockApplicationStatusFilter")?.value||"all";
+ rockRenderApplicationResults();
+}
+function rockExportApplicationsCsv(){
+ const rows=rockFilteredApplications();
+ const cols=["Reference","Applicant","Email","Application type","Municipality","Property reference","Status","Created"];
+ const safe=v=>{let t=String(v??"");if(/^\\s*[=+@-]/.test(t))t="'"+t;return '"'+t.replaceAll('"','""')+'"';};
+ const values=rows.map(a=>[a.application_reference,a.applicant_name,a.applicant_email,a.application_type,a.municipality,a.erf_number,a.status,a.created_at]);
+ const csv="\\uFEFF"+[cols,...values].map(row=>row.map(safe).join(",")).join("\\r\\n");
+ const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+ const link=document.createElement("a");link.href=url;link.download="the-rock-applications.csv";document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function rockLoadMyWorkload(){
+ const panel=document.getElementById("rockWorkloadSummary");
+ if(!panel||!currentUser)return;
+ panel.innerHTML='<div class="loading">Loading assigned task workload...</div>';
+ const today=new Date(),date=[today.getFullYear(),String(today.getMonth()+1).padStart(2,"0"),String(today.getDate()).padStart(2,"0")].join("-");
+ const base=()=>supabaseClient.from("application_case_tasks").select("id",{head:true,count:"exact"}).eq("assigned_to",currentUser.id).in("task_status",["pending","in_progress"]);
+ const results=await Promise.allSettled([base(),base().lt("due_date",date)]);
+ if(!document.getElementById("rockWorkloadSummary"))return;
+ const item=(r,label)=>r.status==="fulfilled"&&!r.value.error?`<div class="rock-task-stat"><strong>${r.value.count??0}</strong><span>${label}</span></div>`:`<div class="rock-task-stat"><strong>—</strong><span>${label} (unavailable)</span></div>`;
+ panel.innerHTML=`<div class="rock-task-summary">${item(results[0],"My open assigned tasks")}${item(results[1],"My overdue assigned tasks")}</div><p class="doc-hint">Workload counts include only tasks assigned to your signed-in account and visible under existing access permissions.</p>`;
+}
+async function loadApplications(){
+ const c=document.getElementById("applicationsTable");c.innerHTML='<div class="loading">Loading applications...</div>';
+ const {data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false});
+ if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}
+ rockApplicationRows=data||[];
+ const controls=document.getElementById("rockApplicationControls");
+ if(controls)controls.innerHTML=`<div class="rock-task-grid"><div class="form-group"><label for="rockApplicationSearch">Search applications</label><input id="rockApplicationSearch" class="form-control" placeholder="Reference, applicant, municipality..." value="${escapeHtml(rockApplicationQuery)}" oninput="rockFilterApplications()"></div><div class="form-group"><label for="rockApplicationStatusFilter">Application status</label><select id="rockApplicationStatusFilter" class="form-control" onchange="rockFilterApplications()"><option value="all">All statuses</option>${["new","initial assessment","information required","fee assessment","quotation","mandate","in progress","submitted","completed"].map(v=>`<option value="${v}" ${rockApplicationStatus===v?"selected":""}>${escapeHtml(capitalizeWords(v))}</option>`).join("")}</select></div></div><div class="readiness-actions"><span id="rockApplicationResultCount" class="doc-hint"></span><button class="button button-secondary" onclick="rockExportApplicationsCsv()">Export filtered applications (CSV)</button></div>`;
+ rockRenderApplicationResults();
+ void rockLoadMyWorkload();
+}
 function buildApplicationsTable(apps){return `<table><thead><tr><th>Reference</th><th>Applicant</th><th>Application</th><th>Municipality</th><th>Complexity</th><th>Fee Range</th><th>Status</th><th>Date</th></tr></thead><tbody>${apps.map(a=>`<tr><td><a href="javascript:void(0)" class="reference-link" onclick="openCaseFileByReference('${escapeJs(a.application_reference||"")}')">${escapeHtml(a.application_reference||"Pending")}</a></td><td><strong>${escapeHtml(a.applicant_name||"")}</strong><br><span style="color:#6b7280">${escapeHtml(a.applicant_email||"")}</span></td><td>${escapeHtml(a.application_type||"")}</td><td>${escapeHtml(a.municipality||"")}</td><td>${complexityBadge(a.complexity_level)}</td><td>${formatMoney(a.indicative_total_min)} - ${formatMoney(a.indicative_total_max)}</td><td>${statusBadge(a.status)}</td><td>${formatDate(a.created_at)}</td></tr>`).join("")}</tbody></table>`}
 
 async function openCaseFileByReference(reference){if(!reference)return;const {data,error}=await supabaseClient.from("applications").select("*").eq("application_reference",reference).maybeSingle();if(error||!data){alert(error?"Unable to open this case file.":"Application could not be found.");return}currentApplication=data;currentQuotation=null;document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById("caseFile").classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));document.getElementById("navCaseFile").classList.add("active");await renderCaseFile(data)}
