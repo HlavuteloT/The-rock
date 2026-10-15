@@ -440,15 +440,25 @@ async function rockCreateCaseTask(){
  }catch(e){rockTaskFeedback("Unable to create task: "+e.message,true);btn.disabled=false;btn.textContent="Create Task";}
 }
 async function rockUpdateTaskStatus(id){
- const appId=currentApplication?.id;if(!appId)return;
+ const appId=currentApplication?.id;if(!appId||!currentUser)return;
  const status=document.getElementById("rockTaskStatus_"+id)?.value;
  if(!rockTaskStatuses[status])return;
- const {data,error}=await supabaseClient.from("application_case_tasks").update({task_status:status}).eq("id",id).eq("application_id",appId).select("id");
+ const task=rockCaseTasks.find(t=>t.id===id);
+ if(!task)return alert("Task not found in the current Case File.");
+ if(task.task_status===status)return rockTaskFeedback("Task status is already "+status.replaceAll("_"," ")+".");
+ const {data,error}=await supabaseClient.from("application_case_tasks").update({task_status:status}).eq("id",id).eq("application_id",appId).eq("task_status",task.task_status).select("id");
  if(currentApplication?.id!==appId)return;
  if(error)return alert("Could not update task: "+error.message);
- if(!data?.length)return alert("Task update was not authorised or the task was not found.");
- await rockLoadCaseTasks(appId);
- rockTaskFeedback("Task status updated.");
+ if(!data?.length){await rockLoadCaseTasks(appId);return alert("Task changed elsewhere or the update was not authorised. The register has been refreshed.");}
+ const description="Task \""+task.task_title+"\" status changed from "+task.task_status.replaceAll("_"," ")+" to "+status.replaceAll("_"," ")+".";
+ const {error:activityError}=await supabaseClient.from("application_case_activities").insert({
+   application_id:appId,activity_type:"other",activity_description:description,performed_by:currentUser.id
+ });
+ if(currentApplication?.id!==appId)return;
+ await Promise.allSettled([rockLoadCaseTasks(appId),rockLoadCaseActivities(appId)]);
+ rockTaskFeedback(activityError
+   ?"Task status saved, but the timeline entry could not be recorded: "+activityError.message
+   :"Task status updated and recorded in the Case Activity Timeline.",Boolean(activityError));
 }
 
 // Phase 6: Professional Case File Activity Timeline
