@@ -435,8 +435,18 @@ async function rockCreateCaseTask(){
  try{
   const {error}=await supabaseClient.from("application_case_tasks").insert({application_id:appId,task_title:title,task_description,priority,task_status:"pending",due_date,assigned_to,created_by:currentUser.id});
   if(error)throw error;if(currentApplication?.id!==appId)return;
-  rockTaskPage=0;await rockLoadCaseTasks(appId);
-  rockTaskFeedback("Task created successfully.");
+  const details=["Task created: "+title,"Priority: "+priority];
+  if(due_date)details.push("Due: "+due_date);
+  if(assigned_to)details.push("Assigned professional: "+assigned_to);
+  const {error:activityError}=await supabaseClient.from("application_case_activities").insert({
+   application_id:appId,activity_type:"other",activity_description:details.join(" | "),performed_by:currentUser.id
+  });
+  if(currentApplication?.id!==appId)return;
+  rockTaskPage=0;
+  await Promise.allSettled([rockLoadCaseTasks(appId),rockLoadCaseActivities(appId)]);
+  rockTaskFeedback(activityError
+   ?"Task created, but its timeline entry could not be recorded: "+activityError.message
+   :"Task created and recorded in the Case Activity Timeline.",Boolean(activityError));
  }catch(e){rockTaskFeedback("Unable to create task: "+e.message,true);btn.disabled=false;btn.textContent="Create Task";}
 }
 async function rockUpdateTaskStatus(id){
