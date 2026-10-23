@@ -21,10 +21,16 @@ main{max-width:1160px;margin:0 auto;padding:70px 26px 80px;min-height:calc(100vh
 
 /* R2 Batch 03 — client submissions */
 .upload-area{margin-top:18px;padding:20px;border:1px solid #dce5d9;background:#f8faf5;border-radius:11px}.upload-area h3{margin:0 0 8px;font-size:17px;color:var(--green)}.upload-area select,.upload-area input{width:100%;padding:12px;border:1px solid #cdd9cb;border-radius:7px;background:white;color:var(--ink)}.upload-area label{margin-top:12px}.upload-area .primary{margin-top:14px}.upload-help{font-size:11px;color:var(--muted);line-height:1.7;margin-top:8px}.submission-card{border:1px solid #e2e8df;background:#fff;border-radius:9px;padding:13px;margin:9px 0;font-size:12px;line-height:1.7;overflow-wrap:anywhere}.submission-card strong{color:var(--green)}.submission-feedback{margin-top:7px;background:#fff8e9;padding:9px;border-radius:6px}.upload-status{font-size:12px;line-height:1.6;margin-top:12px}.upload-status.error{color:#8b3125}.upload-status.ok{color:#24593f}.upload-area button:disabled{opacity:.6;cursor:wait}
+/* Unified platform navigation */
+.rock-portal-nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.rock-footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+.rock-footer-links a{color:#f4e9d5;text-decoration:none}
+.rock-footer-links a:hover{text-decoration:underline}
+@media(max-width:720px){header{flex-wrap:wrap}.rock-portal-nav{justify-content:flex-start}}
 </style>
 </head>
 <body>
-<header><div><div class="brand">THE ROCK <span class="brandmark">◆</span></div><div class="sub">TOWN PLANNING & LAND USE MANAGEMENT</div></div><a href="/">← Main website</a></header>
+<header><div><div class="brand">THE ROCK <span class="brandmark">◆</span></div><div class="sub">TOWN PLANNING & LAND USE MANAGEMENT</div></div><nav class="rock-portal-nav" aria-label="THE ROCK navigation"><a href="/">← Main Website</a><a href="/professional">Professional Portal</a></nav></header>
 <main>
 <section id="authView" class="layout">
 <div class="intro"><div class="eyebrow">Secure client access</div><h1>Your planning project, <em>within reach.</em></h1><p>Welcome to THE ROCK Client Portal. Sign in to follow the progress of planning applications linked to your account.</p><div class="featurelist"><div class="feature"><span class="dot"></span>Verified email registration</div><div class="feature"><span class="dot"></span>Private application tracking</div><div class="feature"><span class="dot"></span>Professional support throughout your project</div></div></div>
@@ -36,7 +42,7 @@ main{max-width:1160px;margin:0 auto;padding:70px 26px 80px;min-height:calc(100vh
  <div id="progressContent" role="region" aria-live="polite"></div>
  <div id="progressMessage" role="status" aria-live="polite" class="notice hidden"></div>
 </section>
-</main><div class="footer">© THE ROCK · Town Planning & Land Use Management · Client information is protected by account-level access controls.</div>
+</main><div class="footer"><div class="rock-footer-links"><a href="/">Public Website</a><a href="/client" aria-current="page">Client Portal</a><a href="/professional">Professional Portal</a></div>© THE ROCK · Town Planning & Land Use Management · Client information is protected by account-level access controls.</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
