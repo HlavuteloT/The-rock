@@ -909,7 +909,8 @@
         <a href="#process">Our Process</a>
         <a href="#intelligence">Planning Intelligence</a>
         <a href="#fees">Fee Estimator</a>
-        <a href="#client-portal">Client Portal</a>
+        <a href="/client">Client Login</a>
+        <a href="/professional">Professional Login</a>
         <a href="#contact">Contact</a>
     </div>
 
@@ -1567,15 +1568,16 @@
     <div>
       <div class="client-portal-kicker">The Rock Digital Experience</div>
       <h2 id="clientPortalTitle">A dedicated space for your planning project.</h2>
-      <div class="client-portal-state" role="status">Client Portal · Coming Soon</div>
-      <p>We're preparing a secure client experience to make it easier to follow your planning application's progress and access project information shared by THE ROCK.</p>
-      <p>Until client access is available, you can continue to submit a planning application or contact us directly about an existing project.</p>
-      <a href="#contact" class="button button-primary">Contact THE ROCK</a>
+      <div class="client-portal-state" role="status">Client Portal · Available</div>
+      <p>Access your secure planning project workspace to review information shared with you, follow progress, and respond to requests from your planning professional.</p>
+      <p>Client portal access is available to authorised clients. If you have submitted an application but have not received access, please contact THE ROCK.</p>
+      <a href="/client" class="button button-primary">Access Client Portal</a>
+      <a href="#contact" class="button button-outline" style="margin-left:10px;">Request Access</a>
     </div>
-    <aside class="client-portal-panel" aria-label="Planned client portal capabilities">
+    <aside class="client-portal-panel" aria-label="Client portal capabilities">
       <h3>Planned client features</h3>
       <ul>
-        <li>View your application progress</li>
+        <li>View the progress of your authorised applications</li>
         <li>Access documents shared with you</li>
         <li>See key project updates and requests</li>
         <li>Keep project communication organised</li>
@@ -2475,6 +2477,12 @@
 
     </div>
 
+
+    <div class="container" style="display:flex;gap:20px;flex-wrap:wrap;margin-top:22px;font-size:13px;">
+        <a href="/" aria-label="Public website">Public Website</a>
+        <a href="/client" aria-label="Client portal login">Client Portal</a>
+        <a href="/professional" aria-label="Professional portal login">Professional Portal</a>
+    </div>
 
     <div class="copyright">
 
@@ -3386,11 +3394,18 @@
                     final scope of work and applicable quotation.
                 </p>
 
+                <p style="color:#66736d;font-size:13px;margin-top:18px;">
+                    Keep your application reference for future enquiries.
+                    Client portal access is provided after authorisation.
+                </p>
+                <a href="/client" class="button button-outline" style="margin-top:20px;">
+                    Client Portal
+                </a>
                 <button
                     type="button"
                     class="button button-primary"
                     onclick="closeApplicationWizard()"
-                    style="margin-top:25px;"
+                    style="margin-top:20px;margin-left:10px;"
                 >
                     Close
                 </button>
