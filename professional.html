@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="canonical" href="https://infocheck-in.co.za/professional">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THE ROCK | Professional Portal</title>
+<title>Infocheck-in | Professional Portal</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// THE ROCK — hybrid municipal submission readiness. Templates are starting points only.
+// Infocheck-in — hybrid municipal submission readiness. Templates are starting points only.
 const ROCK_READINESS_TEMPLATES={
  rezoning:["Title Deed","SG Diagram / General Plan","Zoning Certificate","Power of Attorney","Motivation Report","Site Development Plan"],
  "consent use":["Title Deed","Zoning Certificate","Power of Attorney","Motivation Report","Site Development Plan"],
@@ -51,7 +53,7 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 /* Phase 4: Portfolio Operations Dashboard */
 .ops-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}.ops-kpi{background:#fff;border:1px solid var(--border);border-radius:11px;padding:18px}.ops-kpi strong{display:block;font-size:28px;color:var(--green);margin-top:8px}.ops-kpi span{font-size:12px;color:var(--muted);font-weight:700}.ops-filters{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}.ops-filters input,.ops-filters select{max-width:260px}.ops-table{min-width:850px}.ops-warning{color:var(--danger);font-weight:700}.ops-actions{margin:0;padding-left:18px}.ops-actions li{margin:5px 0}@media(max-width:1000px){.ops-kpis{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.ops-kpis{grid-template-columns:1fr}}
 
-/* THE ROCK · Premium client access suite */
+/* Infocheck-in · Premium client access suite */
 :root{--rock-ivory:#fbf9f3;--rock-gold:#c4a267;--rock-ink:#12392c}
 .rock-access{border:1px solid #e5e7dd;border-radius:20px;overflow:hidden;background:var(--rock-ivory);box-shadow:0 16px 40px rgba(13,48,32,.07)}
 .rock-access-hero{padding:26px 28px;background:linear-gradient(118deg,#0a3024,#14543a 75%,#216747);color:#fff;display:flex;justify-content:space-between;gap:18px;align-items:center}
@@ -92,7 +94,7 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 @media(max-width:650px){.rock-alert-grid{grid-template-columns:1fr}}
 </style>
 <style>
-/* THE ROCK | Phase 7: Invoice Management */
+/* Infocheck-in | Phase 7: Invoice Management */
 .rock-invoice-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:24px}
 .rock-invoice-kpis .value{font-size:clamp(19px,2vw,29px);overflow-wrap:anywhere}
 .rock-invoice-table{min-width:800px}
@@ -196,9 +198,9 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 </style>
 </head>
 <body>
-<div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>THE ROCK</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><nav class="rock-cross-links" aria-label="Other THE ROCK sites"><a href="/">Public Website</a><a href="/client">Client Portal</a></nav><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
+<div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>Infocheck-in</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><nav class="rock-cross-links" aria-label="Other Infocheck-in sites"><a href="/">Public Website</a><a href="/client">Client Portal</a></nav><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
 <div id="app" class="app">
-<header class="topbar"><div class="brand"><h1>THE ROCK</h1><span>PLANNING & LAND USE MANAGEMENT</span></div><div class="user-area"><nav class="rock-top-links" aria-label="Other THE ROCK sites"><a href="/">Public Website</a><a href="/client">Client Portal</a></nav><span id="userEmail" class="user-email"></span><button class="logout-button" onclick="logout()">Sign Out</button></div></header>
+<header class="topbar"><div class="brand"><h1>Infocheck-in</h1><span>INTEGRATED DEVELOPMENT AND ADVISORY SERVICES</span></div><div class="user-area"><nav class="rock-top-links" aria-label="Other Infocheck-in sites"><a href="/">Public Website</a><a href="/client">Client Portal</a></nav><span id="userEmail" class="user-email"></span><button class="logout-button" onclick="logout()">Sign Out</button></div></header>
 <div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navOperations" class="nav-button" onclick="showSection('operations',this)">Operations Dashboard</button><button id="navTasks" class="nav-button" onclick="showSection('tasks',this)">Tasks &amp; Deadlines</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Financial Management</div><button id="navFinancialDashboard" class="nav-button" onclick="showSection('financialDashboard',this)">Financial Dashboard</button><button id="navInvoices" class="nav-button" onclick="showSection('invoices',this)">Invoice Management</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
 <main class="main">
 <section id="dashboard" class="section active"><div class="page-header"><div><h2>Professional Dashboard</h2><p>Manage planning applications, enquiries and active projects.</p></div></div><div class="stats-grid"><div class="stat-card"><div class="label">New Applications</div><div id="statNew" class="value">0</div></div><div class="stat-card"><div class="label">Total Applications</div><div id="statTotal" class="value">0</div></div><div class="stat-card"><div class="label">Active Projects</div><div id="statActive" class="value">0</div></div><div class="stat-card"><div class="label">Completed</div><div id="statCompleted" class="value">0</div></div></div>
@@ -649,7 +651,7 @@ async function loadMandateForApplication(id){const c=document.getElementById("ma
 
 
 // Secure mandate delivery: requires an active authenticated professional.
-const MANDATE_CLIENT_PAGE = "https://the-rock.triggermthombeni.workers.dev/mandate";
+const MANDATE_CLIENT_PAGE = window.location.origin + "/mandate";
 let currentMandateDelivery = null;
 
 async function loadMandateDelivery(m){
@@ -701,8 +703,8 @@ function prepareMandateEmail(){
   if(!m)return alert("Open a mandate first.");
   if(m.status!=="issued")return alert("Issue the mandate before preparing a client acceptance email.");
   if(!m.email)return alert("No client email is recorded for this mandate. Copy the link instead.");
-  const subject=encodeURIComponent("THE ROCK — Professional Mandate "+m.reference);
-  const body=encodeURIComponent(`Dear ${m.name},\n\nYour professional planning mandate ${m.reference} is ready for review and acceptance.\n\nPlease review the mandate together with your accepted quotation and, if you agree, complete the electronic acceptance using this secure link:\n\n${m.link}\n\nKind regards,\nTHE ROCK | Planning & Land Use Management`);
+  const subject=encodeURIComponent("Infocheck-in — Professional Mandate "+m.reference);
+  const body=encodeURIComponent(`Dear ${m.name},\n\nYour professional planning mandate ${m.reference} is ready for review and acceptance.\n\nPlease review the mandate together with your accepted quotation and, if you agree, complete the electronic acceptance using this secure link:\n\n${m.link}\n\nKind regards,\nInfocheck-in | Integrated Development and Advisory Services`);
   window.location.href=`mailto:${encodeURIComponent(m.email)}?subject=${subject}&body=${body}`;
 }
 
@@ -711,7 +713,7 @@ async function saveMandateDates(mandateId){const start=document.getElementById("
 
 function generateMandateDocument(m){
 const w=window.open("","_blank","width=1000,height=800");
-if(!w)return alert("Please allow pop-ups for THE ROCK to generate the mandate document.");
+if(!w)return alert("Please allow pop-ups for Infocheck-in to generate the mandate document.");
 const money=v=>formatMoney(v||0);
 const date=v=>formatDate(v);
 const esc=v=>escapeHtml(v||"");
@@ -719,22 +721,22 @@ const title=esc(m.application_type||"Professional Town Planning Services");
 const status=esc(capitalizeWords(m.status||"draft"));
 const scope=esc(m.scope_of_work||"The professional services are as defined in the accepted quotation associated with this mandate.");
 const assumptions=esc(m.assumptions_exclusions||"No additional assumptions or exclusions have been recorded. The accepted quotation remains the controlling record for the agreed scope and exclusions.");
-const html=`<!DOCTYPE html><html><head><title>${esc(m.mandate_reference)} - THE ROCK Mandate</title><meta charset="UTF-8"><style>
+const html=`<!DOCTYPE html><html><head><title>${esc(m.mandate_reference)} - Infocheck-in Mandate</title><meta charset="UTF-8"><style>
 body{font-family:Arial,Helvetica,sans-serif;color:#1d2b24;margin:0;background:#fff}.page{max-width:850px;margin:0 auto;padding:45px 55px}.header{border-bottom:3px solid #183c2c;padding-bottom:18px;margin-bottom:28px}.brand{font-size:30px;font-weight:800;letter-spacing:1px;color:#183c2c}.sub{font-size:12px;color:#666;margin-top:4px}.doc-title{text-align:center;margin:28px 0 22px}.doc-title h1{font-size:22px;margin:0;color:#183c2c}.ref{margin-top:7px;font-weight:700;color:#b58a45}.section{margin-top:24px}.section h2{font-size:14px;text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid #d9dfdc;padding-bottom:7px;color:#183c2c}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 30px}.item{padding:7px 0}.label{font-size:10px;text-transform:uppercase;color:#777;font-weight:700}.value{font-size:13px;margin-top:3px;line-height:1.45}.text{font-size:13px;line-height:1.6;white-space:pre-wrap}.terms{font-size:13px;line-height:1.6}.terms p{margin:0 0 11px}.terms strong{color:#183c2c}.financial{margin-top:10px;border:1px solid #d9dfdc}.row{display:flex;justify-content:space-between;padding:10px 13px;border-bottom:1px solid #eee;font-size:13px}.row:last-child{border:0}.total{font-weight:800;background:#183c2c;color:#fff;font-size:15px}.signatures{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:55px}.sig{border-top:1px solid #555;padding-top:8px;font-size:11px;line-height:1.6}.notice{font-size:10px;color:#666;line-height:1.5;margin-top:30px}.actions{position:fixed;top:15px;right:15px;z-index:10}button{padding:10px 15px;border:0;background:#183c2c;color:#fff;border-radius:6px;cursor:pointer}@media print{.actions{display:none}.page{padding:25px 35px}}@media(max-width:650px){.page{padding:25px}.grid,.signatures{grid-template-columns:1fr;gap:20px}}
 </style></head><body><div class="actions"><button onclick="window.print()">Print / Save PDF</button></div><div class="page">
-<div class="header"><div class="brand">THE ROCK</div><div class="sub">PLANNING &amp; LAND USE MANAGEMENT</div></div>
+<div class="header"><div class="brand">Infocheck-in</div><div class="sub">INTEGRATED DEVELOPMENT AND ADVISORY SERVICES</div></div>
 <div class="doc-title"><h1>PROFESSIONAL TOWN PLANNING MANDATE</h1><div class="ref">${esc(m.mandate_reference)}</div></div>
-<div class="section"><h2>1. Appointment &amp; Mandate Parties</h2><div class="terms"><p>This mandate records the appointment of <strong>THE ROCK — Planning &amp; Land Use Management</strong> to provide professional town planning and related land use management services for the assignment identified below, subject to the scope and financial terms reflected in the accepted quotation.</p><p>The client authorises the professional to undertake the agreed professional services and to manage the planning assignment in accordance with the agreed scope.</p></div><div class="grid"><div class="item"><div class="label">Client</div><div class="value">${esc(m.client_name)}</div></div><div class="item"><div class="label">Application Type</div><div class="value">${title}</div></div><div class="item"><div class="label">Client Email</div><div class="value">${esc(m.client_email)}</div></div><div class="item"><div class="label">Client Phone</div><div class="value">${esc(m.client_phone)}</div></div><div class="item"><div class="label">Erf / Property Reference</div><div class="value">${esc(m.erf_number)}</div></div><div class="item"><div class="label">Suburb</div><div class="value">${esc(m.suburb)}</div></div><div class="item"><div class="label">Municipality</div><div class="value">${esc(m.municipality)}</div></div><div class="item"><div class="label">Province</div><div class="value">${esc(m.province)}</div></div></div></div>
+<div class="section"><h2>1. Appointment &amp; Mandate Parties</h2><div class="terms"><p>This mandate records the appointment of <strong>Infocheck-in — Planning &amp; Land Use Management</strong> to provide professional town planning and related land use management services for the assignment identified below, subject to the scope and financial terms reflected in the accepted quotation.</p><p>The client authorises the professional to undertake the agreed professional services and to manage the planning assignment in accordance with the agreed scope.</p></div><div class="grid"><div class="item"><div class="label">Client</div><div class="value">${esc(m.client_name)}</div></div><div class="item"><div class="label">Application Type</div><div class="value">${title}</div></div><div class="item"><div class="label">Client Email</div><div class="value">${esc(m.client_email)}</div></div><div class="item"><div class="label">Client Phone</div><div class="value">${esc(m.client_phone)}</div></div><div class="item"><div class="label">Erf / Property Reference</div><div class="value">${esc(m.erf_number)}</div></div><div class="item"><div class="label">Suburb</div><div class="value">${esc(m.suburb)}</div></div><div class="item"><div class="label">Municipality</div><div class="value">${esc(m.municipality)}</div></div><div class="item"><div class="label">Province</div><div class="value">${esc(m.province)}</div></div></div></div>
 <div class="section"><h2>2. Property &amp; Proposed Development</h2><div class="text">${esc(m.property_description)||"No property description recorded."}</div></div>
 <div class="section"><h2>3. Scope of Professional Services</h2><div class="text">${scope}</div></div>
 <div class="section"><h2>4. Client Responsibilities</h2><div class="terms"><p>The client is responsible for providing complete and accurate information and documents reasonably required for the assignment, including property, ownership, planning, development and supporting information applicable to the application.</p><p>The client remains responsible for confirming instructions, reviewing documents supplied for approval, paying agreed fees and disbursements, and providing timely responses where information or decisions are required.</p><p>Delays arising from incomplete information, late instructions, third-party requirements or authority processes may affect the programme and anticipated completion date.</p></div></div>
-<div class="section"><h2>5. Professional Responsibilities</h2><div class="terms"><p>THE ROCK will perform the agreed professional services with reasonable professional care and diligence and will manage the assignment within the scope recorded in this mandate and the accepted quotation.</p><p>Where information, specialist input, authority requirements or additional services fall outside the agreed scope, these will be identified to the client where reasonably practicable and may require separate instruction and fees.</p><p>Any decision, approval, refusal, condition or timeframe imposed by a municipality, government authority or other third party remains outside the professional's control.</p></div></div>
+<div class="section"><h2>5. Professional Responsibilities</h2><div class="terms"><p>Infocheck-in will perform the agreed professional services with reasonable professional care and diligence and will manage the assignment within the scope recorded in this mandate and the accepted quotation.</p><p>Where information, specialist input, authority requirements or additional services fall outside the agreed scope, these will be identified to the client where reasonably practicable and may require separate instruction and fees.</p><p>Any decision, approval, refusal, condition or timeframe imposed by a municipality, government authority or other third party remains outside the professional's control.</p></div></div>
 <div class="section"><h2>6. Assumptions, Exclusions &amp; Additional Work</h2><div class="text">${assumptions}</div><div class="terms" style="margin-top:12px"><p>Additional work arising from material changes to the client's instructions, objections, hearings, appeals, specialist studies, additional meetings, revised submissions, unforeseen authority requirements or other work outside the agreed scope should be separately authorised and may attract additional professional fees and disbursements.</p></div></div>
 <div class="section"><h2>7. Mandate &amp; Financial Details</h2><div class="grid"><div class="item"><div class="label">Mandate Date</div><div class="value">${date(m.mandate_date)}</div></div><div class="item"><div class="label">Status</div><div class="value">${status}</div></div><div class="item"><div class="label">Commencement Date</div><div class="value">${date(m.commencement_date)||"Not yet specified"}</div></div><div class="item"><div class="label">Completion Date</div><div class="value">${date(m.completion_date)||"Not yet specified"}</div></div></div><div class="financial"><div class="row"><span>Professional Fee</span><strong>${money(m.professional_fee)}</strong></div><div class="row"><span>Disbursements</span><strong>${money(m.disbursements)}</strong></div><div class="row"><span>Subtotal Excl. VAT</span><strong>${money(m.subtotal_excl_vat)}</strong></div><div class="row"><span>VAT</span><strong>${money(m.vat_amount)}</strong></div><div class="row total"><span>Total Mandate Value</span><strong>${money(m.total_amount)}</strong></div></div><div class="terms" style="margin-top:12px"><p>Fees, disbursements, payment arrangements and validity are governed by the accepted quotation associated with this mandate. Any additional authorised services will be dealt with separately.</p></div></div>
 <div class="section"><h2>8. Termination &amp; Changes to Instruction</h2><div class="terms"><p>Either party may request termination or material changes to the assignment. The parties should record such changes in writing, including the status of work completed and any fees or disbursements due.</p><p>Material changes to the project or instructions may require a revised scope, programme and quotation before further work proceeds.</p></div></div>
 <div class="section"><h2>9. Professional Record</h2><div class="text">${esc(m.professional_notes)||"No professional mandate notes recorded."}</div></div>
-<div class="section"><h2>10. Client Acknowledgement &amp; Signatures</h2><div class="terms"><p>By signing below, the parties acknowledge the appointment, scope of professional services, responsibilities, assumptions, exclusions and financial terms recorded in this mandate and the associated accepted quotation.</p><p>The client confirms that the information supplied for the assignment is, to the best of the client's knowledge, accurate and complete and undertakes to notify THE ROCK of material changes affecting the assignment.</p></div><div class="signatures"><div class="sig">Client signature<br><br>Name: ${esc(m.client_name)}<br>Date: __________________<br><br>Signature: ______________________________</div><div class="sig">Professional signature<br><br>THE ROCK — Planning &amp; Land Use Management<br>Date: __________________<br><br>Signature: ______________________________</div></div></div>
-<div class="notice">This document is generated from the mandate record held in THE ROCK. It should be reviewed by the professional before issue and signature. The mandate should be read together with the accepted quotation and any written variation or additional instruction agreed between the parties.</div>
+<div class="section"><h2>10. Client Acknowledgement &amp; Signatures</h2><div class="terms"><p>By signing below, the parties acknowledge the appointment, scope of professional services, responsibilities, assumptions, exclusions and financial terms recorded in this mandate and the associated accepted quotation.</p><p>The client confirms that the information supplied for the assignment is, to the best of the client's knowledge, accurate and complete and undertakes to notify Infocheck-in of material changes affecting the assignment.</p></div><div class="signatures"><div class="sig">Client signature<br><br>Name: ${esc(m.client_name)}<br>Date: __________________<br><br>Signature: ______________________________</div><div class="sig">Professional signature<br><br>Infocheck-in — Planning &amp; Land Use Management<br>Date: __________________<br><br>Signature: ______________________________</div></div></div>
+<div class="notice">This document is generated from the mandate record held in Infocheck-in. It should be reviewed by the professional before issue and signature. The mandate should be read together with the accepted quotation and any written variation or additional instruction agreed between the parties.</div>
 </div>
 
 
@@ -783,8 +785,8 @@ if(error){console.error(error);return alert("Unable to send quotation: "+error.m
 currentQuotation=data;await updateApplicationToQuotation();renderQuotation(data);
 const link=getQuotationClientLink(data);
 try{await navigator.clipboard.writeText(link)}catch(e){}
-const subject=encodeURIComponent("THE ROCK Planning Quotation "+(data.quotation_reference||""));
-const body=encodeURIComponent(`Dear ${data.client_name||"Client"},\n\nPlease find your THE ROCK professional planning quotation for your consideration.\n\nQuotation reference: ${data.quotation_reference||""}\nTotal incl. VAT: ${formatMoney(data.total_amount)}\n\nYou can review the quotation and accept or decline it securely using the link below:\n\n${link}\n\nKind regards,\nTHE ROCK | Planning & Land Use Management`);
+const subject=encodeURIComponent("Infocheck-in Planning Quotation "+(data.quotation_reference||""));
+const body=encodeURIComponent(`Dear ${data.client_name||"Client"},\n\nPlease find your Infocheck-in professional planning quotation for your consideration.\n\nQuotation reference: ${data.quotation_reference||""}\nTotal incl. VAT: ${formatMoney(data.total_amount)}\n\nYou can review the quotation and accept or decline it securely using the link below:\n\n${link}\n\nKind regards,\nInfocheck-in | Integrated Development and Advisory Services`);
 window.location.href=`mailto:${encodeURIComponent(email)}?subject=${subject}&body=${body}`;
 }
 
@@ -1249,7 +1251,7 @@ async function rockLoadClientAccess(applicationId){
  if(error){panel.innerHTML='<div class="error-box">Client access service unavailable. Run the companion Supabase SQL before using this panel. Details: '+escapeHtml(error.message)+'</div>';return}
  const rows=Array.isArray(data)?data:[];
  const active=rows.filter(r=>r.access_status==='active');
- panel.innerHTML=`<div class="rock-access"><div class="rock-access-hero"><div><div class="rock-access-eyebrow">THE ROCK · Professional Services</div><h3>Client Portal Access</h3><p>Control which verified client accounts can view this planning application. Access is granted individually and can be revoked at any time.</p></div><div class="rock-access-count"><strong>${active.length}</strong><span>Active ${active.length===1?'client':'clients'}</span></div></div><div class="rock-access-body"><div class="rock-access-columns"><div class="rock-access-panel"><h4>Invite a registered client</h4><p class="rock-access-sub">Enter the client's exact account email. Only confirmed accounts can be linked.</p><label for="rockAccessEmail">Registered email address</label><input id="rockAccessEmail" type="email" autocomplete="off" placeholder="client@example.com" maxlength="254"><div class="rock-access-row" style="margin-top:12px"><button class="rock-access-btn" id="rockAccessFindButton" onclick="rockFindClientAccount()">Find client</button><button class="rock-access-btn rock-access-btn-light" onclick="rockLoadClientAccess(currentApplication.id)">Refresh</button></div><div id="rockAccessMatch"></div><div id="rockAccessFeedback" hidden role="status" aria-live="polite"></div></div><div class="rock-access-panel"><h4>Linked client accounts</h4><p class="rock-access-sub">Access to ${escapeHtml(currentApplication.application_reference||'this case')} is managed separately from public enquiries.</p>${rows.length?rows.map(r=>`<div class="rock-access-entry"><div><strong>${escapeHtml(r.client_email||'Account unavailable')}</strong><small>Linked ${escapeHtml(formatDateTime(r.granted_at))}</small><span class="rock-access-tag ${r.access_status==='revoked'?'revoked':''}">${r.access_status==='active'?'● Active':'Revoked'}</span></div>${r.access_status==='active'?`<button class="rock-access-btn rock-access-btn-danger" onclick="rockRevokeClientAccess('${escapeHtml(r.client_user_id)}','${escapeHtml(r.client_email||'this client')}')">Revoke access</button>`:''}</div>`).join(''):'<div class="rock-access-empty">No client accounts linked to this application yet.</div>'}</div></div><p class="rock-access-sub" style="margin:18px 0 0">Security: Only active professionals may grant or revoke access. Clients see only the fields exposed by the client-safe application service.</p></div></div>`;
+ panel.innerHTML=`<div class="rock-access"><div class="rock-access-hero"><div><div class="rock-access-eyebrow">Infocheck-in · Professional Services</div><h3>Client Portal Access</h3><p>Control which verified client accounts can view this planning application. Access is granted individually and can be revoked at any time.</p></div><div class="rock-access-count"><strong>${active.length}</strong><span>Active ${active.length===1?'client':'clients'}</span></div></div><div class="rock-access-body"><div class="rock-access-columns"><div class="rock-access-panel"><h4>Invite a registered client</h4><p class="rock-access-sub">Enter the client's exact account email. Only confirmed accounts can be linked.</p><label for="rockAccessEmail">Registered email address</label><input id="rockAccessEmail" type="email" autocomplete="off" placeholder="client@example.com" maxlength="254"><div class="rock-access-row" style="margin-top:12px"><button class="rock-access-btn" id="rockAccessFindButton" onclick="rockFindClientAccount()">Find client</button><button class="rock-access-btn rock-access-btn-light" onclick="rockLoadClientAccess(currentApplication.id)">Refresh</button></div><div id="rockAccessMatch"></div><div id="rockAccessFeedback" hidden role="status" aria-live="polite"></div></div><div class="rock-access-panel"><h4>Linked client accounts</h4><p class="rock-access-sub">Access to ${escapeHtml(currentApplication.application_reference||'this case')} is managed separately from public enquiries.</p>${rows.length?rows.map(r=>`<div class="rock-access-entry"><div><strong>${escapeHtml(r.client_email||'Account unavailable')}</strong><small>Linked ${escapeHtml(formatDateTime(r.granted_at))}</small><span class="rock-access-tag ${r.access_status==='revoked'?'revoked':''}">${r.access_status==='active'?'● Active':'Revoked'}</span></div>${r.access_status==='active'?`<button class="rock-access-btn rock-access-btn-danger" onclick="rockRevokeClientAccess('${escapeHtml(r.client_user_id)}','${escapeHtml(r.client_email||'this client')}')">Revoke access</button>`:''}</div>`).join(''):'<div class="rock-access-empty">No client accounts linked to this application yet.</div>'}</div></div><p class="rock-access-sub" style="margin:18px 0 0">Security: Only active professionals may grant or revoke access. Clients see only the fields exposed by the client-safe application service.</p></div></div>`;
 }
 async function rockFindClientAccount(){
  if(!currentApplication)return;
@@ -1368,7 +1370,7 @@ function rockRenderTaskPortfolio(){
 
 </script>
 <script>
-// THE ROCK | Phase 7 — Read-only Invoice Management Dashboard.
+// Infocheck-in | Phase 7 — Read-only Invoice Management Dashboard.
 // Database RLS remains authoritative for which invoices are visible.
 let rockInvoiceLoading=false;
 let rockInvoiceRegisterData=[];
@@ -1443,7 +1445,7 @@ async function rockLoadInvoices(){
 }
 </script>
 <script>
-// THE ROCK | Phase 7 — Create Draft Invoice (authorisation enforced by database RLS).
+// Infocheck-in | Phase 7 — Create Draft Invoice (authorisation enforced by database RLS).
 let rockInvoiceApplications=[];
 let rockInvoiceApplicationLoading=false;
 const rockInvoiceMoney=n=>'R'+Number(n||0).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -1537,7 +1539,7 @@ async function rockCreateDraftInvoice(event){
 }
 </script>
 <script>
-// THE ROCK | Phase 7 — read-only invoice review. RLS authorises each detail fetch.
+// Infocheck-in | Phase 7 — read-only invoice review. RLS authorises each detail fetch.
 let rockInvoiceReviewRequest=0;
 function rockCloseInvoiceReview(){
   rockDraftEditorClose();
@@ -1608,7 +1610,7 @@ async function rockReviewInvoice(invoiceId){
 async function rockPrintInvoice(invoiceId){
   // Open synchronously to avoid popup blockers after asynchronous fetching.
   const printWindow=window.open('','_blank');
-  if(!printWindow){alert('Allow pop-ups for THE ROCK to print or save invoices as PDF.');return;}
+  if(!printWindow){alert('Allow pop-ups for Infocheck-in to print or save invoices as PDF.');return;}
   printWindow.document.write('<!doctype html><html><head><title>Preparing invoice</title></head><body><p>Preparing secure invoice preview...</p></body></html>');
   try{
     const {data:i,error}=await supabaseClient.from('professional_invoices')
@@ -1626,16 +1628,16 @@ async function rockPrintInvoice(invoiceId){
     const isIssued=i.invoice_status==='issued';
     const reference=isIssued?(i.invoice_number||'UNNUMBERED'):(i.draft_reference||'UNNUMBERED DRAFT');
     const heading=isIssued?'TAX INVOICE':'DRAFT INVOICE PREVIEW';
-    const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${safe(reference)} — THE ROCK</title><style>
+    const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${safe(reference)} — Infocheck-in</title><style>
       @page{size:A4;margin:16mm}*{box-sizing:border-box}body{margin:0;font:13px/1.55 Arial,Helvetica,sans-serif;color:#183b2b;background:#fff}main{max-width:780px;margin:auto}.head{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #c4a267;padding-bottom:18px}.brand{font:bold 29px Georgia,serif;letter-spacing:2px;color:#0a3927}.tag{font-size:10px;letter-spacing:2px;color:#9b7c3c}.heading{text-align:right;font:bold 21px Georgia,serif}.ref{font-size:12px;margin-top:6px}.watermark{position:fixed;top:46%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font:bold clamp(48px,10vw,100px) Arial,sans-serif;letter-spacing:8px;color:rgba(140,85,15,.095);pointer-events:none;z-index:0;white-space:nowrap}.document-content{position:relative;z-index:1}.draft{border:2px solid #b7791f;color:#895e14;background:#fff9e9;padding:11px 14px;font-weight:bold;margin:22px 0;text-align:center}.grid{display:grid;grid-template-columns:1fr 1fr;gap:25px;margin:25px 0}.box{border:1px solid #dfe6df;border-radius:8px;padding:16px;overflow-wrap:anywhere;white-space:pre-wrap}.label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#667b70;font-weight:bold;margin-bottom:6px}.name{font-size:15px;font-weight:bold;margin-bottom:6px}table{width:100%;border-collapse:collapse;margin-top:20px}th{text-align:left;background:#0a3927;color:#fff;padding:12px}td{border-bottom:1px solid #e2e9e2;padding:13px;vertical-align:top;overflow-wrap:anywhere}.money{text-align:right;white-space:nowrap}.totals{width:300px;max-width:100%;margin:22px 0 22px auto}.totalrow{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #e0e6e0}.grand{background:#0a3927;color:#fff;font-size:17px;font-weight:bold;padding:14px;margin-top:8px}.foot{border-top:1px solid #dfe6df;margin-top:38px;padding-top:15px;font-size:11px;color:#53695e}.muted{color:#687c71}.meta{margin:18px 0;display:flex;gap:22px;flex-wrap:wrap}.meta div{min-width:140px}button{border:0;background:#0f5132;color:#fff;padding:12px 18px;border-radius:6px;cursor:pointer;margin:16px 0}@media print{button{display:none}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}@media(max-width:560px){.grid{grid-template-columns:1fr}.head{display:block}.heading{text-align:left;margin-top:16px}}
-    </style></head><body>${isIssued?'':'<div class="watermark" aria-hidden="true">DRAFT ONLY</div>'}<main class="document-content"><button type="button" onclick="window.print()">Print / Save as PDF</button><div class="head"><div><div class="brand">THE ROCK</div><div class="tag">TOWN PLANNING &amp; LAND USE MANAGEMENT</div></div><div><div class="heading">${heading}</div><div class="ref">${safe(reference)}</div></div></div>
+    </style></head><body>${isIssued?'':'<div class="watermark" aria-hidden="true">DRAFT ONLY</div>'}<main class="document-content"><button type="button" onclick="window.print()">Print / Save as PDF</button><div class="head"><div><div class="brand">Infocheck-in</div><div class="tag">TOWN INTEGRATED DEVELOPMENT AND ADVISORY SERVICES</div></div><div><div class="heading">${heading}</div><div class="ref">${safe(reference)}</div></div></div>
     ${isIssued?'':'<div class="draft">DRAFT — NOT A TAX INVOICE · INTERNAL REVIEW ONLY · NOT PAYABLE</div>'}
     <div class="meta"><div><div class="label">Invoice date</div>${display(i.invoice_date)}</div><div><div class="label">${isIssued?'Due date':'Proposed due date (not payable)'}</div>${display(i.due_date)}</div><div><div class="label">Application reference</div>${display(a?.application_reference)}</div></div>
     <div class="grid"><div class="box"><div class="label">Supplier</div><div class="name">${display(i.supplier_legal_name)}</div><div class="label">Physical address</div>${display(i.supplier_physical_address)}<div class="label" style="margin-top:12px">VAT registration number</div>${display(i.supplier_vat_number)}</div><div class="box"><div class="label">Bill to</div><div class="name">${display(i.client_billing_name)}</div><div>${display(i.client_billing_address)}</div><div class="label" style="margin-top:12px">Client VAT number</div>${display(i.client_vat_number)}</div></div>
     <div class="muted">${display(a?.application_type)}${a?.municipality?' · '+safe(a.municipality):''}</div>
     <table><thead><tr><th>Professional services</th><th class="money">Quantity</th><th class="money">Amount (ZAR)</th></tr></thead><tbody><tr><td style="white-space:pre-wrap">${display(i.description)}</td><td class="money">${display(i.service_quantity||1)}</td><td class="money">${rockInvoiceMoney(i.subtotal)}</td></tr></tbody></table>
     <div class="totals"><div class="totalrow"><span>Subtotal</span><strong>${rockInvoiceMoney(i.subtotal)}</strong></div><div class="totalrow"><span>VAT (${safe(i.vat_rate)}%)</span><strong>${rockInvoiceMoney(i.vat_amount)}</strong></div><div class="totalrow grand"><span>${isIssued?'Total due':'Model total (not payable)'}</span><span>${rockInvoiceMoney(i.total_amount)}</span></div></div>
-    <div><div class="label">${isIssued?'Payment terms':'Proposed payment terms — informational only'}</div><div style="white-space:pre-wrap">${display(i.payment_terms)}</div></div><div class="foot">${isIssued?'THE ROCK · Official invoice generated from the issued database record. Verify the legal supplier identity, SARS VAT registration and recipient details before distribution.':'THE ROCK · Professional Planning Services · DRAFT DOCUMENT — NOT A TAX INVOICE — NOT FOR CLIENT DISTRIBUTION. This document does not change invoice status.'}</div></main></body></html>`;
+    <div><div class="label">${isIssued?'Payment terms':'Proposed payment terms — informational only'}</div><div style="white-space:pre-wrap">${display(i.payment_terms)}</div></div><div class="foot">${isIssued?'Infocheck-in · Official invoice generated from the issued database record. Verify the legal supplier identity, SARS VAT registration and recipient details before distribution.':'Infocheck-in · Professional Planning Services · DRAFT DOCUMENT — NOT A TAX INVOICE — NOT FOR CLIENT DISTRIBUTION. This document does not change invoice status.'}</div></main></body></html>`;
     printWindow.document.open();printWindow.document.write(html);printWindow.document.close();
   }catch(e){printWindow.document.body.textContent='Unable to prepare invoice: '+(e.message||String(e));}
 }
@@ -1676,7 +1678,7 @@ async function rockIssueInvoice(invoiceId){
   if(!i.due_date||i.due_date<today)missing.push('Due date must be on or after issuance');
   if(/INTERNAL TEST/i.test([i.description,i.client_billing_name,i.supplier_legal_name].join(' ')))missing.push('Internal test invoice cannot be issued');
   if(missing.length){set('Cannot issue: '+missing.join('; ')+'. Correct the draft first.',true);return;}
-  const ok=window.confirm('ISSUE OFFICIAL TAX INVOICE?\n\nThis action allocates a unique invoice number, records the actual issue date and locks billing and financial details. It cannot be undone.\n\nConfirm you have verified THE ROCK supplier VAT registration with SARS, the recipient details, the service quantity, the agreed fee and the VAT treatment.\n\nSelect OK to issue, or Cancel to keep this draft.');
+  const ok=window.confirm('ISSUE OFFICIAL TAX INVOICE?\n\nThis action allocates a unique invoice number, records the actual issue date and locks billing and financial details. It cannot be undone.\n\nConfirm you have verified Infocheck-in supplier VAT registration with SARS, the recipient details, the service quantity, the agreed fee and the VAT treatment.\n\nSelect OK to issue, or Cancel to keep this draft.');
   if(!ok){set('Issuance cancelled. The draft was not changed.');return;}
   rockIssuanceInProgress=true;
   set('Issuing invoice securely...');
@@ -1694,7 +1696,7 @@ async function rockIssueInvoice(invoiceId){
 </script>
 
 <script>
-// THE ROCK — Phase 8, Step 86.5: administrator-only read-only reporting.
+// Infocheck-in — Phase 8, Step 86.5: administrator-only read-only reporting.
 const ROCK_FINANCIAL_API = "https://the-rock-financial-api.triggermthombeni.workers.dev";
 let rockFinancialRequestId = 0;
 
@@ -1787,7 +1789,7 @@ supabaseClient.auth.onAuthStateChange((event) => {
 });
 </script>
 <script>
-// THE ROCK — Step 87.1, read-only invoice financial dashboard.
+// Infocheck-in — Step 87.1, read-only invoice financial dashboard.
 let rockDetailInvoices = [];
 let rockDetailRequest = 0;
 
@@ -1969,7 +1971,7 @@ supabaseClient.auth.onAuthStateChange((event) => {
 });
 </script>
 <script>
-// THE ROCK | Step 89.3 — invoice lifecycle (draft-only updates, no issuance).
+// Infocheck-in | Step 89.3 — invoice lifecycle (draft-only updates, no issuance).
 let rockLifecycleInvoice=null;
 const rockLifecycleSessionEvents=new Map();
 const rockLifecycleFields=[
@@ -2120,7 +2122,7 @@ async function rockOpenCaseInvoice(invoiceId){
 }
 </script>
 <script>
-// THE ROCK R2 Batch 02 — publication is explicit; internal notes are never copied to client fields.
+// Infocheck-in R2 Batch 02 — publication is explicit; internal notes are never copied to client fields.
 let rockPublicationRevision=0;
 function rockPubFeedback(text,isError=false){const node=document.getElementById('rockPubFeedback');if(!node)return;node.hidden=false;node.className='doc-feedback'+(isError?' error':'');node.textContent=text}
 async function rockLoadClientPublication(applicationId){
