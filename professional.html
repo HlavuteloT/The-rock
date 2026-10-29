@@ -365,11 +365,168 @@ tr:hover td {background:#fafcf9}
 @media(max-width:520px){.ic-analytics-head{padding:18px}.ic-analytics-kpis{gap:9px}.ic-kpi{padding:13px}.ic-chart-card{padding:17px}.ic-donut{width:155px;height:155px}.ic-activity-chart{gap:4px;padding-left:1px;padding-right:1px}.ic-trend-tick{font-size:9px}.ic-analytics-actions{width:100%}.ic-analytics-actions label{flex-basis:100%}}
 @media(prefers-reduced-motion:reduce){.ic-trend-bar,.ic-bar-fill{transition:none}}
 </style>
+
+<style id="infocheck-access-unified-theme">
+/* Client Access uses the same design tokens, type scale and surfaces as the professional portal. */
+.rock-access,.rock-access * {font-family:Arial,Helvetica,sans-serif;box-sizing:border-box}
+.rock-access {background:var(--white,#fff);border:1px solid var(--border,#dfe5e1);border-radius:8px;box-shadow:0 3px 12px rgba(8,44,32,.035)}
+.rock-access-hero {background:var(--green-dark,#082c20);border-bottom:3px solid var(--gold,#c8a45d);padding:20px 24px;gap:16px}
+.rock-access-eyebrow {font-size:10px;letter-spacing:1.3px;color:var(--gold-light,#e0c27b)}
+.rock-access-hero h3 {font-family:Arial,Helvetica,sans-serif;font-size:21px;font-weight:800;letter-spacing:0;margin:5px 0 6px;color:#fff}
+.rock-access-hero p {font-size:13px;color:#d9e3de;line-height:1.5}
+.rock-access-count {border-radius:6px;padding:11px 15px;min-width:85px}
+.rock-access-count strong {font-family:Arial,Helvetica,sans-serif;font-size:25px;font-weight:800;color:#fff}
+.rock-access-count span {letter-spacing:.7px;font-size:10px}
+.rock-access-body {padding:20px 24px}
+.rock-access-columns {gap:16px}
+.rock-access-panel {background:#fff;border:1px solid var(--border,#dfe5e1);border-radius:7px;padding:18px}
+.rock-access-panel h4 {font-size:15px;font-weight:800;color:var(--green-dark,#082c20)}
+.rock-access-sub {font-size:12px;color:var(--muted,#66736d);line-height:1.55}
+.rock-access-panel label {font-size:11px;color:var(--text,#1d2924);letter-spacing:.4px;text-transform:none}
+.rock-access-panel input {background:#fff;border:1px solid var(--border,#dfe5e1);border-radius:5px;padding:11px 12px;font-size:14px}
+.rock-access-panel input:focus {border-color:var(--gold,#c8a45d);box-shadow:0 0 0 3px rgba(200,164,93,.16)}
+.rock-access-btn {background:var(--gold,#c8a45d);color:var(--green-dark,#082c20);border-radius:5px;padding:10px 14px;font-size:12px;font-weight:700}
+.rock-access-btn:hover {background:var(--gold-light,#e0c27b);color:var(--green-dark,#082c20)}
+.rock-access-btn-light {background:#fff;color:var(--green-dark,#082c20);border:1px solid var(--green,#0d4a35)}
+.rock-access-btn-light:hover {background:var(--green-dark,#082c20);color:#fff}
+.rock-access-btn-danger {background:#fff4f1;color:#a62b22;border:1px solid #f0d5d0}
+.rock-access-btn-danger:hover {background:#fbe9e5;color:#a62b22}
+.rock-access-entry,.rock-access-match,.rock-access-empty {border-radius:6px}
+.rock-access-entry {background:#fff;border-color:var(--border,#dfe5e1)}
+.rock-access-entry strong,.rock-access-match strong {color:var(--green-dark,#082c20)}
+.rock-access-tag {border-radius:4px}
+.rock-access-feedback {border-radius:5px}
+.rock-access-btn:focus-visible,.rock-access-panel input:focus-visible {outline:2px solid var(--gold,#c8a45d);outline-offset:3px}
+@media(max-width:560px){.rock-access-hero{padding:17px}.rock-access-hero h3{font-size:19px}.rock-access-body{padding:14px}.rock-access-panel{padding:14px}}
+</style>
+
+<style id="ic-homepage-ribbon-match">
+/* Exact homepage wordmark structure and typography, adapted for portal controls */
+.topbar {
+  background:var(--green-dark);
+  padding:18px 6%;
+  height:auto;
+  min-height:84px;
+  gap:22px;
+  align-items:center;
+  box-shadow:0 2px 15px rgba(0,0,0,.15);
+}
+.topbar .ic-brand-link {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:0;
+  flex-shrink:0;
+  text-decoration:none;
+  color:#fff;
+  border-radius:4px;
+  min-width:0;
+}
+.topbar .ic-logo {
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:25px;
+  font-weight:800;
+  letter-spacing:3px;
+  line-height:1.2;
+  color:#fff;
+}
+.topbar .ic-logo span {color:var(--gold)}
+.topbar .ic-nav-subtitle {
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:1.5px;
+  line-height:1.4;
+  color:#d9e3de;
+  margin-top:2px;
+}
+.topbar .ic-brand-link:hover .ic-logo span {color:var(--gold-light)}
+.topbar .ic-brand-link:focus-visible {outline:2px solid var(--gold-light);outline-offset:5px}
+.topbar .rock-top-links {display:flex;gap:25px;align-items:center}
+.topbar .rock-top-links a {
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;
+  font-weight:400;
+  text-decoration:none;
+  letter-spacing:0;
+  transition:color .2s;
+}
+.topbar .rock-top-links a:hover {color:var(--gold-light)}
+.topbar .user-email {font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#d9e3de}
+.topbar .logout-button {font-family:Arial,Helvetica,sans-serif}
+.login-logo .ic-login-wordmark {font-family:Arial,Helvetica,sans-serif;letter-spacing:3px;font-weight:800}
+.login-logo .ic-login-wordmark span {color:var(--gold)}
+/* Keep sidebar and page content below taller fixed ribbon */
+.layout {padding-top:100px}
+.sidebar {top:100px}
+@media(max-width:1100px){
+ .topbar {padding:14px 3%;gap:12px}
+ .topbar .rock-top-links {gap:12px}
+ .topbar .rock-top-links a {font-size:12px}
+ .topbar .ic-logo {font-size:23px}
+ .topbar .ic-nav-subtitle {font-size:9px;letter-spacing:1px}
+}
+@media(max-width:850px){
+ .topbar {flex-wrap:wrap;justify-content:space-between}
+ .topbar .ic-brand-link {flex:1 1 100%}
+ .topbar .user-area {width:100%;justify-content:space-between;gap:10px;flex-wrap:wrap}
+ .layout {padding-top:148px}
+ .sidebar {top:148px}
+}
+@media(max-width:650px){
+ .topbar {padding:10px 14px;gap:7px}
+ .topbar .ic-logo {font-size:22px}
+ .topbar .ic-nav-subtitle {font-size:8px;letter-spacing:.7px}
+ .topbar .rock-top-links {gap:10px}
+ .topbar .rock-top-links a {font-size:11px}
+ .topbar .user-email {font-size:11px;max-width:170px;overflow-wrap:anywhere}
+ .layout {padding-top:148px}
+ .sidebar {top:auto}
+}
+</style>
+
+<style id="ic-header-right-layout-fix">
+/* Restore original ribbon alignment: brand left, all account/navigation actions right. */
+.topbar {display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;min-height:84px;padding:12px 4%;gap:20px}
+.topbar .ic-brand-link {flex:0 1 auto;min-width:0}
+.topbar .user-area {display:flex;flex:0 0 auto;width:auto;align-items:center;justify-content:flex-end;gap:18px;flex-wrap:nowrap;margin-left:auto}
+.topbar .rock-top-links {display:flex;align-items:center;gap:18px;flex-wrap:nowrap}
+.topbar .rock-top-links a {white-space:nowrap}
+.topbar .user-email {max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar .logout-button {white-space:nowrap}
+.layout {padding-top:100px}
+.sidebar {top:100px}
+@media(max-width:900px){
+ .topbar {gap:10px;padding:10px 16px}
+ .topbar .ic-logo {font-size:20px;letter-spacing:1.5px}
+ .topbar .ic-nav-subtitle {font-size:8px;letter-spacing:.5px}
+ .topbar .user-area {width:auto;gap:9px;justify-content:flex-end;flex-wrap:nowrap}
+ .topbar .rock-top-links {gap:9px}
+ .topbar .rock-top-links a,.topbar .user-email {font-size:11px}
+ .topbar .user-email {max-width:110px}
+}
+@media(max-width:650px){
+ .topbar {flex-wrap:wrap;min-height:100px;gap:5px;padding:10px 14px}
+ .topbar .ic-brand-link {flex:1 1 100%}
+ .topbar .user-area {margin-left:auto;width:100%;justify-content:flex-end;flex-wrap:wrap;gap:8px}
+ .topbar .rock-top-links {margin-right:auto;gap:10px}
+ .topbar .user-email {max-width:110px}
+ .layout {padding-top:125px}
+ .sidebar {top:auto}
+}
+@media(max-width:420px){
+ .topbar .rock-top-links a,.topbar .user-email {font-size:10px}
+ .topbar .user-area {gap:6px}
+ .topbar .logout-button {padding:6px 8px;font-size:11px}
+ .layout {padding-top:138px}
+}
+</style>
 </head>
 <body>
-<div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>Infocheck-in</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><nav class="rock-cross-links" aria-label="Other Infocheck-in sites"><a href="/">Public Website</a><a href="/client">Client Portal</a></nav><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
+<div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1 class="ic-login-wordmark">Info<span>check-in</span></h1><p>PROFESSIONAL PLANNING PORTAL</p></div><nav class="rock-cross-links" aria-label="Other Infocheck-in sites"><a href="/">Public Website</a><a href="/client">Client Portal</a></nav><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
 <div id="app" class="app">
-<header class="topbar"><div class="brand"><h1>Infocheck-in</h1><span>INTEGRATED DEVELOPMENT AND ADVISORY SERVICES</span></div><div class="user-area"><nav class="rock-top-links" aria-label="Other Infocheck-in sites"><a href="/">Public Website</a><a href="/client">Client Portal</a></nav><span id="userEmail" class="user-email"></span><button class="logout-button" onclick="logout()">Sign Out</button></div></header>
+<header class="topbar"><a class="brand ic-brand-link" href="/" aria-label="Infocheck-in — return to homepage"><div class="ic-logo">Info<span>check-in</span></div><div class="ic-nav-subtitle">INTEGRATED DEVELOPMENT AND ADVISORY SERVICES</div></a><div class="user-area"><nav class="rock-top-links" aria-label="Other Infocheck-in sites"><a href="/">Public Website</a><a href="/client">Client Portal</a></nav><span id="userEmail" class="user-email"></span><button class="logout-button" onclick="logout()">Sign Out</button></div></header>
 <div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navOperations" class="nav-button" onclick="showSection('operations',this)">Operations Dashboard</button><button id="navTasks" class="nav-button" onclick="showSection('tasks',this)">Tasks &amp; Deadlines</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Financial Management</div><button id="navFinancialDashboard" class="nav-button" onclick="showSection('financialDashboard',this)">Financial Dashboard</button><button id="navInvoices" class="nav-button" onclick="showSection('invoices',this)">Invoice Management</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
 <main class="main">
 <section id="dashboard" class="section active"><div class="page-header"><div><h2>Professional Dashboard</h2><p>Manage planning applications, enquiries and active projects.</p></div></div><div class="stats-grid"><div class="stat-card"><div class="label">New Applications</div><div id="statNew" class="value">0</div></div><div class="stat-card"><div class="label">Total Applications</div><div id="statTotal" class="value">0</div></div><div class="stat-card"><div class="label">Active Projects</div><div id="statActive" class="value">0</div></div><div class="stat-card"><div class="label">Completed</div><div id="statCompleted" class="value">0</div></div></div>
