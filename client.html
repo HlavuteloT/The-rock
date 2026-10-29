@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<link rel="canonical" href="https://infocheck-in.co.za/client">
-
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://infocheck-in.co.za/client" rel="canonical"/>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Client Portal | Infocheck-in</title>
-<meta name="description" content="Secure client access to planning application progress at Infocheck-in.">
+<meta content="Secure client access to planning application progress at Infocheck-in." name="description"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap');
 :root{--ink:#172b25;--green:#103b30;--green2:#1b5240;--cream:#f8f7f1;--light:#f1f3ed;--line:#e1e6dc;--muted:#65736a;--gold:#c9a46a;--goldlight:#efe3cb}
@@ -30,21 +31,70 @@ main{max-width:1160px;margin:0 auto;padding:70px 26px 80px;min-height:calc(100vh
 .rock-footer-links a:hover{text-decoration:underline}
 @media(max-width:720px){header{flex-wrap:wrap}.rock-portal-nav{justify-content:flex-start}}
 </style>
-</head>
+<style>/* Infocheck-in Client Portal — aligned with public index.html visual system */
+:root{--ink:#1d2924;--green:#0d4a35;--green2:#146044;--cream:#f7f4ed;--light:#f0eee7;--line:#dfe5e1;--muted:#66736d;--gold:#c8a45d;--goldlight:#e0c27b}
+html,body{font-family:Arial,Helvetica,sans-serif;line-height:1.6}
+body{background:var(--cream);color:var(--ink)}
+.client-site-header{background:#082c20;color:#fff;padding:18px 6%;min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:sticky;top:0;z-index:1000;box-shadow:0 2px 15px rgba(0,0,0,.15);border-bottom:0}
+.client-site-brand{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-decoration:none;border:0;padding:0;border-radius:4px}
+.client-site-brand:hover{background:none}
+.client-site-logo{font-size:25px;font-weight:800;letter-spacing:3px;color:#fff;line-height:1.3}
+.client-site-logo span{color:#c8a45d}
+.client-site-subtitle{font-size:10px;letter-spacing:1.5px;color:#d9e3de;font-weight:400;line-height:1.5}
+.client-site-links{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.client-site-links a,.client-site-current{color:#fff;font-size:14px;font-weight:400;text-decoration:none;border:0;border-radius:0;padding:0}
+.client-site-links a:hover{background:none;color:#e0c27b}
+.client-site-current{color:#e0c27b;border-bottom:2px solid #c8a45d;padding-bottom:3px}
+main{max-width:1150px;padding:70px 6% 80px}
+.layout{gap:55px}
+.intro h1,.dashhead h1,.progress-hero h1{font-family:Arial,Helvetica,sans-serif;font-weight:800;letter-spacing:-.025em}
+.intro h1{font-size:clamp(40px,5vw,65px);line-height:1.08}
+.intro h1 em{color:#c8a45d}
+h2,.app h3,.empty strong,.dashintro strong{font-family:Arial,Helvetica,sans-serif;font-weight:700}
+.eyebrow{color:#0d4a35;letter-spacing:2px}
+.eyebrow:before{background:#c8a45d}
+.panel,.app,.progress-panel,.empty{border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,.06);border-color:#dfe5e1}
+.panel{padding:40px}
+.panel:before{background:#c8a45d;height:3px}
+.panel-top{color:#9b783e}
+.tabs{background:#f0eee7;border-color:#dfe5e1}
+.tabs button.active{background:#082c20;color:#fff}
+input,.upload-area select,.upload-area input{border-color:#dfe5e1;border-radius:5px}
+button.primary{background:#c8a45d;color:#082c20;border-radius:5px;font-weight:700}
+button.primary:hover{background:#e0c27b;box-shadow:none}
+.smallbtn{border-radius:5px;border:1px solid #0d4a35;background:#fff;color:#082c20}
+.smallbtn:hover{background:#eaf0eb}
+.linkbtn{color:#0d4a35}
+.dashintro,.progress-hero{background:linear-gradient(rgba(5,37,27,.93),rgba(5,37,27,.93)),radial-gradient(circle at 70% 20%,#1c684d,transparent 40%);border-radius:9px}
+.progress-hero{border-bottom:3px solid #c8a45d}
+.progress-hero .eyebrow{color:#e0c27b}
+.pill{border-radius:5px}
+.app{border-left:4px solid #c8a45d}
+.footer{background:#082c20;border-top:0;color:#d9e3de;text-align:center;padding:32px 6%;font-size:12px;letter-spacing:normal}
+.client-footer-brand{font-size:23px;letter-spacing:2px;font-weight:800;color:#fff}
+.client-footer-brand span{color:#c8a45d}
+.client-footer-description{font-size:11px;letter-spacing:1px;margin:5px 0 15px}
+.client-footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:16px}
+.client-footer-links a{color:#fff;text-decoration:none}
+.client-footer-links a:hover{color:#e0c27b}
+.client-footer-links span{color:#e0c27b}
+.client-footer-copy{color:#b5c6bc;font-size:11px}
+@media(max-width:720px){.client-site-header{padding:18px 6%;flex-wrap:wrap}.client-site-logo{font-size:22px}.client-site-subtitle{font-size:9px;letter-spacing:.7px}.client-site-links{gap:16px}.client-site-links a,.client-site-current{font-size:12px}main{padding:40px 6% 60px}.layout{gap:27px}.panel{padding:27px 22px}}
+</style></head>
 <body>
-<header><div><div class="brand">Infocheck-in <span class="brandmark">◆</span></div><div class="sub">TOWN INTEGRATED DEVELOPMENT AND ADVISORY SERVICES</div></div><nav class="rock-portal-nav" aria-label="Infocheck-in navigation"><a href="/">← Main Website</a><a href="/professional">Professional Portal</a></nav></header>
+<header class="client-site-header"><a aria-label="Infocheck-in homepage" class="client-site-brand" href="/"><span class="client-site-logo">Info<span>check-in</span></span><span class="client-site-subtitle">INTEGRATED DEVELOPMENT AND ADVISORY SERVICES</span></a><nav aria-label="Client portal navigation" class="client-site-links"><a href="/">Main Website</a><span aria-current="page" class="client-site-current">Client Portal</span></nav></header>
 <main>
-<section id="authView" class="layout">
+<section class="layout" id="authView">
 <div class="intro"><div class="eyebrow">Secure client access</div><h1>Your planning project, <em>within reach.</em></h1><p>Welcome to Infocheck-in Client Portal. Sign in to follow the progress of planning applications linked to your account.</p><div class="featurelist"><div class="feature"><span class="dot"></span>Verified email registration</div><div class="feature"><span class="dot"></span>Private application tracking</div><div class="feature"><span class="dot"></span>Professional support throughout your project</div></div></div>
-<div class="panel"><div class="panel-top">Your secure account</div><div class="tabs"><button id="signInTab" type="button" class="active">Sign in</button><button id="registerTab" type="button">Create account</button></div><h2 id="formTitle">Welcome back</h2><p id="formHint" class="hint">Enter your details to access your applications.</p><form id="authForm"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required placeholder="name@example.com"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required minlength="6" placeholder="Your password"><button id="submitBtn" class="primary" type="submit">Sign in</button></form><div id="forgot"><button id="forgotBtn" class="linkbtn" type="button">Forgot your password?</button></div><div id="authMessage" role="status" aria-live="polite" class="notice hidden"></div><div class="fineprint">Secure access · Infocheck-in Integrated Development and Advisory Services</div></div>
+<div class="panel"><div class="panel-top">Your secure account</div><div class="tabs"><button class="active" id="signInTab" type="button">Sign in</button><button id="registerTab" type="button">Create account</button></div><h2 id="formTitle">Welcome back</h2><p class="hint" id="formHint">Enter your details to access your applications.</p><form id="authForm"><label for="email">Email address</label><input autocomplete="email" id="email" placeholder="name@example.com" required="" type="email"/><label for="password">Password</label><input autocomplete="current-password" id="password" minlength="6" placeholder="Your password" required="" type="password"/><button class="primary" id="submitBtn" type="submit">Sign in</button></form><div id="forgot"><button class="linkbtn" id="forgotBtn" type="button">Forgot your password?</button></div><div aria-live="polite" class="notice hidden" id="authMessage" role="status"></div><div class="fineprint">Secure access · Infocheck-in Integrated Development and Advisory Services</div></div>
 </section>
-<section id="dashboardView" class="dashboard hidden"><div class="dashhead"><div><div class="eyebrow">Client Portal</div><h1>My Applications</h1><div class="useremail" id="signedInAs"></div></div><button class="smallbtn" id="signOutBtn" type="button">Sign out</button></div><div class="dashintro"><div><strong>Your projects, clearly in view.</strong><p>Track the progress of planning applications linked to your verified account. Your project details remain private and accessible only through authorised access.</p></div><span class="symbol" aria-hidden="true">◆</span></div><div id="dashboardMessage" role="status" aria-live="polite" class="notice hidden"></div><div id="applications" class="apps"></div></section>
-<section id="progressView" class="progress-view hidden" aria-label="Application progress">
- <div class="progress-top"><div class="eyebrow">Client Portal · Project progress</div><div class="progress-toolbar"><span id="progressUpdated" class="progress-stamp" aria-live="polite"></span><button id="refreshProgress" class="smallbtn" type="button">Refresh progress</button><button id="backToApplications" class="smallbtn" type="button">← My Applications</button></div></div>
- <div id="progressContent" role="region" aria-live="polite"></div>
- <div id="progressMessage" role="status" aria-live="polite" class="notice hidden"></div>
+<section class="dashboard hidden" id="dashboardView"><div class="dashhead"><div><div class="eyebrow">Client Portal</div><h1>My Applications</h1><div class="useremail" id="signedInAs"></div></div><button class="smallbtn" id="signOutBtn" type="button">Sign out</button></div><div class="dashintro"><div><strong>Your projects, clearly in view.</strong><p>Track the progress of planning applications linked to your verified account. Your project details remain private and accessible only through authorised access.</p></div><span aria-hidden="true" class="symbol">◆</span></div><div aria-live="polite" class="notice hidden" id="dashboardMessage" role="status"></div><div class="apps" id="applications"></div></section>
+<section aria-label="Application progress" class="progress-view hidden" id="progressView">
+<div class="progress-top"><div class="eyebrow">Client Portal · Project progress</div><div class="progress-toolbar"><span aria-live="polite" class="progress-stamp" id="progressUpdated"></span><button class="smallbtn" id="refreshProgress" type="button">Refresh progress</button><button class="smallbtn" id="backToApplications" type="button">← My Applications</button></div></div>
+<div aria-live="polite" id="progressContent" role="region"></div>
+<div aria-live="polite" class="notice hidden" id="progressMessage" role="status"></div>
 </section>
-</main><div class="footer"><div class="rock-footer-links"><a href="/">Public Website</a><a href="/client" aria-current="page">Client Portal</a><a href="/professional">Professional Portal</a></div>© Infocheck-in · Town Integrated Development and Advisory Services · Client information is protected by account-level access controls.</div>
+</main><div class="footer"><div class="client-footer-brand">Info<span>check-in</span></div><div class="client-footer-description">Integrated Development and Advisory Services</div><div class="client-footer-links"><a href="/">Main Website</a><span aria-current="page">Client Portal</span></div><div class="client-footer-copy">© 2026 Infocheck-in. Client information is protected by account-level access controls.</div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
