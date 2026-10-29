@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="canonical" href="https://infocheck-in.co.za/client">
+
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Client Portal | THE ROCK</title>
-<meta name="description" content="Secure client access to planning application progress at THE ROCK.">
+<title>Client Portal | Infocheck-in</title>
+<meta name="description" content="Secure client access to planning application progress at Infocheck-in.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap');
 :root{--ink:#172b25;--green:#103b30;--green2:#1b5240;--cream:#f8f7f1;--light:#f1f3ed;--line:#e1e6dc;--muted:#65736a;--gold:#c9a46a;--goldlight:#efe3cb}
@@ -30,11 +32,11 @@ main{max-width:1160px;margin:0 auto;padding:70px 26px 80px;min-height:calc(100vh
 </style>
 </head>
 <body>
-<header><div><div class="brand">THE ROCK <span class="brandmark">◆</span></div><div class="sub">TOWN PLANNING & LAND USE MANAGEMENT</div></div><nav class="rock-portal-nav" aria-label="THE ROCK navigation"><a href="/">← Main Website</a><a href="/professional">Professional Portal</a></nav></header>
+<header><div><div class="brand">Infocheck-in <span class="brandmark">◆</span></div><div class="sub">TOWN INTEGRATED DEVELOPMENT AND ADVISORY SERVICES</div></div><nav class="rock-portal-nav" aria-label="Infocheck-in navigation"><a href="/">← Main Website</a><a href="/professional">Professional Portal</a></nav></header>
 <main>
 <section id="authView" class="layout">
-<div class="intro"><div class="eyebrow">Secure client access</div><h1>Your planning project, <em>within reach.</em></h1><p>Welcome to THE ROCK Client Portal. Sign in to follow the progress of planning applications linked to your account.</p><div class="featurelist"><div class="feature"><span class="dot"></span>Verified email registration</div><div class="feature"><span class="dot"></span>Private application tracking</div><div class="feature"><span class="dot"></span>Professional support throughout your project</div></div></div>
-<div class="panel"><div class="panel-top">Your secure account</div><div class="tabs"><button id="signInTab" type="button" class="active">Sign in</button><button id="registerTab" type="button">Create account</button></div><h2 id="formTitle">Welcome back</h2><p id="formHint" class="hint">Enter your details to access your applications.</p><form id="authForm"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required placeholder="name@example.com"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required minlength="6" placeholder="Your password"><button id="submitBtn" class="primary" type="submit">Sign in</button></form><div id="forgot"><button id="forgotBtn" class="linkbtn" type="button">Forgot your password?</button></div><div id="authMessage" role="status" aria-live="polite" class="notice hidden"></div><div class="fineprint">Secure access · THE ROCK Planning & Land Use Management</div></div>
+<div class="intro"><div class="eyebrow">Secure client access</div><h1>Your planning project, <em>within reach.</em></h1><p>Welcome to Infocheck-in Client Portal. Sign in to follow the progress of planning applications linked to your account.</p><div class="featurelist"><div class="feature"><span class="dot"></span>Verified email registration</div><div class="feature"><span class="dot"></span>Private application tracking</div><div class="feature"><span class="dot"></span>Professional support throughout your project</div></div></div>
+<div class="panel"><div class="panel-top">Your secure account</div><div class="tabs"><button id="signInTab" type="button" class="active">Sign in</button><button id="registerTab" type="button">Create account</button></div><h2 id="formTitle">Welcome back</h2><p id="formHint" class="hint">Enter your details to access your applications.</p><form id="authForm"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required placeholder="name@example.com"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required minlength="6" placeholder="Your password"><button id="submitBtn" class="primary" type="submit">Sign in</button></form><div id="forgot"><button id="forgotBtn" class="linkbtn" type="button">Forgot your password?</button></div><div id="authMessage" role="status" aria-live="polite" class="notice hidden"></div><div class="fineprint">Secure access · Infocheck-in Integrated Development and Advisory Services</div></div>
 </section>
 <section id="dashboardView" class="dashboard hidden"><div class="dashhead"><div><div class="eyebrow">Client Portal</div><h1>My Applications</h1><div class="useremail" id="signedInAs"></div></div><button class="smallbtn" id="signOutBtn" type="button">Sign out</button></div><div class="dashintro"><div><strong>Your projects, clearly in view.</strong><p>Track the progress of planning applications linked to your verified account. Your project details remain private and accessible only through authorised access.</p></div><span class="symbol" aria-hidden="true">◆</span></div><div id="dashboardMessage" role="status" aria-live="polite" class="notice hidden"></div><div id="applications" class="apps"></div></section>
 <section id="progressView" class="progress-view hidden" aria-label="Application progress">
@@ -42,7 +44,7 @@ main{max-width:1160px;margin:0 auto;padding:70px 26px 80px;min-height:calc(100vh
  <div id="progressContent" role="region" aria-live="polite"></div>
  <div id="progressMessage" role="status" aria-live="polite" class="notice hidden"></div>
 </section>
-</main><div class="footer"><div class="rock-footer-links"><a href="/">Public Website</a><a href="/client" aria-current="page">Client Portal</a><a href="/professional">Professional Portal</a></div>© THE ROCK · Town Planning & Land Use Management · Client information is protected by account-level access controls.</div>
+</main><div class="footer"><div class="rock-footer-links"><a href="/">Public Website</a><a href="/client" aria-current="page">Client Portal</a><a href="/professional">Professional Portal</a></div>© Infocheck-in · Town Integrated Development and Advisory Services · Client information is protected by account-level access controls.</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
@@ -70,7 +72,7 @@ async function loadApplications(revision){
   if(error){message('dashboardMessage','Unable to load your applications: '+error.message,true);return}
   if(!data||data.length===0){
     const empty=el('div','empty');
-    empty.append(el('strong',null,'No linked applications yet'),el('div',null,'Your account is active, but no planning applications have been assigned to it. Please contact THE ROCK and provide your application reference to request verification and linking.'));
+    empty.append(el('strong',null,'No linked applications yet'),el('div',null,'Your account is active, but no planning applications have been assigned to it. Please contact Infocheck-in and provide your application reference to request verification and linking.'));
     holder.replaceChildren(empty);
     return;
   }
@@ -102,7 +104,7 @@ function clientFacingSection(title,description,records,format){
 function clientFriendlyStatus(value){return String(value||'Pending').replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase())}
 function renderProgress(data){
  const container=$('progressContent');container.replaceChildren();
- const hero=el('div','progress-hero');hero.append(el('div','eyebrow','THE ROCK · APPLICATION PROGRESS'),el('h1',null,data.application_reference||'Planning Application'),el('p',null,(data.application_type||'Planning application')+' · '+(data.municipality||'Municipality not specified')),el('span','pill',data.status||'Status pending'));
+ const hero=el('div','progress-hero');hero.append(el('div','eyebrow','Infocheck-in · APPLICATION PROGRESS'),el('h1',null,data.application_reference||'Planning Application'),el('p',null,(data.application_type||'Planning application')+' · '+(data.municipality||'Municipality not specified')),el('span','pill',data.status||'Status pending'));
  const grid=el('div','progress-grid'),left=el('div','progress-panel'),right=el('div','progress-panel');
  left.append(el('h2',null,'Project milestones'),el('p','hint','Verified milestones from your planning case file.'));
  const subs=Array.isArray(data.municipal_submissions)?data.municipal_submissions:[];
@@ -132,7 +134,7 @@ function renderProgress(data){
  left.append(clientFacingSection('Document requirements','Requirements released to your client account. Contact your professional before sending documents by email.',requirements,r=>[r.requirement_name||'Document requirement',clientFriendlyStatus(r.requirement_status),r.is_mandatory?'Required':'Optional',r.client_note||''].filter(Boolean).join(' · ')));
  left.append(clientFacingSection('Professional updates','Updates shared with you by your appointed professional.',updates,u=>[u.created_at?displayDate(u.created_at):'',u.title||'Professional update',u.message||''].filter(Boolean).join(' · ')));
  left.append(buildClientUploadSection());
- right.append(el('div','progress-footnote','This dashboard reflects records released through THE ROCK. Municipal decisions, legal effect, conditions and appeal periods must be confirmed from the official decision and your appointed professional.'));
+ right.append(el('div','progress-footnote','This dashboard reflects records released through Infocheck-in. Municipal decisions, legal effect, conditions and appeal periods must be confirmed from the official decision and your appointed professional.'));
  grid.append(left,right);container.append(hero,grid);
 }
 
@@ -156,7 +158,7 @@ function buildClientUploadSection(){
  const fileLabel=el('label',null,'Choose file');fileLabel.htmlFor='clientUploadFile';
  const file=el('input');file.id='clientUploadFile';file.type='file';file.accept='.pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp';file.required=true;
  const button=el('button','primary','Submit document securely');button.type='submit';button.id='clientUploadButton';button.disabled=true;
- const help=el('div','upload-help','Submitted files are sent to THE ROCK for professional review. A submission is not an accepted document until reviewed.');
+ const help=el('div','upload-help','Submitted files are sent to Infocheck-in for professional review. A submission is not an accepted document until reviewed.');
  const status=el('div','upload-status');status.id='clientUploadStatus';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
  form.append(reqLabel,select,nameLabel,name,fileLabel,file,button,help,status);
  form.addEventListener('submit',submitClientDocument);
@@ -221,7 +223,7 @@ async function submitClientDocument(event){
   if(uploaded.error)throw uploaded.error;
   uploadStatus('Registering document for professional review…');
   const registered=await client.rpc('rock_register_client_document',{p_application_id:appId,p_requirement_id:reqId,p_storage_path:path,p_document_name:name});
-  if(registered.error)throw new Error('File uploaded but registration failed: '+registered.error.message+'. Please contact THE ROCK; do not repeatedly upload the same file.');
+  if(registered.error)throw new Error('File uploaded but registration failed: '+registered.error.message+'. Please contact Infocheck-in; do not repeatedly upload the same file.');
   if(appId!==currentApplicationId)return;
   if(form.isConnected)form.reset();
   uploadStatus('Document submitted successfully. Awaiting professional review.');
