@@ -196,6 +196,175 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 .rock-top-links a:hover,.rock-cross-links a:hover{opacity:.8}
 @media(max-width:700px){.rock-top-links{gap:7px}.rock-top-links a{font-size:10px}.topbar .brand h1{font-size:18px}}
 </style>
+
+<style id="infocheck-in-professional-theme">
+/* Infocheck-in professional portal — homepage-aligned visual layer.
+   Existing application logic, auth, permissions, IDs and financial safeguards are untouched. */
+:root {
+  --green-dark: #082c20;
+  --green: #0d4a35;
+  --green-light: #e9f2ed;
+  --gold: #c8a45d;
+  --gold-light: #e0c27b;
+  --cream: #f7f4ed;
+  --white: #ffffff;
+  --text: #1d2924;
+  --muted: #66736d;
+  --border: #dfe5e1;
+  --success: #16794c;
+  --danger: #b83a3a;
+  --shadow: 0 8px 24px rgba(8,44,32,.07);
+}
+html {scroll-behavior:smooth}
+body {font-family:Arial,Helvetica,sans-serif;background:var(--cream);color:var(--text);line-height:1.55}
+button,input,select,textarea {font:inherit}
+a {text-underline-offset:3px}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible {
+  outline:2px solid var(--gold);outline-offset:3px;
+}
+.login-screen {
+  background:linear-gradient(rgba(5,37,27,.91),rgba(5,37,27,.91)),
+    radial-gradient(circle at 70% 20%,#1c684d,transparent 45%);
+}
+.login-card {
+  border-radius:10px;border:1px solid rgba(200,164,93,.3);
+  padding:42px;box-shadow:0 20px 60px rgba(0,0,0,.19);
+}
+.login-logo h1 {font-size:clamp(28px,5vw,36px);letter-spacing:1.2px;color:var(--green-dark);font-weight:800}
+.login-logo p {font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.form-control {border-color:var(--border);border-radius:5px;background:#fff}
+.form-control:focus {border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,164,93,.16)}
+.button {border-radius:5px;font-weight:700;transition:background .2s ease,transform .2s ease}
+.button-primary {background:var(--gold);color:var(--green-dark)}
+.button-primary:hover {background:var(--gold-light);color:var(--green-dark)}
+.button-secondary {background:var(--white);border:1px solid var(--green);color:var(--green-dark)}
+.button-secondary:hover {background:var(--green-dark);color:white}
+.topbar {
+  background:var(--green-dark);height:78px;padding:0 5%;
+  box-shadow:0 2px 15px rgba(0,0,0,.15);
+}
+.topbar .brand {display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:0}
+.topbar .brand h1 {font-size:24px;line-height:1.2;letter-spacing:1px;color:#fff;font-weight:800}
+.topbar .brand span {color:#d9e3de;font-size:9px;letter-spacing:1.25px;line-height:1.35}
+.topbar .user-area {gap:14px}
+.topbar .user-email {color:#d9e3de}
+.topbar .rock-top-links a {color:#fff}
+.topbar .rock-top-links a:hover {color:var(--gold-light)}
+.logout-button {border-radius:5px;border:1px solid rgba(255,255,255,.4);background:transparent}
+.logout-button:hover {border-color:var(--gold);color:var(--gold-light)}
+.layout {padding-top:78px}
+.sidebar {top:78px;background:#fff;border-right:1px solid var(--border);padding:24px 12px}
+.nav-label {color:var(--muted);letter-spacing:1.6px}
+.nav-button {border-radius:5px;color:var(--text)}
+.nav-button:hover {background:var(--green-light);color:var(--green-dark)}
+.nav-button.active {background:var(--green-dark);color:#fff;border-left:3px solid var(--gold)}
+.main {background:var(--cream);padding:34px}
+.page-header h2 {color:var(--green-dark);font-weight:800}
+.page-header p {color:var(--muted)}
+.stat-card,.content-card,.pipeline-card,.quotation-card,.mandate-card {
+  border:1px solid var(--border);border-radius:8px;
+  box-shadow:0 3px 12px rgba(8,44,32,.035);
+}
+.stat-card .value,.pipeline-number,.reference-link {color:var(--green)}
+.content-card h3,.case-section-title,.quotation-header h4 {color:var(--green-dark)}
+.case-header {background:var(--green-dark);border-radius:8px 8px 0 0;border-top:3px solid var(--gold)}
+.case-body {border-radius:0 0 8px 8px}
+.quotation-header {background:#f7f4ed}
+.financial-row.total {background:var(--green-dark)}
+th {background:#f1f5f1;color:var(--green-dark)}
+tr:hover td {background:#fafcf9}
+.badge-gold {background:#f8f0dd;color:#7a591f}
+.rock-cross-links a {color:var(--green-dark)}
+.rock-cross-links a:hover {color:var(--green)}
+@media(max-width:900px) {
+  .topbar {padding:0 16px}
+  .topbar .brand h1 {font-size:20px}
+  .topbar .brand span {font-size:8px;letter-spacing:.7px}
+  .topbar .user-area {gap:8px}
+}
+@media(max-width:650px) {
+  .topbar {height:auto;min-height:78px;gap:8px;flex-wrap:wrap;padding:10px 14px}
+  .topbar .brand {flex:1 1 100%}
+  .topbar .brand span {display:block;font-size:8px}
+  .topbar .user-area {width:100%;justify-content:space-between;flex-wrap:wrap}
+  .layout {padding-top:122px}
+  .sidebar {position:static;width:100%}
+  .main {padding:18px;width:100%;margin-left:0}
+  .login-card {padding:28px 22px}
+  .page-header h2 {font-size:23px}
+}
+@media(max-width:400px) {
+  .layout {padding-top:136px}
+  .topbar .rock-top-links {gap:7px}
+  .topbar .rock-top-links a {font-size:10px}
+}
+</style>
+
+
+<style id="infocheck-analytics-style">
+.ic-analytics{margin:26px 0 30px;min-width:0;color:var(--text)}
+.ic-analytics-head{background:linear-gradient(115deg,#082d21 0%,#104c38 75%,#1b5c45 100%);border-top:3px solid #c8a45d;border-radius:10px;padding:24px 26px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:0 14px 32px rgba(8,44,32,.12)}
+.ic-analytics-head h3{font-size:clamp(22px,2.2vw,29px);color:#fff;margin:5px 0 4px;letter-spacing:-.5px}
+.ic-analytics-head p{font-size:12px;color:#c7dfd4;margin:0;max-width:590px}
+.ic-kicker{font-size:10px;letter-spacing:2px;font-weight:800;color:#d8bd7c}
+.ic-live-pill{vertical-align:middle;border:1px solid rgba(255,255,255,.3);color:#e6f4e9;border-radius:50px;padding:5px 9px;font-size:10px;letter-spacing:.4px;font-weight:600;white-space:nowrap}
+.ic-live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#81d3a6;margin-right:5px}
+.ic-analytics-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.ic-analytics-actions label{color:#e8f1eb;font-size:11px;font-weight:700}
+.ic-analytics-actions select.form-control{width:auto;min-width:150px;padding:9px 12px;border-color:#bbd1c5;font-size:12px}
+.ic-analytics-actions .button{padding:9px 13px;font-size:11px;white-space:nowrap;background:#fff;color:#082d21;border:1px solid #e0c27b}
+.ic-analytics-actions .button:hover:not(:disabled){background:#e6d3a3}
+.ic-analytics-actions .button:disabled{opacity:.5;cursor:not-allowed}
+.ic-analytics-alert{font-size:12px;min-height:18px;color:#57665d;margin:10px 0 13px}
+.ic-analytics-alert.ic-error{color:#ad3535}
+.ic-analytics-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.ic-kpi{border:1px solid #dfe5e1;background:white;border-radius:9px;padding:17px 19px;position:relative;overflow:hidden;box-shadow:0 3px 12px rgba(8,44,32,.03)}
+.ic-kpi::before{content:"";position:absolute;inset:0 auto 0 0;background:#c8a45d;width:3px}
+.ic-kpi-label{display:block;font-size:12px;color:#607268;font-weight:700}
+.ic-kpi strong{display:block;color:#0d4a35;font-size:clamp(24px,2.3vw,33px);line-height:1.4;font-variant-numeric:tabular-nums}
+.ic-kpi small{color:#7e8b82;font-size:10px}
+.ic-analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+.ic-chart-card{background:#fff;border:1px solid #dfe5e1;border-radius:10px;min-width:0;padding:20px 22px;box-shadow:0 3px 12px rgba(8,44,32,.035)}
+.ic-chart-wide{grid-column:1/-1}
+.ic-card-heading{display:flex;justify-content:space-between;gap:8px;margin-bottom:17px;align-items:flex-start}
+.ic-card-heading h4{font-size:16px;font-weight:800;color:#11392b;margin:0 0 3px}
+.ic-card-heading p{font-size:11px;color:#78867d;margin:0}
+.ic-tag{border:1px solid #dfe9e2;background:#f2f7f3;color:#377057;border-radius:4px;font-size:9px;font-weight:800;letter-spacing:1px;padding:4px 7px;white-space:nowrap}
+.ic-activity-chart{min-height:200px;position:relative;display:flex;align-items:flex-end;gap:14px;padding:22px 12px 3px;border-bottom:1px solid #dfe5e1}
+.ic-trend-group{height:175px;flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px}
+.ic-trend-group:hover .ic-trend-bars{filter:brightness(.91)}
+.ic-trend-bars{width:100%;height:135px;display:flex;align-items:flex-end;justify-content:center;gap:4px;max-width:95px}
+.ic-trend-bar{width:24%;max-width:30px;min-width:5px;border-radius:4px 4px 0 0;transition:height .25s ease;background:#0d4a35;display:block}
+.ic-trend-bar.ic-enquiries{background:#c8a45d}
+.ic-trend-tick{font-size:10px;color:#63746b;text-align:center;white-space:nowrap}
+.ic-legend{display:flex;gap:18px;align-items:center;justify-content:flex-end;padding-top:12px;color:#667970;font-size:11px}
+.ic-legend span{display:flex;align-items:center;gap:6px}
+.ic-legend-dot{display:inline-block;width:8px;height:8px;border-radius:3px}
+.ic-app-dot{background:#0d4a35}.ic-enq-dot{background:#c8a45d}
+.ic-donut-layout{display:flex;align-items:center;justify-content:center;gap:20px;min-height:205px;flex-wrap:wrap}
+.ic-donut{width:190px;height:190px;flex:none;display:grid;place-items:center}
+.ic-donut svg{width:100%;height:100%}
+.ic-donut-legend{flex:1;min-width:145px;max-height:240px;overflow:auto}
+.ic-donut-row{display:flex;align-items:center;gap:7px;margin:8px 0;font-size:11px;color:#43564b}
+.ic-donut-row .ic-legend-dot{width:9px;height:9px;flex:none}
+.ic-donut-row b{margin-left:auto;font-size:12px;color:#143c2a;font-variant-numeric:tabular-nums}
+.ic-bar-list{min-height:220px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.ic-bar-item{display:grid;grid-template-columns:minmax(0,1fr) 36px;align-items:center;gap:4px 12px}
+.ic-bar-name{font-size:11px;color:#43564b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ic-bar-value{font-size:12px;font-weight:800;text-align:right;color:#11392b;font-variant-numeric:tabular-nums}
+.ic-bar-track{grid-column:1/-1;height:8px;border-radius:10px;background:#edf2ed;overflow:hidden}
+.ic-bar-fill{background:linear-gradient(90deg,#0e5138,#389577);height:100%;border-radius:10px;display:block;min-width:0;transition:width .25s ease}
+.ic-bar-fill.ic-gold{background:linear-gradient(90deg,#b18b49,#dfbb76)}
+.ic-insight-list{min-height:215px;display:flex;flex-direction:column;justify-content:center;gap:11px}
+.ic-insight{border:1px solid #e3eae4;background:#f8faf7;border-left:3px solid #c8a45d;padding:10px 12px;border-radius:5px;color:#455c4c;font-size:12px;line-height:1.5}
+.ic-insight strong{color:#113b2a}
+.ic-empty{color:#7b887f;font-size:12px;text-align:center;padding:24px 6px}
+.ic-analytics-footnote{font-size:11px;color:#728179;margin:11px 3px 0}
+@media(max-width:1050px){.ic-analytics-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){.ic-analytics-grid{grid-template-columns:1fr}.ic-chart-wide{grid-column:auto}}
+@media(max-width:520px){.ic-analytics-head{padding:18px}.ic-analytics-kpis{gap:9px}.ic-kpi{padding:13px}.ic-chart-card{padding:17px}.ic-donut{width:155px;height:155px}.ic-activity-chart{gap:4px;padding-left:1px;padding-right:1px}.ic-trend-tick{font-size:9px}.ic-analytics-actions{width:100%}.ic-analytics-actions label{flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.ic-trend-bar,.ic-bar-fill{transition:none}}
+</style>
 </head>
 <body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><div class="login-logo"><h1>Infocheck-in</h1><p>PROFESSIONAL PLANNING PORTAL</p></div><nav class="rock-cross-links" aria-label="Other Infocheck-in sites"><a href="/">Public Website</a><a href="/client">Client Portal</a></nav><form id="loginForm"><div class="form-group"><label>Professional Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" class="form-control" required></div><button id="loginButton" class="button button-primary" style="width:100%">Sign In</button><div id="loginMessage" class="login-message"></div></form></div></div>
@@ -204,6 +373,40 @@ body.auth-ready #loginScreen{visibility:visible} .readiness-meter{height:12px;ba
 <div class="layout"><aside class="sidebar"><div class="nav-label">Workspace</div><button id="navDashboard" class="nav-button active" onclick="showSection('dashboard',this)">Dashboard</button><button id="navOperations" class="nav-button" onclick="showSection('operations',this)">Operations Dashboard</button><button id="navTasks" class="nav-button" onclick="showSection('tasks',this)">Tasks &amp; Deadlines</button><button id="navApplications" class="nav-button" onclick="showSection('applications',this)">Applications</button><button id="navEnquiries" class="nav-button" onclick="showSection('enquiries',this)">Enquiries</button><button id="navPipeline" class="nav-button" onclick="showSection('pipeline',this)">Pipeline</button><div class="nav-label" style="margin-top:20px">Financial Management</div><button id="navFinancialDashboard" class="nav-button" onclick="showSection('financialDashboard',this)">Financial Dashboard</button><button id="navInvoices" class="nav-button" onclick="showSection('invoices',this)">Invoice Management</button><div class="nav-label" style="margin-top:20px">Case Management</div><button id="navCaseFile" class="nav-button" onclick="showSection('caseFile',this)">Current Case</button></aside>
 <main class="main">
 <section id="dashboard" class="section active"><div class="page-header"><div><h2>Professional Dashboard</h2><p>Manage planning applications, enquiries and active projects.</p></div></div><div class="stats-grid"><div class="stat-card"><div class="label">New Applications</div><div id="statNew" class="value">0</div></div><div class="stat-card"><div class="label">Total Applications</div><div id="statTotal" class="value">0</div></div><div class="stat-card"><div class="label">Active Projects</div><div id="statActive" class="value">0</div></div><div class="stat-card"><div class="label">Completed</div><div id="statCompleted" class="value">0</div></div></div>
+
+<div id="infocheck-analytics-panel" class="ic-analytics" aria-label="Portfolio analytics">
+  <div class="ic-analytics-head">
+    <div><span class="ic-kicker">OPERATIONS INTELLIGENCE</span><h3>Portfolio analytics <span class="ic-live-pill"><span class="ic-live-dot"></span> Live records</span></h3>
+      <p>Visual insights from your authorised applications and enquiries. Refresh after making changes.</p></div>
+    <div class="ic-analytics-actions">
+      <label for="ic-analytics-range">Reporting period</label>
+      <select id="ic-analytics-range" class="form-control" aria-label="Analytics date range"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="180" selected>Last 180 days</option><option value="365">Last 365 days</option><option value="all">All records</option></select>
+      <button type="button" id="ic-analytics-refresh" class="button button-secondary">↻ Refresh</button>
+      <button type="button" id="ic-analytics-export" class="button button-secondary" disabled>↓ Export summary CSV</button>
+    </div>
+  </div>
+  <div id="ic-analytics-alert" class="ic-analytics-alert" role="status" aria-live="polite">Preparing live portfolio analytics…</div>
+  <div class="ic-analytics-kpis">
+    <div class="ic-kpi"><span class="ic-kpi-label">Applications opened</span><strong id="ic-kpi-apps">—</strong><small>Within selected period</small></div>
+    <div class="ic-kpi"><span class="ic-kpi-label">Client enquiries</span><strong id="ic-kpi-enquiries">—</strong><small>Within selected period</small></div>
+    <div class="ic-kpi"><span class="ic-kpi-label">Completed applications</span><strong id="ic-kpi-completed">—</strong><small>Current status of period cases</small></div>
+    <div class="ic-kpi"><span class="ic-kpi-label">Active / pending</span><strong id="ic-kpi-pending">—</strong><small>Excludes new and completed</small></div>
+  </div>
+  <div class="ic-analytics-grid">
+    <article class="ic-chart-card ic-chart-wide"><div class="ic-card-heading"><div><h4>Enquiry & application activity</h4><p id="ic-trend-subtitle">Six reporting intervals</p></div><span class="ic-tag">ACTIVITY</span></div>
+      <div id="ic-activity-chart" class="ic-activity-chart" role="img" aria-label="Application and enquiry trend chart">Loading chart…</div>
+      <div class="ic-legend"><span><i class="ic-legend-dot ic-app-dot"></i> Applications</span><span><i class="ic-legend-dot ic-enq-dot"></i> Enquiries</span></div></article>
+    <article class="ic-chart-card"><div class="ic-card-heading"><div><h4>Application status</h4><p>Current status distribution</p></div><span class="ic-tag">PIPELINE</span></div>
+      <div class="ic-donut-layout"><div id="ic-status-chart" class="ic-donut" role="img" aria-label="Application status distribution">Loading chart…</div><div id="ic-status-legend" class="ic-donut-legend"></div></div></article>
+    <article class="ic-chart-card"><div class="ic-card-heading"><div><h4>Application categories</h4><p>Most requested planning services</p></div><span class="ic-tag">DEMAND</span></div>
+      <div id="ic-type-chart" class="ic-bar-list" role="img" aria-label="Applications by type">Loading chart…</div></article>
+    <article class="ic-chart-card"><div class="ic-card-heading"><div><h4>Municipality distribution</h4><p>Where applications originate</p></div><span class="ic-tag">GEOGRAPHY</span></div>
+      <div id="ic-municipality-chart" class="ic-bar-list" role="img" aria-label="Applications by municipality">Loading chart…</div></article>
+    <article class="ic-chart-card"><div class="ic-card-heading"><div><h4>Operational signals</h4><p>Actionable observations from live records</p></div><span class="ic-tag">INSIGHTS</span></div>
+      <div id="ic-insights" class="ic-insight-list">Loading insights…</div></article>
+  </div>
+  <p class="ic-analytics-footnote" id="ic-analytics-updated">Analytics are read-only and respect your existing Supabase permissions. Figures are not financial forecasts.</p>
+</div>
 <div id="rockFinancialOverview" class="content-card" hidden>
   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
     <div>
@@ -332,7 +535,7 @@ async function logout(){await supabaseClient.auth.signOut({scope:"local"});curre
 supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){currentUser=currentProfile=currentApplication=currentQuotation=null;showLoginScreen();return}if(event==="SIGNED_IN"&&session){if(!currentUser||currentUser.id!==session.user.id)setTimeout(()=>verifyProfessional(session.user),0)}});
 function showLoginError(message){const b=document.getElementById("loginMessage");b.textContent=message;b.className="login-message error"}function clearLoginMessage(){const b=document.getElementById("loginMessage");b.textContent="";b.className="login-message"}
 function showSection(id,button){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));const section=document.getElementById(id);if(section)section.classList.add("active");document.querySelectorAll(".nav-button").forEach(n=>n.classList.remove("active"));if(button)button.classList.add("active");if(id==="dashboard")loadDashboard();if(id==="operations")rockLoadOperations();if(id==="tasks")rockLoadTaskPortfolio();if(id==="applications")loadApplications();if(id==="enquiries")loadEnquiries();if(id==="pipeline"){loadPipelineSummary();loadFullPipeline()}if(id==="financialDashboard")rockLoadDetailedFinancials();if(id==="invoices"){rockLoadInvoices();rockInvoiceLoadApplications()}}
-async function loadDashboard(){await loadApplicationStats();await loadRecentApplications();await loadPipelineSummary("dashboardPipeline");void rockLoadFinancialOverview()}
+async function loadDashboard(){await loadApplicationStats();await loadRecentApplications();await loadPipelineSummary("dashboardPipeline");void rockLoadFinancialOverview();void window.infocheckAnalytics?.refresh()}
 async function loadApplicationStats(){const {data,error}=await supabaseClient.from("applications").select("status");if(error)return console.error(error);const a=data||[],newA=a.filter(x=>(x.status||"").toLowerCase()==="new").length,completed=a.filter(x=>(x.status||"").toLowerCase()==="completed").length,active=a.filter(x=>{const s=(x.status||"").toLowerCase();return s!=="new"&&s!=="completed"&&s!==""}).length;document.getElementById("statNew").textContent=newA;document.getElementById("statTotal").textContent=a.length;document.getElementById("statActive").textContent=active;document.getElementById("statCompleted").textContent=completed}
 async function loadRecentApplications(){const c=document.getElementById("recentApplications"),{data,error}=await supabaseClient.from("applications").select("*").order("created_at",{ascending:false}).limit(8);if(error){c.innerHTML='<div class="error-box">Unable to load applications.</div>';return}c.innerHTML=data&&data.length?buildApplicationsTable(data):'<div class="empty">No applications have been received yet.</div>'}
 let rockApplicationRows=[],rockApplicationQuery="",rockApplicationStatus="all";
@@ -2163,6 +2366,169 @@ async function rockPublishClientUpdate(){
  await rockLoadClientPublication(appId);rockPubFeedback('Client update published successfully.');
  await rockLoadCaseActivities(appId);
 }
+</script>
+
+<script id="infocheck-analytics-behaviour">
+/* Read-only, self-contained analytics: no third-party chart libraries, no additional privileges. */
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const statusesPalette=['#0b5137','#c8a45d','#2d9274','#7cae99','#d9bc80','#718b7d','#b7c9be','#446e60','#b5a891'];
+  const formatCount=n=>Number(n||0).toLocaleString('en-ZA');
+  const addText=(parent,tag,text,cls)=>{const el=document.createElement(tag);if(cls)el.className=cls;el.textContent=String(text);parent.appendChild(el);return el};
+  const safeDate=v=>{if(!v)return null;const d=new Date(v);return Number.isFinite(d.getTime())?d:null};
+  const dayDate=v=>{if(!v)return null;const str=String(v).slice(0,10);if(!/^\d{4}-\d{2}-\d{2}$/.test(str))return null;const d=new Date(str+'T12:00:00');return Number.isFinite(d.getTime())?d:null};
+  let latest={applications:[],enquiries:[],tasks:[],date:new Date(),partial:false};
+  let busy=false,loaded=false;
+  const number=(node,value)=>{if($(node))$(node).textContent=formatCount(value)};
+  const titleCase=s=>String(s||'').replace(/\b\w/g,c=>c.toUpperCase());
+  const generic=s=>String(s==null||String(s).trim()===''?'Not specified':s).trim();
+  const countBy=(rows,key)=>{const map=new Map();for(const r of rows){let value=generic(r[key]);if(value.length>80)value=value.slice(0,77)+'…';map.set(value,(map.get(value)||0)+1)}return [...map].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))};
+  const empty=(node,msg)=>{node.replaceChildren();addText(node,'div',msg,'ic-empty')};
+  const startFor=(period,now)=>{if(period==='all')return null;const d=new Date(now);d.setHours(0,0,0,0);d.setDate(d.getDate()-Number(period)+1);return d};
+  const inRange=(row,start,end)=>{const d=safeDate(row.created_at);return d&&(!start||d>=start)&&d<=end};
+  const statusKey=r=>generic(r.status).toLowerCase();
+  async function getAll(table,fields){
+    const out=[];const size=1000;let partial=false;
+    for(let from=0;from<10000;from+=size){
+      const {data,error}=await supabaseClient.from(table).select(fields).order('created_at',{ascending:false}).range(from,from+size-1);
+      if(error)throw Error(`${table}: ${error.message}`);
+      out.push(...(data||[]));
+      if(!data||data.length<size)return {rows:out,partial};
+    }
+    partial=true;
+    return {rows:out,partial};
+  }
+  async function refresh(){
+    if(busy||!$('infocheck-analytics-panel'))return;
+    if(typeof currentUser==='undefined'||!currentUser)return;
+    busy=true;
+    const button=$('ic-analytics-refresh');button.disabled=true;button.textContent='Refreshing…';
+    $('ic-analytics-alert').classList.remove('ic-error');$('ic-analytics-alert').textContent='Reading your authorised portfolio data…';
+    try{
+      // Queries run under the existing signed-in professional's JWT and current RLS policies.
+      const [apps,enquiries]=await Promise.all([
+        getAll('applications','id,application_reference,created_at,status,application_type,municipality'),
+        getAll('enquiries','id,created_at,status,application_type,municipality')
+      ]);
+      latest={applications:apps.rows,enquiries:enquiries.rows,date:new Date(),partial:apps.partial||enquiries.partial};
+      loaded=true;
+      render();
+    }catch(err){
+      console.error('Infocheck-in analytics query failed:',err);
+      $('ic-analytics-alert').classList.add('ic-error');
+      $('ic-analytics-alert').textContent='Analytics could not load. Check your session, table access and connection, then refresh. No records have been changed.';
+      if(!loaded){for(const id of ['ic-activity-chart','ic-status-chart','ic-type-chart','ic-municipality-chart','ic-insights'])empty($(id),'No verified data available');$('ic-status-legend').replaceChildren()}
+    }finally{busy=false;button.disabled=false;button.textContent='↻ Refresh'}
+  }
+  function makeTrend(apps,enq,start,now){
+    const node=$('ic-activity-chart');node.replaceChildren();
+    const chartStart=start||new Date(now.getFullYear(),now.getMonth()-5,1);
+    const end=new Date(now);end.setHours(23,59,59,999);
+    const total=Math.max(1,end.getTime()-chartStart.getTime());
+    const buckets=Array.from({length:6},(_,i)=>({a:0,e:0,from:new Date(chartStart.getTime()+i*total/6),to:new Date(chartStart.getTime()+(i+1)*total/6)}));
+    for(const [rows,key] of [[apps,'a'],[enq,'e']])for(const r of rows){const d=safeDate(r.created_at);if(!d||d<chartStart||d>end)continue;const n=Math.min(5,Math.floor((d-chartStart)/total*6));buckets[n][key]++}
+    const max=Math.max(1,...buckets.map(b=>Math.max(b.a,b.e)));
+    for(const b of buckets){
+      const group=document.createElement('div');group.className='ic-trend-group';
+      const bars=document.createElement('div');bars.className='ic-trend-bars';
+      for(const [key,cls,type] of [['a','ic-applications','applications'],['e','ic-enquiries','enquiries']]){
+        const bar=document.createElement('span');bar.className='ic-trend-bar '+(key==='e'?'ic-enquiries':'');
+        bar.style.height=b[key]?`${Math.max(3,(b[key]/max)*100)}%`:'0%';
+        bar.title=`${formatCount(b[key])} ${type}, ${b.from.toLocaleDateString('en-ZA',{day:'numeric',month:'short'})} – ${b.to.toLocaleDateString('en-ZA',{day:'numeric',month:'short'})}`;
+        bars.appendChild(bar)
+      }
+      group.appendChild(bars);
+      addText(group,'span',b.from.toLocaleDateString('en-ZA',{day:'numeric',month:'short'}),'ic-trend-tick');
+      node.appendChild(group)
+    }
+    const subtitle=$('ic-trend-subtitle');subtitle.textContent=`Six intervals · ${chartStart.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'})} – ${end.toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'})}`;
+    node.setAttribute('aria-label',`Activity trend: ${buckets.map((b,i)=>`period ${i+1}, ${b.a} applications and ${b.e} enquiries`).join('; ')}`)
+  }
+  function makeDonut(rows){
+    const node=$('ic-status-chart'),legend=$('ic-status-legend');node.replaceChildren();legend.replaceChildren();
+    if(!rows.length){empty(node,'No applications in this period');return}
+    const counts=countBy(rows.map(r=>({status:statusKey(r)})),'status');
+    const grouped=counts.length>8?[...counts.slice(0,7),['other statuses',counts.slice(7).reduce((s,x)=>s+x[1],0)]]:counts;
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 190 190');svg.setAttribute('role','presentation');
+    let offset=0;const full=2*Math.PI*67;
+    for(let i=0;i<grouped.length;i++){
+      const [name,n]=grouped[i],part=n/rows.length;
+      const ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      for(const [k,v] of Object.entries({cx:'95',cy:'95',r:'67',fill:'none',stroke:statusesPalette[i%statusesPalette.length],'stroke-width':'24','stroke-dasharray':`${part*full} ${full}`,'stroke-dashoffset':String(-offset),'transform':'rotate(-90 95 95)'}))ring.setAttribute(k,v);
+      const t=document.createElementNS('http://www.w3.org/2000/svg','title');t.textContent=`${titleCase(name)}: ${n}`;ring.appendChild(t);svg.appendChild(ring);offset+=part*full;
+      const item=document.createElement('div');item.className='ic-donut-row';const dot=document.createElement('i');dot.className='ic-legend-dot';dot.style.background=statusesPalette[i%statusesPalette.length];item.appendChild(dot);addText(item,'span',titleCase(name));addText(item,'b',formatCount(n));legend.appendChild(item)
+    }
+    const center=document.createElementNS('http://www.w3.org/2000/svg','text');center.setAttribute('x','95');center.setAttribute('y','96');center.setAttribute('text-anchor','middle');center.setAttribute('font-size','27');center.setAttribute('font-weight','800');center.setAttribute('fill','#0d4a35');center.textContent=formatCount(rows.length);svg.appendChild(center);
+    const label=document.createElementNS('http://www.w3.org/2000/svg','text');label.setAttribute('x','95');label.setAttribute('y','114');label.setAttribute('text-anchor','middle');label.setAttribute('font-size','10');label.setAttribute('fill','#6f8075');label.textContent='applications';svg.appendChild(label);node.appendChild(svg);
+    node.setAttribute('aria-label',grouped.map(([n,v])=>`${n}: ${v}`).join(', '))
+  }
+  function makeBars(container,rows,field,gold){
+    const node=$(container);node.replaceChildren();
+    if(!rows.length){empty(node,'No applications in this period');return}
+    const counts=countBy(rows,field).slice(0,5),max=Math.max(...counts.map(x=>x[1]),1);
+    for(const [label,count] of counts){
+      const line=document.createElement('div');line.className='ic-bar-item';
+      const name=addText(line,'span',label,'ic-bar-name');name.title=label;
+      addText(line,'strong',formatCount(count),'ic-bar-value');
+      const track=document.createElement('div');track.className='ic-bar-track';track.setAttribute('aria-hidden','true');
+      const bar=document.createElement('span');bar.className='ic-bar-fill'+(gold?' ic-gold':'');bar.style.width=(count/max*100)+'%';track.appendChild(bar);line.appendChild(track);node.appendChild(line)
+    }
+    node.setAttribute('aria-label',counts.map(([k,v])=>`${k}: ${v}`).join('; '))
+  }
+  function makeInsights(apps,enquiries,period){
+    const node=$('ic-insights');node.replaceChildren();
+    const facts=[];
+    if(!apps.length&&!enquiries.length){facts.push('No application or enquiry records match the selected period. Try widening the reporting window.')}
+    else{
+      const statuses=countBy(apps.map(r=>({status:statusKey(r)})),'status');
+      const types=countBy(apps,'application_type');
+      const places=countBy(apps,'municipality');
+      const info=apps.filter(a=>statusKey(a)==='information required').length;
+      if(info)facts.push(`${formatCount(info)} application${info===1?' is':'s are'} currently marked “Information Required”. Check the relevant cases for outstanding client information.`);
+      if(types.length&&types[0][0]!=='Not specified')facts.push(`Most frequent service category: ${types[0][0]} (${formatCount(types[0][1])} application${types[0][1]===1?'':'s'}).`);
+      if(places.length&&places[0][0]!=='Not specified')facts.push(`Highest recorded municipality volume: ${places[0][0]} (${formatCount(places[0][1])} application${places[0][1]===1?'':'s'}).`);
+      if(statuses.length)facts.push(`Largest current pipeline category: ${titleCase(statuses[0][0])} (${formatCount(statuses[0][1])} applications).`);
+      if(enquiries.length)facts.push(`${formatCount(enquiries.length)} enquiries were recorded in this period. Enquiries are not automatically counted as converted applications.`)
+    }
+    for(const fact of facts.slice(0,4))addText(node,'div',fact,'ic-insight')
+  }
+  function render(){
+    if(!loaded)return;
+    const p=$('ic-analytics-range').value,now=new Date(),start=startFor(p,now);
+    const applications=latest.applications.filter(x=>inRange(x,start,now));
+    const enquiries=latest.enquiries.filter(x=>inRange(x,start,now));
+    number('ic-kpi-apps',applications.length);number('ic-kpi-enquiries',enquiries.length);
+    number('ic-kpi-completed',applications.filter(x=>statusKey(x)==='completed').length);
+    number('ic-kpi-pending',applications.filter(x=>!['new','completed','not specified'].includes(statusKey(x))).length);
+    makeTrend(applications,enquiries,start,now);
+    makeDonut(applications);
+    makeBars('ic-type-chart',applications,'application_type',false);
+    makeBars('ic-municipality-chart',applications,'municipality',true);
+    makeInsights(applications,enquiries,p);
+    $('ic-analytics-export').disabled=false;
+    const warning=latest.partial?' Results may be incomplete because the table exceeded the 10,000-row reporting limit.':'';
+    $('ic-analytics-alert').textContent=`Based on ${formatCount(latest.applications.length)} accessible application records and ${formatCount(latest.enquiries.length)} accessible enquiry records.${warning}`;
+    $('ic-analytics-updated').textContent=`Updated ${latest.date.toLocaleString('en-ZA',{dateStyle:'medium',timeStyle:'short'})}. Reporting period filters by creation date; status is current, not historical. Charts show accessible Supabase records only. No financial transactions are performed.`
+  }
+  function exportSummary(){
+    if(!loaded)return;
+    const p=$('ic-analytics-range').value,now=new Date(),start=startFor(p,now);
+    const apps=latest.applications.filter(x=>inRange(x,start,now));
+    const enquiries=latest.enquiries.filter(x=>inRange(x,start,now));
+    const csvCell=x=>{let v=String(x??'');if(/^[=+@\-\t\r]/.test(v))v="'"+v;return '"'+v.replaceAll('"','""')+'"'};
+    const rows=[['Report','Infocheck-in portfolio analytics'],['Period',p==='all'?'All records':`Last ${p} days`],['Generated at',new Date().toISOString()],['Metric','Value'],['Applications opened',apps.length],['Enquiries',enquiries.length],['Completed applications',apps.filter(x=>statusKey(x)==='completed').length],[],['Application status','Count'],...countBy(apps.map(x=>({status:statusKey(x)})),'status'),[],['Application types','Count'],...countBy(apps,'application_type'),[],['Municipality','Count'],...countBy(apps,'municipality')];
+    const blob=new Blob(['\ufeff'+rows.map(row=>row.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});
+    const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=`infocheck-in-portfolio-summary-${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),1000)
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+    $('ic-analytics-range')?.addEventListener('change',render);
+    $('ic-analytics-refresh')?.addEventListener('click',refresh);
+    $('ic-analytics-export')?.addEventListener('click',exportSummary)
+  });
+  window.infocheckAnalytics={refresh};
+})();
 </script>
 </body>
 </html>
